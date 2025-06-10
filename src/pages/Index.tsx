@@ -1,3 +1,4 @@
+
 import { useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -9,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { ArrowRight, Wifi, Utensils, Waves, LifeBuoy, MapPin, Coffee } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useCMS } from "@/contexts/CMSContext";
 
 // Sample apartments data
 const featuredApartments: ApartmentProps[] = [
@@ -49,6 +51,7 @@ const featuredApartments: ApartmentProps[] = [
 
 export default function Index() {
   const { t } = useLanguage();
+  const { content } = useCMS();
   
   useEffect(() => {
     // Scroll to top when component mounts
@@ -106,13 +109,13 @@ export default function Index() {
                   {t.home.welcome.subtitle}
                 </span>
                 <h2 className="text-3xl md:text-4xl font-bold mt-2 mb-6">
-                  {t.home.welcome.title}
+                  {content.welcomeTitle}
                 </h2>
                 <p className="text-muted-foreground mb-6">
-                  {t.home.welcome.description1}
+                  {content.welcomeDescription1}
                 </p>
                 <p className="text-muted-foreground mb-8">
-                  {t.home.welcome.description2}
+                  {content.welcomeDescription2}
                 </p>
                 <Button asChild className="btn-primary">
                   <Link to="/about">
@@ -157,10 +160,10 @@ export default function Index() {
                   {t.home.booking.subtitle}
                 </span>
                 <h2 className="text-3xl md:text-4xl font-bold mt-2 mb-6">
-                  {t.home.booking.title}
+                  {content.bookingTitle}
                 </h2>
                 <p className="text-muted-foreground mb-6">
-                  {t.home.booking.description}
+                  {content.bookingDescription}
                 </p>
                 <ul className="space-y-3 mb-8">
                   {t.home.booking.benefits.map((item, index) => (
@@ -193,10 +196,10 @@ export default function Index() {
                 {t.home.featuredApartments.subtitle}
               </span>
               <h2 className="text-3xl md:text-4xl font-bold mt-2 mb-4">
-                {t.home.featuredApartments.title}
+                {content.featuredApartmentsTitle}
               </h2>
               <p className="text-muted-foreground">
-                {t.home.featuredApartments.description}
+                {content.featuredApartmentsDescription}
               </p>
             </div>
             
@@ -229,10 +232,10 @@ export default function Index() {
                 {t.home.amenities.subtitle}
               </span>
               <h2 className="text-3xl md:text-4xl font-bold mt-2 mb-4">
-                {t.home.amenities.title}
+                {content.amenitiesTitle}
               </h2>
               <p className="text-muted-foreground">
-                {t.home.amenities.description}
+                {content.amenitiesDescription}
               </p>
             </div>
             
@@ -259,10 +262,10 @@ export default function Index() {
           <div className="container">
             <div className="max-w-3xl mx-auto text-center animate-fade-in">
               <h2 className="text-3xl md:text-4xl font-bold mb-6">
-                {t.home.cta.title}
+                {content.ctaTitle}
               </h2>
               <p className="text-muted-foreground mb-8">
-                {t.home.cta.description}
+                {content.ctaDescription}
               </p>
               <Button asChild size="lg" className="btn-primary">
                 <Link to="/booking">{t.home.cta.bookNow}</Link>

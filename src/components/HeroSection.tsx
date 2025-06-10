@@ -5,9 +5,11 @@ import { ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useCMS } from "@/contexts/CMSContext";
 
 export default function HeroSection() {
   const { t } = useLanguage();
+  const { content } = useCMS();
   const [scrollY, setScrollY] = useState(0);
   
   useEffect(() => {
@@ -45,13 +47,13 @@ export default function HeroSection() {
       >
         <div className="max-w-3xl animate-fade-in">
           <span className="inline-block text-white/90 text-lg mb-4 tracking-wide border-b border-white/30 pb-2">
-            {t.hero.subtitle}
+            {content.heroSubtitle}
           </span>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
-            {t.hero.title}
+            {content.heroTitle}
           </h1>
           <p className="text-lg text-white/90 mb-8 max-w-2xl mx-auto">
-            {t.hero.description}
+            {content.heroDescription}
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Button asChild size="lg" variant="heroSolid" className="min-w-[200px] rounded-full transform transition-all duration-300 hover:translate-y-[-2px]">
