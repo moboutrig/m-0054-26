@@ -207,19 +207,9 @@
       @apply px-3 py-1.5 text-xs;
     }
 
-    /* Mobile header fixes */
-    header nav {
+    /* Two-row header mobile adjustments */
+    header .container {
       @apply gap-2;
-    }
-
-    /* Mobile logo positioning */
-    header nav > div:nth-child(2) {
-      @apply max-w-[50%];
-    }
-
-    /* CMS mobile improvements */
-    .cms-container {
-      @apply px-2;
     }
   }
 
@@ -235,6 +225,27 @@
     .minimal-button {
       @apply px-6 py-2 text-sm;
     }
+  }
+
+  /* Two-row header specific styles */
+  .two-row-header {
+    @apply border-b border-border/10;
+  }
+  
+  .header-row {
+    @apply py-2 sm:py-3 transition-all duration-500;
+  }
+  
+  .header-row.scrolled {
+    @apply py-1 sm:py-2;
+  }
+  
+  .navigation-row {
+    @apply hidden lg:block py-2 sm:py-3 border-t border-border/5;
+  }
+  
+  .navigation-row.scrolled {
+    @apply py-1 sm:py-2;
   }
 }
 
