@@ -3,14 +3,14 @@
   "siteLogo": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=200&h=80&fit=crop",
   "heroTitle": "Luxury Coastal Retreat",
   "heroSubtitle": "Where comfort meets elegance",
-  "heroDescription": "Experience unparalleled luxury in our beautifully appointed apartments, nestled along pristine coastlines with breathtaking ocean views.",
+  "heroDescription": "Experience unparalleled luxury in our beautifully appointed rooms and suites, nestled along pristine coastlines with breathtaking ocean views.",
   "welcomeTitle": "Welcome to Paradise",
-  "welcomeDescription1": "Discover your perfect coastal getaway in our collection of luxury apartments and suites. Each accommodation is thoughtfully designed to provide the ultimate in comfort and sophistication.",
+  "welcomeDescription1": "Discover your perfect coastal getaway in our collection of luxury rooms and suites. Each accommodation is thoughtfully designed to provide the ultimate in comfort and sophistication.",
   "welcomeDescription2": "From intimate studios to spacious penthouses, our properties offer stunning ocean views, modern amenities, and personalized service that exceeds expectations.",
   "bookingTitle": "Book Your Stay",
   "bookingDescription": "Reserve your luxury coastal experience with our easy booking system. Choose your dates, select your perfect accommodation, and prepare for an unforgettable getaway.",
-  "featuredApartmentsTitle": "Featured Accommodations",
-  "featuredApartmentsDescription": "Explore our handpicked selection of premium apartments and suites, each offering unique features and stunning coastal views.",
+  "featuredRoomsTitle": "Featured Accommodations",
+  "featuredRoomsDescription": "Explore our handpicked selection of premium rooms and suites, each offering unique features and stunning coastal views.",
   "amenitiesTitle": "Premium Amenities",
   "amenitiesDescription": "Indulge in our world-class amenities designed to enhance your stay and create lasting memories.",
   "ctaTitle": "Ready for Your Escape?",
@@ -24,43 +24,17 @@
     "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?w=600&h=400&fit=crop"
   ],
   "galleryImages": [],
-  "roomImages": {
-    "1": {
-      "main": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&h=600&fit=crop",
-      "gallery": [
-        "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&h=600&fit=crop",
-        "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop"
-      ]
-    },
-    "2": {
-      "main": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
-      "gallery": [
-        "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
-        "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?w=800&h=600&fit=crop"
-      ]
-    }
-  },
-  "roomAmenities": {
-    "1": [
-      { "id": "1", "name": "Wi-Fi", "icon": "Wifi", "description": "High-speed internet" },
-      { "id": "2", "name": "Kitchen", "icon": "Utensils", "description": "Fully equipped kitchen" }
-    ],
-    "2": [
-      { "id": "3", "name": "Wi-Fi", "icon": "Wifi", "description": "High-speed internet" },
-      { "id": "4", "name": "Bathroom", "icon": "Bath", "description": "Luxury bathroom" }
-    ]
-  },
   "navigation": [
     { "id": "1", "label": "Home", "path": "/", "isActive": true, "order": 1 },
-    { "id": "2", "label": "Apartments", "path": "/apartments", "isActive": true, "order": 2 },
+    { "id": "2", "label": "Rooms", "path": "/rooms", "isActive": true, "order": 2 },
     { "id": "3", "label": "Amenities", "path": "/amenities", "isActive": true, "order": 3 },
     { "id": "4", "label": "Gallery", "path": "/gallery", "isActive": true, "order": 4 },
     { "id": "5", "label": "About", "path": "/about", "isActive": true, "order": 5 }
   ],
   "seoSettings": {
-    "title": "Luxury Coastal Resort - Premium Accommodations",
-    "description": "Experience luxury coastal living with our premium apartments and suites featuring ocean views, modern amenities, and exceptional service.",
-    "keywords": "luxury resort, coastal accommodation, ocean view apartments, premium suites, beachfront rental",
+    "title": "Luxury Coastal Resort - Premium Rooms & Suites",
+    "description": "Experience luxury coastal living with our premium rooms and suites featuring ocean views, modern amenities, and exceptional service.",
+    "keywords": "luxury resort, coastal accommodation, ocean view rooms, premium suites, beachfront rental",
     "ogImage": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=1200&h=630&fit=crop"
   },
   "socialMedia": {
@@ -72,22 +46,23 @@
   },
   "pricing": [
     { "roomId": "1", "basePrice": 180, "currency": "EUR", "seasonalRates": [] },
-    { "roomId": "2", "basePrice": 250, "currency": "EUR", "seasonalRates": [] }
+    { "roomId": "2", "basePrice": 250, "currency": "EUR", "seasonalRates": [] },
+    { "roomId": "3", "basePrice": 150, "currency": "EUR", "seasonalRates": [] },
+    { "roomId": "4", "basePrice": 320, "currency": "EUR", "seasonalRates": [] },
+    { "roomId": "5", "basePrice": 120, "currency": "EUR", "seasonalRates": [] },
+    { "roomId": "6", "basePrice": 200, "currency": "EUR", "seasonalRates": [] }
   ],
   "testimonials": [],
   "footerContent": {
     "description": "Experience luxury coastal living at its finest with our premium accommodations and exceptional service.",
     "quickLinks": [
       { "label": "About", "path": "/about" },
-      { "label": "Apartments", "path": "/apartments" },
+      { "label": "Rooms", "path": "/rooms" },
       { "label": "Gallery", "path": "/gallery" },
       { "label": "Privacy", "path": "/privacy" },
       { "label": "Terms", "path": "/terms" }
     ],
     "contactInfo": {
-      "address": "123 Coastal Drive, Paradise Bay",
-      "phone": "+1 (555) 123-4567",
-      "email": "info@luxurycoastal.com",
       "hours": "24/7 Customer Service"
     },
     "newsletter": {
@@ -145,8 +120,8 @@
         "amenities": "Amenities"
       }
     },
-    "apartments": {
-      "title": "Our Apartments",
+    "rooms": {
+      "title": "Our Rooms & Suites",
       "subtitle": "Find your perfect accommodation",
       "filters": {
         "guests": "Number of Guests",
@@ -173,8 +148,8 @@
       "offer": {
         "title": "What We Offer",
         "content": [
-          "Our resort features a diverse range of luxury apartments and suites, each designed with comfort and elegance in mind.",
-          "From intimate studios perfect for romantic getaways to spacious family apartments with all the amenities of home, we have the perfect accommodation for every traveler."
+          "Our resort features a diverse range of luxury rooms and suites, each designed with comfort and elegance in mind.",
+          "From intimate studios perfect for romantic getaways to spacious family suites with all the amenities of home, we have the perfect accommodation for every traveler."
         ]
       },
       "contact": {
@@ -276,7 +251,7 @@
       "required": "This field is required",
       "invalidEmail": "Please enter a valid email address"
     },
-    "apartment": {
+    "room": {
       "perNight": "per night",
       "guests": "guests",
       "sqm": "sqm",
@@ -290,7 +265,7 @@
       "position": "after"
     }
   },
-  "apartments": [
+  "rooms": [
     {
       "id": "1",
       "name": "Deluxe Sea View Suite",
@@ -300,18 +275,42 @@
       "location": "Beachfront",
       "features": ["Wi-Fi", "Kitchen", "Bathroom", "Air Conditioning", "TV", "Balcony"],
       "isActive": true,
-      "order": 1
+      "order": 1,
+      "roomType": "Suite",
+      "images": {
+        "main": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&h=600&fit=crop",
+        "gallery": [
+          "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&h=600&fit=crop",
+          "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop"
+        ]
+      },
+      "amenities": [
+        { "id": "1", "name": "Wi-Fi", "icon": "Wifi", "description": "High-speed internet" },
+        { "id": "2", "name": "Kitchen", "icon": "Utensils", "description": "Fully equipped kitchen" }
+      ]
     },
     {
       "id": "2",
-      "name": "Premium Family Apartment",
-      "description": "Spacious apartment ideal for families, with full kitchen and stunning coastal views.",
+      "name": "Premium Family Suite",
+      "description": "Spacious suite ideal for families, with full kitchen and stunning coastal views.",
       "capacity": 4,
       "size": 75,
       "location": "Second row",
       "features": ["Wi-Fi", "Kitchen", "Bathroom", "Air Conditioning", "TV", "Washing Machine"],
       "isActive": true,
-      "order": 2
+      "order": 2,
+      "roomType": "Premium",
+      "images": {
+        "main": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+        "gallery": [
+          "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+          "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?w=800&h=600&fit=crop"
+        ]
+      },
+      "amenities": [
+        { "id": "3", "name": "Wi-Fi", "icon": "Wifi", "description": "High-speed internet" },
+        { "id": "4", "name": "Bathroom", "icon": "Bath", "description": "Luxury bathroom" }
+      ]
     },
     {
       "id": "3",
@@ -322,7 +321,10 @@
       "location": "Beachfront",
       "features": ["Wi-Fi", "Kitchenette", "Bathroom", "Air Conditioning", "TV"],
       "isActive": true,
-      "order": 3
+      "order": 3,
+      "roomType": "Studio",
+      "images": { "main": "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?w=800&h=600&fit=crop", "gallery": [] },
+      "amenities": [{ "id": "5", "name": "Beach Access", "icon": "Waves", "description": "Direct beach access"}]
     },
     {
       "id": "4",
@@ -333,7 +335,10 @@
       "location": "Beachfront",
       "features": ["Wi-Fi", "Full Kitchen", "2 Bathrooms", "Air Conditioning", "TV", "Terrace", "Jacuzzi"],
       "isActive": true,
-      "order": 4
+      "order": 4,
+      "roomType": "Suite",
+      "images": { "main": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&h=600&fit=crop", "gallery": [] },
+      "amenities": [{ "id": "6", "name": "Jacuzzi", "icon": "Wind", "description": "Private Jacuzzi" }]
     },
     {
       "id": "5",
@@ -344,18 +349,24 @@
       "location": "Hotel building",
       "features": ["Wi-Fi", "Bathroom", "Air Conditioning", "TV", "Mini Fridge"],
       "isActive": true,
-      "order": 5
+      "order": 5,
+      "roomType": "Standard",
+      "images": { "main": "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800&h=600&fit=crop", "gallery": [] },
+      "amenities": []
     },
     {
       "id": "6",
-      "name": "Garden View Apartment",
-      "description": "Peaceful apartment surrounded by lush gardens, just a short walk from the beach.",
+      "name": "Garden View Room",
+      "description": "Peaceful room surrounded by lush gardens, just a short walk from the beach.",
       "capacity": 3,
       "size": 55,
       "location": "Garden area",
       "features": ["Wi-Fi", "Kitchen", "Bathroom", "Air Conditioning", "TV", "Terrace"],
       "isActive": true,
-      "order": 6
+      "order": 6,
+      "roomType": "Custom",
+      "images": { "main": "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?w=800&h=600&fit=crop", "gallery": [] },
+      "amenities": []
     }
   ]
 }

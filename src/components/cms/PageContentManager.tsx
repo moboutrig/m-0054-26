@@ -114,7 +114,7 @@ export default function PageContentManager() {
       <Tabs defaultValue="about" className="w-full">
         <TabsList className="grid w-full grid-cols-5">
           <TabsTrigger value="about">About</TabsTrigger>
-          <TabsTrigger value="apartments">Apartments</TabsTrigger>
+          <TabsTrigger value="rooms">Rooms</TabsTrigger> {/* Renamed */}
           <TabsTrigger value="faq">FAQ</TabsTrigger>
           <TabsTrigger value="privacy">Privacy</TabsTrigger>
           <TabsTrigger value="terms">Terms</TabsTrigger>
@@ -186,33 +186,33 @@ export default function PageContentManager() {
           </Card>
         </TabsContent>
 
-        <TabsContent value="apartments" className="space-y-4">
+        <TabsContent value="rooms" className="space-y-4"> {/* Renamed value */}
           <Card>
             <CardHeader>
-              <CardTitle>Apartments Page Content</CardTitle>
+              <CardTitle>Rooms Page Content</CardTitle> {/* Renamed */}
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
                 <Label>Page Title</Label>
                 <Input
-                  value={pageContent.apartments.title}
-                  onChange={(e) => updateContent('apartments', 'title', e.target.value)}
+                  value={pageContent.rooms?.title || ""} // Use optional chaining and default value
+                  onChange={(e) => updateContent('rooms', 'title', e.target.value)}
                 />
               </div>
               <div>
                 <Label>Page Subtitle</Label>
                 <Input
-                  value={pageContent.apartments.subtitle}
-                  onChange={(e) => updateContent('apartments', 'subtitle', e.target.value)}
+                  value={pageContent.rooms?.subtitle || ""} // Use optional chaining and default value
+                  onChange={(e) => updateContent('rooms', 'subtitle', e.target.value)}
                 />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <Label>Guests Filter Label</Label>
                   <Input
-                    value={pageContent.apartments.filters.guests}
-                    onChange={(e) => updateContent('apartments', 'filters', { 
-                      ...pageContent.apartments.filters, 
+                    value={pageContent.rooms?.filters?.guests || ""} // Use optional chaining
+                    onChange={(e) => updateContent('rooms', 'filters', {
+                      ...(pageContent.rooms?.filters || {}),
                       guests: e.target.value 
                     })}
                   />
@@ -220,13 +220,14 @@ export default function PageContentManager() {
                 <div>
                   <Label>Location Filter Label</Label>
                   <Input
-                    value={pageContent.apartments.filters.location}
-                    onChange={(e) => updateContent('apartments', 'filters', { 
-                      ...pageContent.apartments.filters, 
+                    value={pageContent.rooms?.filters?.location || ""} // Use optional chaining
+                    onChange={(e) => updateContent('rooms', 'filters', {
+                      ...(pageContent.rooms?.filters || {}),
                       location: e.target.value 
                     })}
                   />
                 </div>
+                {/* Add other filter labels here if needed, e.g., priceRange, anyGuests etc. */}
               </div>
             </CardContent>
           </Card>

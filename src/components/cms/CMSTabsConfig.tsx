@@ -3,9 +3,9 @@ import { TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function CMSTabsConfig() {
   return (
-    <TabsList className="grid w-full grid-cols-6 lg:grid-cols-11 gap-1">
+    <TabsList className="grid w-full grid-cols-5 lg:grid-cols-10 gap-1"> {/* Adjusted grid columns */}
       <TabsTrigger value="content" className="text-xs">Site</TabsTrigger>
-      <TabsTrigger value="apartments" className="text-xs">Apartments</TabsTrigger>
+      {/* <TabsTrigger value="apartments" className="text-xs">Apartments</TabsTrigger> // Removed */}
       <TabsTrigger value="navigation" className="text-xs">Navigation</TabsTrigger>
       <TabsTrigger value="rooms" className="text-xs">Rooms</TabsTrigger>
       <TabsTrigger value="testimonials" className="text-xs">Reviews</TabsTrigger>

@@ -6,7 +6,7 @@ import HeroSection from "@/components/HeroSection";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import WelcomeSection from "@/components/sections/WelcomeSection";
 import BookingSection from "@/components/sections/BookingSection";
-import FeaturedApartmentsSection from "@/components/sections/FeaturedApartmentsSection";
+import FeaturedRoomsSection from "@/components/sections/FeaturedRoomsSection"; // Renamed
 import FeaturesSection from "@/components/sections/FeaturesSection";
 import CTASection from "@/components/sections/CTASection";
 
@@ -30,8 +30,8 @@ export default function Index() {
         {/* Booking Form Section */}
         <BookingSection />
         
-        {/* Featured Apartments */}
-        <FeaturedApartmentsSection />
+        {/* Featured Rooms */}
+        <FeaturedRoomsSection /> {/* Renamed */}
         
         {/* Testimonials Section */}
         <TestimonialsSection />

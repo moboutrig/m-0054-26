@@ -1,7 +1,7 @@
 export const en = {
   nav: {
     home: "Home",
-    apartments: "Apartments",
+    rooms: "Rooms", // Renamed
     amenities: "Amenities",
     gallery: "Gallery",
     contact: "Contact",
@@ -10,13 +10,13 @@ export const en = {
   hero: {
     subtitle: "BEACHFRONT LUXURY ACCOMMODATION",
     title: "Experience Seaside Tranquility",
-    description: "Discover our exclusive collection of luxury beachfront apartments and hotel rooms, offering unparalleled comfort and breathtaking sea views.",
+    description: "Discover our exclusive collection of luxury beachfront rooms and suites, offering unparalleled comfort and breathtaking sea views.", // Updated
     bookStay: "Book Your Stay",
-    exploreApartments: "Explore Apartments",
+    exploreRooms: "Explore Rooms", // Renamed
     scrollDown: "Scroll Down"
   },
   footer: {
-    description: "Luxurious beachfront apartments and hotel rooms with stunning sea views, offering the perfect blend of comfort and elegance for your dream vacation.",
+    description: "Luxurious beachfront rooms and suites with stunning sea views, offering the perfect blend of comfort and elegance for your dream vacation.", // Updated
     quickLinks: "Quick Links",
     contact: "Contact",
     newsletter: "Newsletter",
@@ -50,7 +50,7 @@ export const en = {
     welcome: {
       subtitle: "Welcome to MareSereno",
       title: "Luxury Seaside Accommodations",
-      description1: "Nestled on the pristine Mediterranean coastline, MareSereno offers an exquisite collection of luxury apartments and hotel rooms. Our beachfront accommodations combine elegant design with modern comfort, creating the perfect setting for an unforgettable seaside getaway.",
+      description1: "Nestled on the pristine Mediterranean coastline, MareSereno offers an exquisite collection of luxury rooms and suites. Our beachfront accommodations combine elegant design with modern comfort, creating the perfect setting for an unforgettable seaside getaway.", // Updated
       description2: "Whether you're seeking a romantic escape, a family vacation, or a peaceful retreat, our diverse range of accommodations caters to every preference and need. Each space is thoughtfully designed to provide panoramic sea views and direct beach access.",
       learnMore: "Learn More"
     },
@@ -60,11 +60,11 @@ export const en = {
       description: "Take the first step towards your dream vacation by checking availability and securing your preferred dates. Our simple booking process ensures a seamless experience from reservation to arrival.",
       benefits: ["Instant confirmation", "Best rate guarantee", "Flexible cancellation options", "Secure payment"]
     },
-    featuredApartments: {
+    featuredRooms: { // Renamed
       subtitle: "Our Accommodations",
-      title: "Featured Apartments",
+      title: "Featured Rooms", // Renamed
       description: "Discover our most popular accommodation options, each offering a perfect blend of comfort, style, and breathtaking sea views.",
-      viewAll: "View All Apartments"
+      viewAll: "View All Rooms" // Renamed
     },
     amenities: {
       subtitle: "Hotel Amenities",
@@ -103,8 +103,8 @@ export const en = {
       bookNow: "Book Now"
     }
   },
-  apartments: {
-    title: "Our Apartments & Rooms",
+  roomsPage: { // Renamed from apartments to avoid conflict with uiText.room
+    title: "Our Rooms & Suites", // Updated
     subtitle: "Discover our selection of premium accommodations, ranging from cozy studios to luxurious penthouses.",
     filters: {
       guests: "Guests",
@@ -120,7 +120,7 @@ export const en = {
       of: "of",
       accommodations: "accommodations",
       resetFilters: "Reset Filters",
-      noMatch: "No apartments match your filters",
+      noMatch: "No rooms match your filters", // Updated
       adjustFilters: "Try adjusting your filter criteria to see more options.",
       viewDetails: "View Details",
       features: "features",
@@ -256,8 +256,8 @@ export const en = {
         answer: "Yes, we offer complimentary parking for all guests. Valet parking service is also available for an additional fee."
       },
       pets: {
-        question: "Are pets allowed in the apartments?",
-        answer: "We welcome pets in designated pet-friendly apartments. Please inform us in advance if you plan to bring a pet, as additional charges may apply."
+        question: "Are pets allowed in the rooms/suites?", // Updated
+        answer: "We welcome pets in designated pet-friendly rooms/suites. Please inform us in advance if you plan to bring a pet, as additional charges may apply." // Updated
       },
       breakfast: {
         question: "Is breakfast included in the room rate?",
@@ -269,18 +269,18 @@ export const en = {
       },
       amenities: {
         question: "What amenities are available at the property?",
-        answer: "Our property features swimming pools, a spa, restaurants, a beach bar, fitness center, and direct beach access. All apartments include Wi-Fi, air conditioning, and modern appliances."
+        answer: "Our property features swimming pools, a spa, restaurants, a beach bar, fitness center, and direct beach access. All rooms and suites include Wi-Fi, air conditioning, and modern appliances." // Updated
       }
     }
   },
-  apartmentDescriptions: {
+  roomDescriptions: { // Renamed
     "1": {
       name: "Deluxe Sea View Suite",
       description: "Luxurious suite with panoramic sea views, modern amenities, and a private balcony."
     },
     "2": {
-      name: "Premium Family Apartment",
-      description: "Spacious apartment ideal for families, with full kitchen and stunning coastal views."
+      name: "Premium Family Suite", // Updated
+      description: "Spacious suite ideal for families, with full kitchen and stunning coastal views." // Updated
     },
     "3": {
       name: "Executive Beach Studio",
@@ -295,8 +295,8 @@ export const en = {
       description: "Comfortable hotel room with modern amenities and partial sea views."
     },
     "6": {
-      name: "Garden View Apartment",
-      description: "Peaceful apartment surrounded by lush gardens, just a short walk from the beach."
+      name: "Garden View Room", // Updated
+      description: "Peaceful room surrounded by lush gardens, just a short walk from the beach." // Updated
     }
   },
   amenitiesPage: {
@@ -344,7 +344,7 @@ export const en = {
           },
           {
             title: "Room Service",
-            description: "Enjoy gourmet meals in the privacy of your apartment, available 24 hours a day."
+            description: "Enjoy gourmet meals in the privacy of your room or suite, available 24 hours a day." // Updated
           }
         ]
       },

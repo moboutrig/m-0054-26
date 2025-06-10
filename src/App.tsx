@@ -5,7 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
-import Apartments from "./pages/Apartments";
+import Rooms from "./pages/Rooms"; // Renamed from Apartments
 import BookingPage from "./pages/BookingPage";
 import Gallery from "./pages/Gallery";
 import Contact from "./pages/Contact";
@@ -34,7 +34,7 @@ const App = () => (
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Index />} />
-              <Route path="/apartments" element={<Apartments />} />
+              <Route path="/rooms" element={<Rooms />} /> {/* Path changed to /rooms */}
               <Route path="/booking" element={<BookingPage />} />
               <Route path="/gallery" element={<Gallery />} />
               <Route path="/contact" element={<Contact />} />

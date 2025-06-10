@@ -25,8 +25,7 @@ export const useCMSContent = () => {
         const mergedContent = {
             ...defaultContent,
             ...apiData,
-            roomImages: { ...defaultContent.roomImages, ...apiData.roomImages },
-            roomAmenities: { ...defaultContent.roomAmenities, ...apiData.roomAmenities },
+            // roomImages and roomAmenities are no longer top-level. They are part of each room in the rooms array.
             navigation: apiData.navigation || defaultContent.navigation,
             seoSettings: { ...defaultContent.seoSettings, ...apiData.seoSettings },
             socialMedia: { ...defaultContent.socialMedia, ...apiData.socialMedia },
@@ -37,7 +36,7 @@ export const useCMSContent = () => {
             bookingSettings: { ...defaultContent.bookingSettings, ...apiData.bookingSettings },
             pageContent: { ...defaultContent.pageContent, ...apiData.pageContent },
             uiText: { ...defaultContent.uiText, ...apiData.uiText },
-            apartments: apiData.apartments || defaultContent.apartments,
+            rooms: apiData.rooms || defaultContent.rooms, // Changed from apartments to rooms
         };
 
         setContent(mergedContent);

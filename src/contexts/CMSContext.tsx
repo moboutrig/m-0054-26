@@ -1,6 +1,6 @@
 
 import React, { createContext, useContext } from 'react';
-import { CMSContent, CMSContextType, RoomImages, RoomAmenity, NavigationItem, Testimonial, PricingInfo, PageContent, UIText, ApartmentData } from '@/types/cms';
+import { CMSContent, CMSContextType, RoomData, RoomImages, RoomAmenity, NavigationItem, Testimonial, PricingInfo, PageContent, UIText } from '@/types/cms'; // Replaced ApartmentData with RoomData
 import { useCMSContent } from '@/hooks/useCMSContent';
 import { defaultContent } from '@/data/defaultCMSContent'; // Import for fallback
 
@@ -17,27 +17,7 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     saveContent(newContent);
   };
 
-  const updateRoomImages = (roomId: string, images: RoomImages) => {
-    const newContent = {
-      ...content,
-      roomImages: {
-        ...content.roomImages,
-        [roomId]: images
-      }
-    };
-    saveContent(newContent);
-  };
-
-  const updateRoomAmenities = (roomId: string, amenities: RoomAmenity[]) => {
-    const newContent = {
-      ...content,
-      roomAmenities: {
-        ...content.roomAmenities,
-        [roomId]: amenities
-      }
-    };
-    saveContent(newContent);
-  };
+  // updateRoomImages and updateRoomAmenities are removed as this is now part of RoomData within updateRooms
 
   const updateNavigation = (navigation: NavigationItem[]) => {
     const newContent = { ...content, navigation };
@@ -70,8 +50,8 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     saveContent(newContent);
   };
 
-  const updateApartments = (apartments: ApartmentData[]) => {
-    const newContent = { ...content, apartments };
+  const updateRooms = (rooms: RoomData[]) => { // Renamed from updateApartments, type changed to RoomData[]
+    const newContent = { ...content, rooms };
     saveContent(newContent);
   };
 
@@ -86,20 +66,20 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
   };
 
-  const getApartmentWithPricing = (apartmentId: string) => {
-    const apartment = content.apartments?.find(apt => apt.id === apartmentId);
-    const pricing = content.pricing?.find(p => p.roomId === apartmentId);
-    const images = content.roomImages?.[apartmentId];
+  const getRoomWithPricing = (roomId: string) => { // Renamed from getApartmentWithPricing, param renamed
+    const room = content.rooms?.find(r => r.id === roomId); // Changed from apartments to rooms
+    const pricing = content.pricing?.find(p => p.roomId === roomId);
+    // Images are now directly on the room object
     
-    if (!apartment) return null;
+    if (!room) return null;
     
     return {
-      ...apartment,
-      price: pricing?.basePrice || 150,
-      currency: pricing?.currency || 'EUR',
-      image: images?.main || 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&h=600&fit=crop',
-      gallery: images?.gallery || [],
-      features: apartment.features || []
+      ...room, // room already contains images and amenities
+      price: pricing?.basePrice || 150, // Default pricing if not found
+      currency: pricing?.currency || content.uiText.currency.code || 'EUR', // Default currency
+      // 'image' and 'gallery' are part of room.images
+      // 'features' are part of room.features
+      // 'amenities' are part of room.amenities
     };
   };
 
@@ -134,16 +114,15 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     <CMSContext.Provider value={{
       content: content || defaultContent, // Ensure content is never null/undefined if API fails badly
       updateContent,
-      updateRoomImages,
-      updateRoomAmenities,
+      // updateRoomImages and updateRoomAmenities removed
       updateNavigation,
       updateTestimonials,
       updatePricing,
       updatePageContent,
       updateUIText,
-      updateApartments,
+      updateRooms, // Renamed from updateApartments
       getFormattedPrice,
-      getApartmentWithPricing,
+      getRoomWithPricing, // Renamed from getApartmentWithPricing
       resetContent,
       // Expose isLoading and error if needed by consumer components, though not strictly required by the prompt for now
       // isLoading,

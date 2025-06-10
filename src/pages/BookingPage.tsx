@@ -23,10 +23,23 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ApartmentProps } from "@/components/ApartmentCard";
+// import { ApartmentProps } from "@/components/ApartmentCard"; // Removed import
+
+// Define a local type for the sample data used in this page
+interface BookingRoomEntry {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  capacity: number;
+  size: number;
+  image: string;
+  location: string;
+  features: string[];
+}
 
 // Sample apartments data
-const apartmentsData: ApartmentProps[] = [
+const apartmentsData: BookingRoomEntry[] = [
   {
     id: "1",
     name: "Deluxe Sea View Suite",
@@ -67,7 +80,7 @@ export default function BookingPage() {
   const [endDate, setEndDate] = useState<Date | undefined>(addDays(new Date(), 7));
   const [adults, setAdults] = useState("2");
   const [children, setChildren] = useState("0");
-  const [selectedApartment, setSelectedApartment] = useState<ApartmentProps | null>(null);
+  const [selectedApartment, setSelectedApartment] = useState<BookingRoomEntry | null>(null); // Updated type
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
     firstName: "",
