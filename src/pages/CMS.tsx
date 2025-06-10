@@ -12,6 +12,13 @@ import SiteSettings from "@/components/cms/SiteSettings";
 import ContactSettings from "@/components/cms/ContactSettings";
 import ImageManager from "@/components/cms/ImageManager";
 import RoomManager from "@/components/cms/RoomManager";
+import NavigationManager from "@/components/cms/NavigationManager";
+import SEOSettings from "@/components/cms/SEOSettings";
+import SocialMediaSettings from "@/components/cms/SocialMediaSettings";
+import PricingManager from "@/components/cms/PricingManager";
+import TestimonialsManager from "@/components/cms/TestimonialsManager";
+import FooterSettings from "@/components/cms/FooterSettings";
+import BookingSettings from "@/components/cms/BookingSettings";
 
 export default function CMS() {
   const { resetContent } = useCMS();
@@ -55,12 +62,19 @@ export default function CMS() {
       {/* Content */}
       <div className="container py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-5">
-            <TabsTrigger value="content">Page Content</TabsTrigger>
-            <TabsTrigger value="settings">Site Settings</TabsTrigger>
-            <TabsTrigger value="contact">Contact Info</TabsTrigger>
-            <TabsTrigger value="images">Site Images</TabsTrigger>
-            <TabsTrigger value="rooms">Room Management</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-6 lg:grid-cols-12">
+            <TabsTrigger value="content">Content</TabsTrigger>
+            <TabsTrigger value="settings">Site</TabsTrigger>
+            <TabsTrigger value="contact">Contact</TabsTrigger>
+            <TabsTrigger value="images">Images</TabsTrigger>
+            <TabsTrigger value="rooms">Rooms</TabsTrigger>
+            <TabsTrigger value="navigation">Navigation</TabsTrigger>
+            <TabsTrigger value="seo">SEO</TabsTrigger>
+            <TabsTrigger value="social">Social</TabsTrigger>
+            <TabsTrigger value="pricing">Pricing</TabsTrigger>
+            <TabsTrigger value="testimonials">Reviews</TabsTrigger>
+            <TabsTrigger value="footer">Footer</TabsTrigger>
+            <TabsTrigger value="booking">Booking</TabsTrigger>
           </TabsList>
 
           <TabsContent value="content" className="mt-6">
@@ -132,19 +146,129 @@ export default function CMS() {
               </CardContent>
             </Card>
           </TabsContent>
+
+          <TabsContent value="navigation" className="mt-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Navigation Menu</CardTitle>
+                <CardDescription>
+                  Configure your website's main navigation menu items and their order.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <NavigationManager />
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="seo" className="mt-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>SEO Settings</CardTitle>
+                <CardDescription>
+                  Optimize your website for search engines with meta tags and descriptions.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <SEOSettings />
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="social" className="mt-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Social Media Links</CardTitle>
+                <CardDescription>
+                  Add links to your social media profiles for increased visibility.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <SocialMediaSettings />
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="pricing" className="mt-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Room Pricing Management</CardTitle>
+                <CardDescription>
+                  Set base prices and seasonal rates for each room type.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <PricingManager />
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="testimonials" className="mt-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Customer Testimonials</CardTitle>
+                <CardDescription>
+                  Manage customer reviews and testimonials displayed on your website.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <TestimonialsManager />
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="footer" className="mt-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Footer Content</CardTitle>
+                <CardDescription>
+                  Customize your website footer with links, contact info, and descriptions.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <FooterSettings />
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="booking" className="mt-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Booking Policies</CardTitle>
+                <CardDescription>
+                  Configure booking rules, check-in/out times, and cancellation policies.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <BookingSettings />
+              </CardContent>
+            </Card>
+          </TabsContent>
         </Tabs>
 
         {/* Info Card */}
         <Card className="mt-8 border-amber-200 bg-amber-50 dark:border-amber-800 dark:bg-amber-950/20">
           <CardHeader>
-            <CardTitle className="text-amber-800 dark:text-amber-200">Room Management Features</CardTitle>
+            <CardTitle className="text-amber-800 dark:text-amber-200">Comprehensive CMS Features</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="space-y-2 text-amber-700 dark:text-amber-300">
-              <p>• <strong>Individual Room Customization:</strong> Each of the 6 rooms can have unique images and amenities</p>
-              <p>• <strong>Room Images:</strong> Set a main image and gallery for each room independently</p>
-              <p>• <strong>Custom Amenities:</strong> Add specific amenities for each room with custom icons and descriptions</p>
-              <p>• <strong>Automatic Integration:</strong> Room-specific content automatically appears on apartment cards and detail pages</p>
+            <div className="grid md:grid-cols-2 gap-4 text-amber-700 dark:text-amber-300">
+              <div className="space-y-2">
+                <p>• <strong>Content Management:</strong> Edit all page content and sections</p>
+                <p>• <strong>Room Customization:</strong> Individual room images and amenities</p>
+                <p>• <strong>Navigation Control:</strong> Manage menu items and structure</p>
+                <p>• <strong>SEO Optimization:</strong> Meta tags and search engine settings</p>
+                <p>• <strong>Social Integration:</strong> Connect all social media profiles</p>
+                <p>• <strong>Pricing Management:</strong> Set rates and seasonal pricing</p>
+              </div>
+              <div className="space-y-2">
+                <p>• <strong>Customer Reviews:</strong> Manage testimonials and ratings</p>
+                <p>• <strong>Footer Customization:</strong> Links, contact info, and content</p>
+                <p>• <strong>Booking Policies:</strong> Check-in/out times and rules</p>
+                <p>• <strong>Image Management:</strong> Site-wide and room-specific images</p>
+                <p>• <strong>Contact Settings:</strong> Business information and details</p>
+                <p>• <strong>Live Preview:</strong> All changes reflect immediately</p>
+              </div>
             </div>
           </CardContent>
         </Card>

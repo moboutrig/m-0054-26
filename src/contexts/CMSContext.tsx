@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 interface RoomAmenity {
@@ -11,6 +10,79 @@ interface RoomAmenity {
 interface RoomImages {
   main: string;
   gallery: string[];
+}
+
+interface NavigationItem {
+  id: string;
+  label: string;
+  path: string;
+  isActive: boolean;
+  order: number;
+}
+
+interface SEOSettings {
+  title: string;
+  description: string;
+  keywords: string;
+  ogImage: string;
+}
+
+interface SocialMedia {
+  facebook: string;
+  instagram: string;
+  twitter: string;
+  youtube: string;
+  tripadvisor: string;
+}
+
+interface PricingInfo {
+  roomId: string;
+  basePrice: number;
+  currency: string;
+  seasonalRates: { season: string; multiplier: number }[];
+}
+
+interface Testimonial {
+  id: string;
+  name: string;
+  location: string;
+  rating: number;
+  comment: string;
+  image: string;
+  isActive: boolean;
+}
+
+interface FooterContent {
+  description: string;
+  quickLinks: { label: string; path: string }[];
+  contactInfo: {
+    address: string;
+    phone: string;
+    email: string;
+    hours: string;
+  };
+  newsletter: {
+    title: string;
+    description: string;
+  };
+  copyright: string;
+}
+
+interface ThemeSettings {
+  primaryColor: string;
+  secondaryColor: string;
+  accentColor: string;
+  fontFamily: string;
+  borderRadius: string;
+}
+
+interface BookingSettings {
+  minimumStay: number;
+  maximumStay: number;
+  checkInTime: string;
+  checkOutTime: string;
+  cancellationPolicy: string;
+  depositRequired: number;
 }
 
 interface CMSContent {
@@ -39,6 +111,15 @@ interface CMSContent {
   // Room-specific data
   roomImages: { [roomId: string]: RoomImages };
   roomAmenities: { [roomId: string]: RoomAmenity[] };
+  // New features
+  navigation: NavigationItem[];
+  seoSettings: SEOSettings;
+  socialMedia: SocialMedia;
+  pricing: PricingInfo[];
+  testimonials: Testimonial[];
+  footerContent: FooterContent;
+  themeSettings: ThemeSettings;
+  bookingSettings: BookingSettings;
 }
 
 interface CMSContextType {
@@ -46,6 +127,9 @@ interface CMSContextType {
   updateContent: (key: keyof CMSContent, value: any) => void;
   updateRoomImages: (roomId: string, images: RoomImages) => void;
   updateRoomAmenities: (roomId: string, amenities: RoomAmenity[]) => void;
+  updateNavigation: (navigation: NavigationItem[]) => void;
+  updateTestimonials: (testimonials: Testimonial[]) => void;
+  updatePricing: (pricing: PricingInfo[]) => void;
   resetContent: () => void;
 }
 
@@ -178,6 +262,99 @@ const defaultContent: CMSContent = {
       { id: "parking", name: "VIP Parking", icon: "Car", description: "Reserved parking spot" },
       { id: "gym", name: "Fitness Access", icon: "Dumbbell", description: "Complimentary gym access" }
     ]
+  },
+  // New features with default data
+  navigation: [
+    { id: "1", label: "Home", path: "/", isActive: true, order: 1 },
+    { id: "2", label: "Apartments", path: "/apartments", isActive: true, order: 2 },
+    { id: "3", label: "Amenities", path: "/amenities", isActive: true, order: 3 },
+    { id: "4", label: "Gallery", path: "/gallery", isActive: true, order: 4 },
+    { id: "5", label: "Contact", path: "/contact", isActive: true, order: 5 }
+  ],
+  seoSettings: {
+    title: "MareSereno - Luxury Beachfront Accommodations",
+    description: "Experience luxury seaside living at MareSereno. Premium beachfront apartments and hotel rooms with stunning sea views on the Mediterranean coast.",
+    keywords: "luxury accommodation, beachfront hotel, seaside apartments, Mediterranean vacation, premium rooms",
+    ogImage: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=1200&h=630&fit=crop"
+  },
+  socialMedia: {
+    facebook: "https://facebook.com/maresereno",
+    instagram: "https://instagram.com/maresereno",
+    twitter: "https://twitter.com/maresereno",
+    youtube: "https://youtube.com/maresereno",
+    tripadvisor: "https://tripadvisor.com/maresereno"
+  },
+  pricing: [
+    { roomId: "1", basePrice: 180, currency: "EUR", seasonalRates: [{ season: "High Season", multiplier: 1.3 }, { season: "Low Season", multiplier: 0.8 }] },
+    { roomId: "2", basePrice: 150, currency: "EUR", seasonalRates: [{ season: "High Season", multiplier: 1.3 }, { season: "Low Season", multiplier: 0.8 }] },
+    { roomId: "3", basePrice: 120, currency: "EUR", seasonalRates: [{ season: "High Season", multiplier: 1.3 }, { season: "Low Season", multiplier: 0.8 }] },
+    { roomId: "4", basePrice: 250, currency: "EUR", seasonalRates: [{ season: "High Season", multiplier: 1.3 }, { season: "Low Season", multiplier: 0.8 }] },
+    { roomId: "5", basePrice: 100, currency: "EUR", seasonalRates: [{ season: "High Season", multiplier: 1.3 }, { season: "Low Season", multiplier: 0.8 }] },
+    { roomId: "6", basePrice: 140, currency: "EUR", seasonalRates: [{ season: "High Season", multiplier: 1.3 }, { season: "Low Season", multiplier: 0.8 }] }
+  ],
+  testimonials: [
+    {
+      id: "1",
+      name: "Sarah Johnson",
+      location: "London, UK",
+      rating: 5,
+      comment: "Absolutely stunning location with incredible sea views. The staff was exceptional and the room was beautifully appointed.",
+      image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
+      isActive: true
+    },
+    {
+      id: "2",
+      name: "Marco Rossi",
+      location: "Rome, Italy",
+      rating: 5,
+      comment: "Perfect for a romantic getaway. The sunset from our balcony was magical every evening.",
+      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
+      isActive: true
+    },
+    {
+      id: "3",
+      name: "Emily Chen",
+      location: "New York, USA",
+      rating: 5,
+      comment: "Luxury at its finest. Every detail was perfect and the beach access was amazing.",
+      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
+      isActive: true
+    }
+  ],
+  footerContent: {
+    description: "Luxurious beachfront apartments and hotel rooms with stunning sea views, offering the perfect blend of comfort and elegance for your dream vacation.",
+    quickLinks: [
+      { label: "About Us", path: "/about" },
+      { label: "Privacy Policy", path: "/privacy" },
+      { label: "Terms of Service", path: "/terms" },
+      { label: "FAQ", path: "/faq" }
+    ],
+    contactInfo: {
+      address: "Via del Mare 123, 12345 Seaside City",
+      phone: "+39 123 456 7890",
+      email: "info@maresereno.com",
+      hours: "Reception: 24/7"
+    },
+    newsletter: {
+      title: "Newsletter",
+      description: "Subscribe to our newsletter for special deals and updates."
+    },
+    copyright: "2024 MareSereno. All rights reserved."
+  },
+  themeSettings: {
+    primaryColor: "#654321",
+    secondaryColor: "#8B4513",
+    accentColor: "#F0E68C",
+    fontFamily: "Inter",
+    borderRadius: "0.5rem"
+  },
+  bookingSettings: {
+    minimumStay: 2,
+    maximumStay: 14,
+    checkInTime: "15:00",
+    checkOutTime: "11:00",
+    cancellationPolicy: "Free cancellation up to 48 hours before check-in",
+    depositRequired: 30
   }
 };
 
@@ -191,12 +368,19 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     if (savedContent) {
       try {
         const parsedContent = JSON.parse(savedContent);
-        // Merge with default content to ensure all rooms are present
         const mergedContent = {
           ...defaultContent,
           ...parsedContent,
           roomImages: { ...defaultContent.roomImages, ...parsedContent.roomImages },
-          roomAmenities: { ...defaultContent.roomAmenities, ...parsedContent.roomAmenities }
+          roomAmenities: { ...defaultContent.roomAmenities, ...parsedContent.roomAmenities },
+          navigation: parsedContent.navigation || defaultContent.navigation,
+          seoSettings: { ...defaultContent.seoSettings, ...parsedContent.seoSettings },
+          socialMedia: { ...defaultContent.socialMedia, ...parsedContent.socialMedia },
+          pricing: parsedContent.pricing || defaultContent.pricing,
+          testimonials: parsedContent.testimonials || defaultContent.testimonials,
+          footerContent: { ...defaultContent.footerContent, ...parsedContent.footerContent },
+          themeSettings: { ...defaultContent.themeSettings, ...parsedContent.themeSettings },
+          bookingSettings: { ...defaultContent.bookingSettings, ...parsedContent.bookingSettings }
         };
         setContent(mergedContent);
       } catch (error) {
@@ -205,10 +389,14 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
   }, []);
 
-  const updateContent = (key: keyof CMSContent, value: any) => {
-    const newContent = { ...content, [key]: value };
+  const saveContent = (newContent: CMSContent) => {
     setContent(newContent);
     localStorage.setItem('cms-content', JSON.stringify(newContent));
+  };
+
+  const updateContent = (key: keyof CMSContent, value: any) => {
+    const newContent = { ...content, [key]: value };
+    saveContent(newContent);
   };
 
   const updateRoomImages = (roomId: string, images: RoomImages) => {
@@ -219,8 +407,7 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         [roomId]: images
       }
     };
-    setContent(newContent);
-    localStorage.setItem('cms-content', JSON.stringify(newContent));
+    saveContent(newContent);
   };
 
   const updateRoomAmenities = (roomId: string, amenities: RoomAmenity[]) => {
@@ -231,8 +418,22 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         [roomId]: amenities
       }
     };
-    setContent(newContent);
-    localStorage.setItem('cms-content', JSON.stringify(newContent));
+    saveContent(newContent);
+  };
+
+  const updateNavigation = (navigation: NavigationItem[]) => {
+    const newContent = { ...content, navigation };
+    saveContent(newContent);
+  };
+
+  const updateTestimonials = (testimonials: Testimonial[]) => {
+    const newContent = { ...content, testimonials };
+    saveContent(newContent);
+  };
+
+  const updatePricing = (pricing: PricingInfo[]) => {
+    const newContent = { ...content, pricing };
+    saveContent(newContent);
   };
 
   const resetContent = () => {
@@ -245,7 +446,10 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       content, 
       updateContent, 
       updateRoomImages, 
-      updateRoomAmenities, 
+      updateRoomAmenities,
+      updateNavigation,
+      updateTestimonials,
+      updatePricing,
       resetContent 
     }}>
       {children}
@@ -260,3 +464,5 @@ export const useCMS = () => {
   }
   return context;
 };
+
+export default CMSProvider;
