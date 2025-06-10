@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Trash2, Plus, GripVertical } from "lucide-react";
+import { Plus, Trash2, ArrowUp, ArrowDown } from "lucide-react";
 import { useCMS } from "@/contexts/CMSContext";
 import { useToast } from "@/hooks/use-toast";
 
@@ -20,135 +20,158 @@ interface NavigationItem {
 export default function NavigationManager() {
   const { content, updateNavigation } = useCMS();
   const { toast } = useToast();
-  const [items, setItems] = useState<NavigationItem[]>(content.navigation);
+  const [navigation, setNavigation] = useState<NavigationItem[]>(content.navigation);
+  const [newItem, setNewItem] = useState({ label: "", path: "" });
 
   const handleSave = () => {
-    updateNavigation(items);
+    updateNavigation(navigation);
     toast({
       title: "Navigation Updated",
       description: "Navigation menu has been saved successfully.",
     });
   };
 
-  const addItem = () => {
-    const newItem: NavigationItem = {
-      id: Date.now().toString(),
-      label: "New Item",
-      path: "/new-page",
-      isActive: true,
-      order: items.length + 1
-    };
-    setItems([...items, newItem]);
+  const addNavigationItem = () => {
+    if (newItem.label.trim() && newItem.path.trim()) {
+      const item: NavigationItem = {
+        id: Date.now().toString(),
+        label: newItem.label,
+        path: newItem.path,
+        isActive: true,
+        order: navigation.length + 1
+      };
+      setNavigation([...navigation, item]);
+      setNewItem({ label: "", path: "" });
+    }
   };
 
-  const updateItem = (id: string, field: keyof NavigationItem, value: any) => {
-    setItems(items.map(item => 
-      item.id === id ? { ...item, [field]: value } : item
+  const removeNavigationItem = (id: string) => {
+    setNavigation(navigation.filter(item => item.id !== id));
+  };
+
+  const toggleItemActive = (id: string) => {
+    setNavigation(navigation.map(item => 
+      item.id === id ? { ...item, isActive: !item.isActive } : item
     ));
   };
 
-  const deleteItem = (id: string) => {
-    setItems(items.filter(item => item.id !== id));
-  };
-
   const moveItem = (id: string, direction: 'up' | 'down') => {
-    const currentIndex = items.findIndex(item => item.id === id);
-    if (currentIndex === -1) return;
-
-    const newItems = [...items];
-    const targetIndex = direction === 'up' ? currentIndex - 1 : currentIndex + 1;
-    
-    if (targetIndex >= 0 && targetIndex < items.length) {
-      [newItems[currentIndex], newItems[targetIndex]] = [newItems[targetIndex], newItems[currentIndex]];
+    const currentIndex = navigation.findIndex(item => item.id === id);
+    if ((direction === 'up' && currentIndex > 0) || 
+        (direction === 'down' && currentIndex < navigation.length - 1)) {
+      const newNavigation = [...navigation];
+      const targetIndex = direction === 'up' ? currentIndex - 1 : currentIndex + 1;
+      [newNavigation[currentIndex], newNavigation[targetIndex]] = 
+      [newNavigation[targetIndex], newNavigation[currentIndex]];
       
-      // Update order numbers
-      newItems.forEach((item, index) => {
+      // Update order values
+      newNavigation.forEach((item, index) => {
         item.order = index + 1;
       });
       
-      setItems(newItems);
+      setNavigation(newNavigation);
     }
+  };
+
+  const updateItemLabel = (id: string, label: string) => {
+    setNavigation(navigation.map(item => 
+      item.id === id ? { ...item, label } : item
+    ));
+  };
+
+  const updateItemPath = (id: string, path: string) => {
+    setNavigation(navigation.map(item => 
+      item.id === id ? { ...item, path } : item
+    ));
   };
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <div>
-          <h3 className="text-lg font-semibold">Navigation Menu</h3>
-          <p className="text-sm text-muted-foreground">
-            Manage your website's navigation menu items and their order.
-          </p>
-        </div>
-        <Button onClick={addItem} size="sm">
-          <Plus className="h-4 w-4 mr-2" />
-          Add Item
-        </Button>
-      </div>
+      <Card>
+        <CardHeader>
+          <CardTitle>Add New Navigation Item</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <Label htmlFor="new-label">Label</Label>
+              <Input
+                id="new-label"
+                value={newItem.label}
+                onChange={(e) => setNewItem({ ...newItem, label: e.target.value })}
+                placeholder="Menu label"
+              />
+            </div>
+            <div>
+              <Label htmlFor="new-path">Path</Label>
+              <Input
+                id="new-path"
+                value={newItem.path}
+                onChange={(e) => setNewItem({ ...newItem, path: e.target.value })}
+                placeholder="/page-url"
+              />
+            </div>
+          </div>
+          <Button onClick={addNavigationItem} className="w-full">
+            <Plus className="h-4 w-4 mr-2" />
+            Add Navigation Item
+          </Button>
+        </CardContent>
+      </Card>
 
       <div className="space-y-4">
-        {items.map((item, index) => (
+        {navigation.map((item) => (
           <Card key={item.id}>
-            <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <GripVertical className="h-4 w-4 text-muted-foreground" />
-                  <CardTitle className="text-sm">Menu Item {index + 1}</CardTitle>
+            <CardContent className="pt-6">
+              <div className="flex items-center justify-between gap-4">
+                <div className="flex-1 grid grid-cols-2 gap-4">
+                  <div>
+                    <Label>Label</Label>
+                    <Input
+                      value={item.label}
+                      onChange={(e) => updateItemLabel(item.id, e.target.value)}
+                    />
+                  </div>
+                  <div>
+                    <Label>Path</Label>
+                    <Input
+                      value={item.path}
+                      onChange={(e) => updateItemPath(item.id, e.target.value)}
+                    />
+                  </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => moveItem(item.id, 'up')}
-                    disabled={index === 0}
-                  >
-                    ↑
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => moveItem(item.id, 'down')}
-                    disabled={index === items.length - 1}
-                  >
-                    ↓
-                  </Button>
-                  <Button
-                    variant="destructive"
-                    size="sm"
-                    onClick={() => deleteItem(item.id)}
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
+                  <div className="flex items-center gap-2">
+                    <Switch
+                      checked={item.isActive}
+                      onCheckedChange={() => toggleItemActive(item.id)}
+                    />
+                    <Label>Active</Label>
+                  </div>
+                  <div className="flex gap-1">
+                    <Button
+                      onClick={() => moveItem(item.id, 'up')}
+                      variant="outline"
+                      size="sm"
+                    >
+                      <ArrowUp className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      onClick={() => moveItem(item.id, 'down')}
+                      variant="outline"
+                      size="sm"
+                    >
+                      <ArrowDown className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      onClick={() => removeNavigationItem(item.id)}
+                      variant="destructive"
+                      size="sm"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor={`label-${item.id}`}>Label</Label>
-                  <Input
-                    id={`label-${item.id}`}
-                    value={item.label}
-                    onChange={(e) => updateItem(item.id, 'label', e.target.value)}
-                    placeholder="Menu label"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor={`path-${item.id}`}>Path</Label>
-                  <Input
-                    id={`path-${item.id}`}
-                    value={item.path}
-                    onChange={(e) => updateItem(item.id, 'path', e.target.value)}
-                    placeholder="/page-path"
-                  />
-                </div>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Switch
-                  id={`active-${item.id}`}
-                  checked={item.isActive}
-                  onCheckedChange={(checked) => updateItem(item.id, 'isActive', checked)}
-                />
-                <Label htmlFor={`active-${item.id}`}>Active</Label>
               </div>
             </CardContent>
           </Card>

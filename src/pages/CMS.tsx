@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -62,7 +63,7 @@ export default function CMS() {
       {/* Content */}
       <div className="container py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-7 lg:grid-cols-13">
+          <TabsList className="w-full flex flex-wrap justify-start gap-1 h-auto p-1">
             <TabsTrigger value="content">Content</TabsTrigger>
             <TabsTrigger value="settings">Site</TabsTrigger>
             <TabsTrigger value="contact">Contact</TabsTrigger>

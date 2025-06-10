@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Trash2, Plus } from "lucide-react";
+import { Plus, Trash2 } from "lucide-react";
 import { useCMS } from "@/contexts/CMSContext";
 import { useToast } from "@/hooks/use-toast";
 
@@ -13,11 +13,12 @@ export default function FooterSettings() {
   const { content, updateContent } = useCMS();
   const { toast } = useToast();
   const [footerContent, setFooterContent] = useState(content.footerContent);
+  const [newLink, setNewLink] = useState({ label: "", path: "" });
 
   const handleSave = () => {
     updateContent('footerContent', footerContent);
     toast({
-      title: "Footer Settings Updated",
+      title: "Footer Updated",
       description: "Footer content has been saved successfully.",
     });
   };
@@ -27,104 +28,109 @@ export default function FooterSettings() {
   };
 
   const updateContactInfo = (field: keyof typeof footerContent.contactInfo, value: string) => {
-    setFooterContent(prev => ({
-      ...prev,
+    setFooterContent(prev => ({ 
+      ...prev, 
       contactInfo: { ...prev.contactInfo, [field]: value }
     }));
   };
 
   const updateNewsletter = (field: keyof typeof footerContent.newsletter, value: string) => {
-    setFooterContent(prev => ({
-      ...prev,
+    setFooterContent(prev => ({ 
+      ...prev, 
       newsletter: { ...prev.newsletter, [field]: value }
     }));
   };
 
   const addQuickLink = () => {
-    const newLink = { label: "New Link", path: "/new-page" };
-    setFooterContent(prev => ({
-      ...prev,
-      quickLinks: [...prev.quickLinks, newLink]
-    }));
-  };
-
-  const updateQuickLink = (index: number, field: 'label' | 'path', value: string) => {
-    setFooterContent(prev => ({
-      ...prev,
-      quickLinks: prev.quickLinks.map((link, i) => 
-        i === index ? { ...link, [field]: value } : link
-      )
-    }));
+    if (newLink.label.trim() && newLink.path.trim()) {
+      const updatedLinks = [...footerContent.quickLinks, newLink];
+      updateFooter('quickLinks', updatedLinks);
+      setNewLink({ label: "", path: "" });
+    }
   };
 
   const removeQuickLink = (index: number) => {
-    setFooterContent(prev => ({
-      ...prev,
-      quickLinks: prev.quickLinks.filter((_, i) => i !== index)
-    }));
+    const updatedLinks = footerContent.quickLinks.filter((_, i) => i !== index);
+    updateFooter('quickLinks', updatedLinks);
   };
 
   return (
     <div className="space-y-6">
-      <div>
-        <h3 className="text-lg font-semibold">Footer Settings</h3>
-        <p className="text-sm text-muted-foreground">
-          Customize your website footer content, links, and contact information.
-        </p>
-      </div>
-
       <Card>
         <CardHeader>
           <CardTitle>Footer Description</CardTitle>
         </CardHeader>
         <CardContent>
-          <Label htmlFor="footer-description">Main Description</Label>
-          <Textarea
-            id="footer-description"
-            value={footerContent.description}
-            onChange={(e) => updateFooter('description', e.target.value)}
-            placeholder="Brief description of your business"
-            rows={3}
-          />
+          <div>
+            <Label htmlFor="footer-description">Business Description</Label>
+            <Textarea
+              id="footer-description"
+              value={footerContent.description}
+              onChange={(e) => updateFooter('description', e.target.value)}
+              placeholder="Brief description of your business"
+              rows={3}
+            />
+          </div>
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader>
-          <div className="flex justify-between items-center">
-            <CardTitle>Quick Links</CardTitle>
-            <Button variant="outline" size="sm" onClick={addQuickLink}>
-              <Plus className="h-4 w-4 mr-2" />
-              Add Link
-            </Button>
-          </div>
+          <CardTitle>Quick Links</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-3">
-          {footerContent.quickLinks.map((link, index) => (
-            <div key={index} className="flex items-center gap-3 p-3 border rounded-lg">
-              <div className="flex-1">
+        <CardContent className="space-y-4">
+          <div className="space-y-2">
+            {footerContent.quickLinks.map((link, index) => (
+              <div key={index} className="flex gap-2 items-center">
                 <Input
                   value={link.label}
-                  onChange={(e) => updateQuickLink(index, 'label', e.target.value)}
+                  onChange={(e) => {
+                    const updatedLinks = footerContent.quickLinks.map((l, i) => 
+                      i === index ? { ...l, label: e.target.value } : l
+                    );
+                    updateFooter('quickLinks', updatedLinks);
+                  }}
                   placeholder="Link label"
+                  className="flex-1"
                 />
-              </div>
-              <div className="flex-1">
                 <Input
                   value={link.path}
-                  onChange={(e) => updateQuickLink(index, 'path', e.target.value)}
-                  placeholder="/page-path"
+                  onChange={(e) => {
+                    const updatedLinks = footerContent.quickLinks.map((l, i) => 
+                      i === index ? { ...l, path: e.target.value } : l
+                    );
+                    updateFooter('quickLinks', updatedLinks);
+                  }}
+                  placeholder="/path"
+                  className="flex-1"
                 />
+                <Button
+                  onClick={() => removeQuickLink(index)}
+                  variant="destructive"
+                  size="sm"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
               </div>
-              <Button
-                variant="destructive"
-                size="sm"
-                onClick={() => removeQuickLink(index)}
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
-            </div>
-          ))}
+            ))}
+          </div>
+          <div className="flex gap-2">
+            <Input
+              value={newLink.label}
+              onChange={(e) => setNewLink({ ...newLink, label: e.target.value })}
+              placeholder="New link label"
+              className="flex-1"
+            />
+            <Input
+              value={newLink.path}
+              onChange={(e) => setNewLink({ ...newLink, path: e.target.value })}
+              placeholder="/new-path"
+              className="flex-1"
+            />
+            <Button onClick={addQuickLink}>
+              <Plus className="h-4 w-4" />
+            </Button>
+          </div>
         </CardContent>
       </Card>
 
@@ -139,29 +145,26 @@ export default function FooterSettings() {
               id="footer-address"
               value={footerContent.contactInfo.address}
               onChange={(e) => updateContactInfo('address', e.target.value)}
-              placeholder="Your business address"
+              placeholder="Business address"
             />
           </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <Label htmlFor="footer-phone">Phone</Label>
-              <Input
-                id="footer-phone"
-                value={footerContent.contactInfo.phone}
-                onChange={(e) => updateContactInfo('phone', e.target.value)}
-                placeholder="+1 (555) 123-4567"
-              />
-            </div>
-            <div>
-              <Label htmlFor="footer-email">Email</Label>
-              <Input
-                id="footer-email"
-                value={footerContent.contactInfo.email}
-                onChange={(e) => updateContactInfo('email', e.target.value)}
-                placeholder="info@example.com"
-                type="email"
-              />
-            </div>
+          <div>
+            <Label htmlFor="footer-phone">Phone</Label>
+            <Input
+              id="footer-phone"
+              value={footerContent.contactInfo.phone}
+              onChange={(e) => updateContactInfo('phone', e.target.value)}
+              placeholder="Phone number"
+            />
+          </div>
+          <div>
+            <Label htmlFor="footer-email">Email</Label>
+            <Input
+              id="footer-email"
+              value={footerContent.contactInfo.email}
+              onChange={(e) => updateContactInfo('email', e.target.value)}
+              placeholder="Email address"
+            />
           </div>
           <div>
             <Label htmlFor="footer-hours">Business Hours</Label>
@@ -169,7 +172,7 @@ export default function FooterSettings() {
               id="footer-hours"
               value={footerContent.contactInfo.hours}
               onChange={(e) => updateContactInfo('hours', e.target.value)}
-              placeholder="Mon-Fri: 9AM-6PM"
+              placeholder="Business hours"
             />
           </div>
         </CardContent>
@@ -186,7 +189,7 @@ export default function FooterSettings() {
               id="newsletter-title"
               value={footerContent.newsletter.title}
               onChange={(e) => updateNewsletter('title', e.target.value)}
-              placeholder="Newsletter"
+              placeholder="Newsletter section title"
             />
           </div>
           <div>
@@ -195,7 +198,7 @@ export default function FooterSettings() {
               id="newsletter-description"
               value={footerContent.newsletter.description}
               onChange={(e) => updateNewsletter('description', e.target.value)}
-              placeholder="Subscribe to receive updates and special offers"
+              placeholder="Newsletter description"
               rows={2}
             />
           </div>
@@ -207,13 +210,15 @@ export default function FooterSettings() {
           <CardTitle>Copyright</CardTitle>
         </CardHeader>
         <CardContent>
-          <Label htmlFor="footer-copyright">Copyright Text</Label>
-          <Input
-            id="footer-copyright"
-            value={footerContent.copyright}
-            onChange={(e) => updateFooter('copyright', e.target.value)}
-            placeholder="© 2024 Your Company. All rights reserved."
-          />
+          <div>
+            <Label htmlFor="copyright">Copyright Text</Label>
+            <Input
+              id="copyright"
+              value={footerContent.copyright}
+              onChange={(e) => updateFooter('copyright', e.target.value)}
+              placeholder="Copyright notice"
+            />
+          </div>
         </CardContent>
       </Card>
 

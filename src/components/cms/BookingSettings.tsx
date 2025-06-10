@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Calendar, Clock, CreditCard } from "lucide-react";
 import { useCMS } from "@/contexts/CMSContext";
 import { useToast } from "@/hooks/use-toast";
 
@@ -21,68 +22,44 @@ export default function BookingSettings() {
     });
   };
 
-  const updateSetting = (field: keyof typeof bookingSettings, value: any) => {
+  const updateSetting = (field: keyof typeof bookingSettings, value: string | number) => {
     setBookingSettings(prev => ({ ...prev, [field]: value }));
   };
 
   return (
     <div className="space-y-6">
-      <div>
-        <h3 className="text-lg font-semibold">Booking Settings</h3>
-        <p className="text-sm text-muted-foreground">
-          Configure booking policies, check-in/out times, and deposit requirements.
-        </p>
+      <div className="flex items-center gap-2">
+        <Calendar className="h-5 w-5" />
+        <div>
+          <h3 className="text-lg font-semibold">Booking Policies</h3>
+          <p className="text-sm text-muted-foreground">
+            Configure check-in/out times, stay requirements, and policies.
+          </p>
+        </div>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>Stay Duration</CardTitle>
+          <CardTitle className="flex items-center gap-2">
+            <Clock className="h-4 w-4" />
+            Check-in & Check-out Times
+          </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="minimum-stay">Minimum Stay (nights)</Label>
+              <Label htmlFor="checkin-time">Check-in Time</Label>
               <Input
-                id="minimum-stay"
-                type="number"
-                value={bookingSettings.minimumStay}
-                onChange={(e) => updateSetting('minimumStay', parseInt(e.target.value))}
-                min="1"
-              />
-            </div>
-            <div>
-              <Label htmlFor="maximum-stay">Maximum Stay (nights)</Label>
-              <Input
-                id="maximum-stay"
-                type="number"
-                value={bookingSettings.maximumStay}
-                onChange={(e) => updateSetting('maximumStay', parseInt(e.target.value))}
-                min="1"
-              />
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Check-in/Check-out Times</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <Label htmlFor="check-in-time">Check-in Time</Label>
-              <Input
-                id="check-in-time"
+                id="checkin-time"
                 type="time"
                 value={bookingSettings.checkInTime}
                 onChange={(e) => updateSetting('checkInTime', e.target.value)}
               />
             </div>
             <div>
-              <Label htmlFor="check-out-time">Check-out Time</Label>
+              <Label htmlFor="checkout-time">Check-out Time</Label>
               <Input
-                id="check-out-time"
+                id="checkout-time"
                 type="time"
                 value={bookingSettings.checkOutTime}
                 onChange={(e) => updateSetting('checkOutTime', e.target.value)}
@@ -94,7 +71,40 @@ export default function BookingSettings() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Payment & Cancellation</CardTitle>
+          <CardTitle>Stay Requirements</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <Label htmlFor="minimum-stay">Minimum Stay (nights)</Label>
+              <Input
+                id="minimum-stay"
+                type="number"
+                min="1"
+                value={bookingSettings.minimumStay}
+                onChange={(e) => updateSetting('minimumStay', parseInt(e.target.value) || 1)}
+              />
+            </div>
+            <div>
+              <Label htmlFor="maximum-stay">Maximum Stay (nights)</Label>
+              <Input
+                id="maximum-stay"
+                type="number"
+                min="1"
+                value={bookingSettings.maximumStay}
+                onChange={(e) => updateSetting('maximumStay', parseInt(e.target.value) || 1)}
+              />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <CreditCard className="h-4 w-4" />
+            Payment & Deposits
+          </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div>
@@ -102,15 +112,23 @@ export default function BookingSettings() {
             <Input
               id="deposit-required"
               type="number"
-              value={bookingSettings.depositRequired}
-              onChange={(e) => updateSetting('depositRequired', parseInt(e.target.value))}
               min="0"
               max="100"
+              value={bookingSettings.depositRequired}
+              onChange={(e) => updateSetting('depositRequired', parseInt(e.target.value) || 0)}
             />
             <p className="text-xs text-muted-foreground mt-1">
               Percentage of total booking amount required as deposit
             </p>
           </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Cancellation Policy</CardTitle>
+        </CardHeader>
+        <CardContent>
           <div>
             <Label htmlFor="cancellation-policy">Cancellation Policy</Label>
             <Textarea
@@ -118,8 +136,11 @@ export default function BookingSettings() {
               value={bookingSettings.cancellationPolicy}
               onChange={(e) => updateSetting('cancellationPolicy', e.target.value)}
               placeholder="Describe your cancellation policy"
-              rows={3}
+              rows={4}
             />
+            <p className="text-xs text-muted-foreground mt-1">
+              This will be displayed to customers during booking and in terms of service
+            </p>
           </div>
         </CardContent>
       </Card>
