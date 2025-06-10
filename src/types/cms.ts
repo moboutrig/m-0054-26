@@ -76,6 +76,7 @@ export interface ThemeSettings {
 }
 
 export interface BookingSettings {
+  enableBooking: boolean;
   minimumStay: number;
   maximumStay: number;
   checkInTime: string;

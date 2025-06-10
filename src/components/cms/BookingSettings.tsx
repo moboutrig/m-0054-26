@@ -1,11 +1,11 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Calendar, Clock, CreditCard } from "lucide-react";
+import { Calendar, Clock, CreditCard, Settings } from "lucide-react";
 import { useCMS } from "@/contexts/CMSContext";
 import { useToast } from "@/hooks/use-toast";
 
@@ -22,7 +22,7 @@ export default function BookingSettings() {
     });
   };
 
-  const updateSetting = (field: keyof typeof bookingSettings, value: string | number) => {
+  const updateSetting = (field: keyof typeof bookingSettings, value: string | number | boolean) => {
     setBookingSettings(prev => ({ ...prev, [field]: value }));
   };
 
@@ -37,6 +37,30 @@ export default function BookingSettings() {
           </p>
         </div>
       </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Settings className="h-4 w-4" />
+            General Booking Settings
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <Label htmlFor="enable-booking">Enable Booking System</Label>
+              <p className="text-xs text-muted-foreground mt-1">
+                Show booking buttons and forms on the website
+              </p>
+            </div>
+            <Switch
+              id="enable-booking"
+              checked={bookingSettings.enableBooking}
+              onCheckedChange={(checked) => updateSetting('enableBooking', checked)}
+            />
+          </div>
+        </CardContent>
+      </Card>
 
       <Card>
         <CardHeader>

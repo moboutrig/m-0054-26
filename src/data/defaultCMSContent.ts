@@ -91,7 +91,7 @@ export const defaultContent: CMSContent = {
     ],
     "2": [
       { id: "wifi", name: "Wi-Fi", icon: "Wifi", description: "High-speed internet access" },
-      { id: "kitchen", name: "Kitchenette", icon: "Coffee", description: "Compact kitchen with essentials" },
+      { id: "kitchenette", name: "Kitchenette", icon: "Coffee", description: "Compact kitchen with essentials" },
       { id: "bathroom", name: "Bathroom", icon: "Bath", description: "Stylish bathroom with shower" },
       { id: "ac", name: "Air Conditioning", icon: "Wind", description: "Climate control system" },
       { id: "workspace", name: "Work Desk", icon: "Users", description: "Dedicated workspace area" }
@@ -216,6 +216,7 @@ export const defaultContent: CMSContent = {
     borderRadius: "0.5rem"
   },
   bookingSettings: {
+    enableBooking: true,
     minimumStay: 2,
     maximumStay: 14,
     checkInTime: "15:00",
