@@ -10,6 +10,8 @@ import { useToast } from "@/hooks/use-toast";
 import ContentEditor from "@/components/cms/ContentEditor";
 import SiteSettings from "@/components/cms/SiteSettings";
 import ContactSettings from "@/components/cms/ContactSettings";
+import ImageManager from "@/components/cms/ImageManager";
+import RoomManager from "@/components/cms/RoomManager";
 
 export default function CMS() {
   const { resetContent } = useCMS();
@@ -53,10 +55,12 @@ export default function CMS() {
       {/* Content */}
       <div className="container py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="content">Page Content</TabsTrigger>
             <TabsTrigger value="settings">Site Settings</TabsTrigger>
             <TabsTrigger value="contact">Contact Info</TabsTrigger>
+            <TabsTrigger value="images">Images</TabsTrigger>
+            <TabsTrigger value="rooms">Rooms</TabsTrigger>
           </TabsList>
 
           <TabsContent value="content" className="mt-6">
@@ -97,6 +101,34 @@ export default function CMS() {
               </CardHeader>
               <CardContent>
                 <ContactSettings />
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="images" className="mt-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Image Management</CardTitle>
+                <CardDescription>
+                  Manage images used throughout your website. Add URLs for hero, welcome, and gallery sections.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ImageManager />
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="rooms" className="mt-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Room Management</CardTitle>
+                <CardDescription>
+                  Manage individual room images and amenities. Customize each room's specific features and gallery.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <RoomManager />
               </CardContent>
             </Card>
           </TabsContent>
