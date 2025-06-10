@@ -6,58 +6,106 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Plus, Trash2, Edit, Save, X, ArrowUp, ArrowDown } from "lucide-react";
+import { Plus, Trash2, ArrowUp, ArrowDown, Users, Square, MapPin, Star } from "lucide-react";
 import { useCMS } from "@/contexts/CMSContext";
 import { useToast } from "@/hooks/use-toast";
-import { ApartmentData } from "@/types/cms";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export default function ApartmentManager() {
   const { content, updateApartments } = useCMS();
   const { toast } = useToast();
-  const [apartments, setApartments] = useState<ApartmentData[]>(content.apartments);
-  const [editingId, setEditingId] = useState<string | null>(null);
-  const [newApartment, setNewApartment] = useState<Omit<ApartmentData, 'id'>>({
+  const [apartments, setApartments] = useState(content.apartments || []);
+  const [newApartment, setNewApartment] = useState({
     name: "",
     description: "",
     capacity: 2,
-    size: 45,
+    size: 40,
     location: "",
-    features: [],
-    isActive: true,
-    order: apartments.length + 1
+    features: [] as string[],
+    newFeature: ""
   });
+
+  const locationOptions = [
+    "Beachfront",
+    "Second row",
+    "City center",
+    "Mountain view",
+    "Garden view",
+    "Pool view",
+    "Sea view",
+    "Custom location"
+  ];
+
+  const commonFeatures = [
+    "Wi-Fi",
+    "Kitchen",
+    "Kitchenette", 
+    "Bathroom",
+    "Air Conditioning",
+    "TV",
+    "Balcony",
+    "Terrace",
+    "Washing Machine",
+    "Dishwasher",
+    "Microwave",
+    "Coffee Machine",
+    "Safe",
+    "Hairdryer",
+    "Iron",
+    "Parking",
+    "Elevator",
+    "Pet Friendly",
+    "Non-smoking",
+    "Wheelchair Accessible"
+  ];
 
   const handleSave = () => {
     updateApartments(apartments);
     toast({
       title: "Apartments Updated",
-      description: "Apartment listings have been saved successfully.",
+      description: "All apartment data has been saved successfully.",
     });
   };
 
   const addApartment = () => {
     if (newApartment.name.trim() && newApartment.description.trim()) {
-      const apartment: ApartmentData = {
+      const apartment = {
         id: Date.now().toString(),
-        ...newApartment,
-        features: newApartment.features.filter(f => f.trim() !== "")
+        name: newApartment.name,
+        description: newApartment.description,
+        capacity: newApartment.capacity,
+        size: newApartment.size,
+        location: newApartment.location,
+        features: [...newApartment.features],
+        isActive: true,
+        order: apartments.length + 1
       };
       setApartments([...apartments, apartment]);
       setNewApartment({
         name: "",
         description: "",
         capacity: 2,
-        size: 45,
+        size: 40,
         location: "",
         features: [],
-        isActive: true,
-        order: apartments.length + 2
+        newFeature: ""
+      });
+      toast({
+        title: "Apartment Added",
+        description: `"${newApartment.name}" has been added to your apartment list.`,
       });
     }
   };
 
   const removeApartment = (id: string) => {
+    const apartment = apartments.find(apt => apt.id === id);
     setApartments(apartments.filter(apt => apt.id !== id));
+    if (apartment) {
+      toast({
+        title: "Apartment Removed",
+        description: `"${apartment.name}" has been removed.`,
+      });
+    }
   };
 
   const toggleActive = (id: string) => {
@@ -75,7 +123,6 @@ export default function ApartmentManager() {
       [newApartments[currentIndex], newApartments[targetIndex]] = 
       [newApartments[targetIndex], newApartments[currentIndex]];
       
-      // Update order values
       newApartments.forEach((apt, index) => {
         apt.order = index + 1;
       });
@@ -84,21 +131,41 @@ export default function ApartmentManager() {
     }
   };
 
-  const updateApartment = (id: string, field: keyof ApartmentData, value: any) => {
+  const updateApartment = (id: string, field: string, value: any) => {
     setApartments(apartments.map(apt => 
       apt.id === id ? { ...apt, [field]: value } : apt
     ));
   };
 
-  const updateNewApartmentFeatures = (features: string) => {
+  const addFeatureToNew = (feature: string) => {
+    if (feature && !newApartment.features.includes(feature)) {
+      setNewApartment({
+        ...newApartment,
+        features: [...newApartment.features, feature],
+        newFeature: ""
+      });
+    }
+  };
+
+  const removeFeatureFromNew = (feature: string) => {
     setNewApartment({
       ...newApartment,
-      features: features.split(',').map(f => f.trim()).filter(f => f !== "")
+      features: newApartment.features.filter(f => f !== feature)
     });
   };
 
-  const updateApartmentFeatures = (id: string, features: string) => {
-    updateApartment(id, 'features', features.split(',').map(f => f.trim()).filter(f => f !== ""));
+  const addFeatureToApartment = (apartmentId: string, feature: string) => {
+    const apartment = apartments.find(apt => apt.id === apartmentId);
+    if (apartment && feature && !apartment.features.includes(feature)) {
+      updateApartment(apartmentId, 'features', [...apartment.features, feature]);
+    }
+  };
+
+  const removeFeatureFromApartment = (apartmentId: string, feature: string) => {
+    const apartment = apartments.find(apt => apt.id === apartmentId);
+    if (apartment) {
+      updateApartment(apartmentId, 'features', apartment.features.filter(f => f !== feature));
+    }
   };
 
   return (
@@ -106,92 +173,166 @@ export default function ApartmentManager() {
       <div>
         <h3 className="text-lg font-semibold">Apartment Management</h3>
         <p className="text-sm text-muted-foreground">
-          Manage your apartment listings, pricing, and availability.
+          Create and manage apartment types. Add unlimited room types with custom features.
         </p>
       </div>
 
-      {/* Add New Apartment */}
       <Card>
         <CardHeader>
-          <CardTitle>Add New Apartment</CardTitle>
+          <CardTitle>Add New Apartment Type</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <Label>Name</Label>
+              <Label htmlFor="new-name">Apartment Name</Label>
               <Input
+                id="new-name"
                 value={newApartment.name}
                 onChange={(e) => setNewApartment({ ...newApartment, name: e.target.value })}
-                placeholder="Apartment name"
+                placeholder="e.g., Deluxe Sea View Suite"
               />
             </div>
             <div>
-              <Label>Location</Label>
-              <Input
-                value={newApartment.location}
-                onChange={(e) => setNewApartment({ ...newApartment, location: e.target.value })}
-                placeholder="e.g., Beachfront, Second row"
-              />
+              <Label htmlFor="new-location">Location</Label>
+              <Select value={newApartment.location} onValueChange={(value) => setNewApartment({ ...newApartment, location: value })}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select location" />
+                </SelectTrigger>
+                <SelectContent>
+                  {locationOptions.map((location) => (
+                    <SelectItem key={location} value={location}>
+                      {location}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
           </div>
-          
+
           <div>
-            <Label>Description</Label>
+            <Label htmlFor="new-description">Description</Label>
             <Textarea
+              id="new-description"
               value={newApartment.description}
               onChange={(e) => setNewApartment({ ...newApartment, description: e.target.value })}
-              placeholder="Apartment description"
+              placeholder="Describe the apartment features and amenities..."
               rows={3}
             />
           </div>
-          
-          <div className="grid grid-cols-2 gap-4">
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <Label>Capacity (guests)</Label>
-              <Input
-                type="number"
-                value={newApartment.capacity}
-                onChange={(e) => setNewApartment({ ...newApartment, capacity: parseInt(e.target.value) || 2 })}
-                min="1"
-              />
+              <Label htmlFor="new-capacity">Capacity (guests)</Label>
+              <div className="flex items-center gap-2">
+                <Users className="h-4 w-4 text-muted-foreground" />
+                <Input
+                  id="new-capacity"
+                  type="number"
+                  min="1"
+                  max="20"
+                  value={newApartment.capacity}
+                  onChange={(e) => setNewApartment({ ...newApartment, capacity: parseInt(e.target.value) || 2 })}
+                />
+              </div>
             </div>
             <div>
-              <Label>Size (sqm)</Label>
-              <Input
-                type="number"
-                value={newApartment.size}
-                onChange={(e) => setNewApartment({ ...newApartment, size: parseInt(e.target.value) || 45 })}
-                min="1"
-              />
+              <Label htmlFor="new-size">Size (sqm)</Label>
+              <div className="flex items-center gap-2">
+                <Square className="h-4 w-4 text-muted-foreground" />
+                <Input
+                  id="new-size"
+                  type="number"
+                  min="10"
+                  max="500"
+                  value={newApartment.size}
+                  onChange={(e) => setNewApartment({ ...newApartment, size: parseInt(e.target.value) || 40 })}
+                />
+              </div>
             </div>
           </div>
-          
+
           <div>
-            <Label>Features (comma separated)</Label>
-            <Input
-              value={newApartment.features.join(', ')}
-              onChange={(e) => updateNewApartmentFeatures(e.target.value)}
-              placeholder="Wi-Fi, Kitchen, Bathroom, Air Conditioning"
-            />
+            <Label>Features & Amenities</Label>
+            <div className="space-y-3">
+              <div className="flex gap-2">
+                <Select onValueChange={addFeatureToNew}>
+                  <SelectTrigger className="flex-1">
+                    <SelectValue placeholder="Add common features" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {commonFeatures.filter(f => !newApartment.features.includes(f)).map((feature) => (
+                      <SelectItem key={feature} value={feature}>
+                        {feature}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <div className="flex gap-2">
+                  <Input
+                    value={newApartment.newFeature}
+                    onChange={(e) => setNewApartment({ ...newApartment, newFeature: e.target.value })}
+                    placeholder="Custom feature"
+                    onKeyPress={(e) => {
+                      if (e.key === 'Enter') {
+                        addFeatureToNew(newApartment.newFeature);
+                      }
+                    }}
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => addFeatureToNew(newApartment.newFeature)}
+                    disabled={!newApartment.newFeature.trim()}
+                  >
+                    <Plus className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+              
+              {newApartment.features.length > 0 && (
+                <div className="flex flex-wrap gap-2">
+                  {newApartment.features.map((feature, index) => (
+                    <span 
+                      key={index}
+                      className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-sm flex items-center gap-1"
+                    >
+                      {feature}
+                      <button
+                        onClick={() => removeFeatureFromNew(feature)}
+                        className="ml-1 hover:text-destructive"
+                      >
+                        <Trash2 className="h-3 w-3" />
+                      </button>
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
-          
-          <Button onClick={addApartment} className="w-full">
+
+          <Button onClick={addApartment} className="w-full" disabled={!newApartment.name.trim() || !newApartment.description.trim()}>
             <Plus className="h-4 w-4 mr-2" />
-            Add Apartment
+            Add Apartment Type
           </Button>
         </CardContent>
       </Card>
 
-      {/* Apartment List */}
       <div className="space-y-4">
-        {apartments.map((apartment) => (
-          <Card key={apartment.id}>
-            <CardContent className="pt-6">
-              <div className="flex items-start justify-between gap-4">
-                <div className="flex-1 space-y-4">
-                  {editingId === apartment.id ? (
-                    <>
-                      <div className="grid grid-cols-2 gap-4">
+        <h4 className="font-medium">Current Apartment Types ({apartments.length})</h4>
+        {apartments.length === 0 ? (
+          <Card>
+            <CardContent className="pt-6 text-center text-muted-foreground">
+              No apartment types created yet. Add your first apartment type above.
+            </CardContent>
+          </Card>
+        ) : (
+          apartments.map((apartment) => (
+            <Card key={apartment.id} className={!apartment.isActive ? "opacity-60" : ""}>
+              <CardContent className="pt-6">
+                <div className="space-y-4">
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1 space-y-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                           <Label>Name</Label>
                           <Input
@@ -213,10 +354,10 @@ export default function ApartmentManager() {
                         <Textarea
                           value={apartment.description}
                           onChange={(e) => updateApartment(apartment.id, 'description', e.target.value)}
-                          rows={3}
+                          rows={2}
                         />
                       </div>
-                      
+
                       <div className="grid grid-cols-2 gap-4">
                         <div>
                           <Label>Capacity</Label>
@@ -231,91 +372,73 @@ export default function ApartmentManager() {
                           <Input
                             type="number"
                             value={apartment.size}
-                            onChange={(e) => updateApartment(apartment.id, 'size', parseInt(e.target.value) || 45)}
+                            onChange={(e) => updateApartment(apartment.id, 'size', parseInt(e.target.value) || 40)}
                           />
                         </div>
                       </div>
-                      
+
                       <div>
                         <Label>Features</Label>
-                        <Input
-                          value={apartment.features.join(', ')}
-                          onChange={(e) => updateApartmentFeatures(apartment.id, e.target.value)}
+                        <div className="space-y-2">
+                          <Select onValueChange={(feature) => addFeatureToApartment(apartment.id, feature)}>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Add feature" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {commonFeatures.filter(f => !apartment.features.includes(f)).map((feature) => (
+                                <SelectItem key={feature} value={feature}>
+                                  {feature}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          
+                          {apartment.features.length > 0 && (
+                            <div className="flex flex-wrap gap-2">
+                              {apartment.features.map((feature, index) => (
+                                <span 
+                                  key={index}
+                                  className="px-2 py-1 bg-muted text-muted-foreground rounded text-sm flex items-center gap-1"
+                                >
+                                  {feature}
+                                  <button
+                                    onClick={() => removeFeatureFromApartment(apartment.id, feature)}
+                                    className="ml-1 hover:text-destructive"
+                                  >
+                                    <Trash2 className="h-3 w-3" />
+                                  </button>
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2 ml-4">
+                      <div className="flex items-center gap-2">
+                        <Switch
+                          checked={apartment.isActive}
+                          onCheckedChange={() => toggleActive(apartment.id)}
                         />
+                        <Label>Active</Label>
                       </div>
-                    </>
-                  ) : (
-                    <>
-                      <div>
-                        <h3 className="font-semibold text-lg">{apartment.name}</h3>
-                        <p className="text-sm text-muted-foreground">{apartment.location}</p>
-                      </div>
-                      <p className="text-muted-foreground">{apartment.description}</p>
-                      <div className="flex gap-4 text-sm">
-                        <span>{apartment.capacity} guests</span>
-                        <span>{apartment.size} sqm</span>
-                        <span>{apartment.features.length} features</span>
-                      </div>
-                      <div className="flex flex-wrap gap-1">
-                        {apartment.features.map((feature, index) => (
-                          <span key={index} className="px-2 py-1 bg-muted text-xs rounded">
-                            {feature}
-                          </span>
-                        ))}
-                      </div>
-                    </>
-                  )}
-                </div>
-                
-                <div className="flex items-center gap-2">
-                  <div className="flex items-center gap-2">
-                    <Switch
-                      checked={apartment.isActive}
-                      onCheckedChange={() => toggleActive(apartment.id)}
-                    />
-                    <Label>Active</Label>
-                  </div>
-                  
-                  <div className="flex gap-1">
-                    <Button
-                      onClick={() => moveApartment(apartment.id, 'up')}
-                      variant="outline"
-                      size="sm"
-                    >
-                      <ArrowUp className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      onClick={() => moveApartment(apartment.id, 'down')}
-                      variant="outline"
-                      size="sm"
-                    >
-                      <ArrowDown className="h-4 w-4" />
-                    </Button>
-                    
-                    {editingId === apartment.id ? (
-                      <>
+                      <div className="flex gap-1">
                         <Button
-                          onClick={() => setEditingId(null)}
-                          size="sm"
-                        >
-                          <Save className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          onClick={() => setEditingId(null)}
+                          onClick={() => moveApartment(apartment.id, 'up')}
                           variant="outline"
                           size="sm"
+                          disabled={apartments.findIndex(apt => apt.id === apartment.id) === 0}
                         >
-                          <X className="h-4 w-4" />
+                          <ArrowUp className="h-4 w-4" />
                         </Button>
-                      </>
-                    ) : (
-                      <>
                         <Button
-                          onClick={() => setEditingId(apartment.id)}
+                          onClick={() => moveApartment(apartment.id, 'down')}
                           variant="outline"
                           size="sm"
+                          disabled={apartments.findIndex(apt => apt.id === apartment.id) === apartments.length - 1}
                         >
-                          <Edit className="h-4 w-4" />
+                          <ArrowDown className="h-4 w-4" />
                         </Button>
                         <Button
                           onClick={() => removeApartment(apartment.id)}
@@ -324,14 +447,14 @@ export default function ApartmentManager() {
                         >
                           <Trash2 className="h-4 w-4" />
                         </Button>
-                      </>
-                    )}
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+              </CardContent>
+            </Card>
+          ))
+        )}
       </div>
 
       <Button onClick={handleSave} className="w-full">
