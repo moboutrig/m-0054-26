@@ -41,33 +41,33 @@ export default function Navbar() {
   return (
     <header className={cn(
       "fixed top-0 left-0 right-0 z-50 transition-all duration-500", 
-      scrolled ? "bg-white/95 dark:bg-card/95 backdrop-blur-lg py-4 shadow-sm border-b border-border/10" : "bg-transparent py-8"
+      scrolled ? "bg-background/95 backdrop-blur-lg py-3 sm:py-4 shadow-sm border-b border-border/10" : "bg-transparent py-6 sm:py-8"
     )}>
       <nav className="container flex justify-between items-center relative">
         {/* Left side - Language and Theme */}
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-2 sm:space-x-4 z-40">
           <LanguageSelector />
           <div className="hidden md:block">
             <ThemeToggle />
           </div>
         </div>
 
-        {/* Centered Logo */}
-        <div className="absolute left-1/2 transform -translate-x-1/2 z-60">
-          <Link to="/" className="flex items-center">
+        {/* Centered Logo - Improved mobile positioning */}
+        <div className="absolute left-1/2 transform -translate-x-1/2 z-30 max-w-[60%] sm:max-w-none">
+          <Link to="/" className="flex items-center justify-center">
             {content.siteLogo ? (
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-2 sm:space-x-3">
                 <img 
                   src={content.siteLogo} 
                   alt={content.siteName}
-                  className="h-8 w-auto max-w-[120px] object-contain"
+                  className="h-6 sm:h-8 w-auto max-w-[80px] sm:max-w-[120px] object-contain"
                 />
-                <span className="font-display text-xl text-foreground hidden sm:block tracking-wider">
+                <span className="font-display text-base sm:text-xl text-foreground hidden xs:block tracking-wider truncate">
                   {content.siteName}
                 </span>
               </div>
             ) : (
-              <span className="font-display text-2xl text-foreground tracking-wider">
+              <span className="font-display text-lg sm:text-2xl text-foreground tracking-wider text-center">
                 {content.siteName}
               </span>
             )}
@@ -75,7 +75,7 @@ export default function Navbar() {
         </div>
 
         {/* Desktop Navigation */}
-        <ul className="hidden lg:flex space-x-12">
+        <ul className="hidden lg:flex space-x-8 xl:space-x-12">
           {navLinks.map(link => (
             <li key={link.name} className="relative">
               <Link 
@@ -89,14 +89,14 @@ export default function Navbar() {
         </ul>
 
         {/* Right side - Book Now Button */}
-        <div className="hidden lg:flex items-center space-x-4">
+        <div className="hidden lg:flex items-center space-x-4 z-40">
           <Button asChild className="minimal-button">
             <Link to="/booking">{t.nav.bookNow}</Link>
           </Button>
         </div>
 
         {/* Mobile Navigation Toggle */}
-        <div className="lg:hidden flex items-center space-x-2">
+        <div className="lg:hidden flex items-center space-x-2 z-40">
           <div className="md:hidden">
             <ThemeToggle />
           </div>
@@ -104,30 +104,43 @@ export default function Navbar() {
             variant="ghost" 
             size="icon" 
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)} 
-            className="z-50"
+            className="z-50 h-8 w-8 sm:h-10 sm:w-10"
           >
-            {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            {mobileMenuOpen ? <X className="h-4 w-4 sm:h-5 sm:w-5" /> : <Menu className="h-4 w-4 sm:h-5 sm:w-5" />}
           </Button>
         </div>
       </nav>
 
-      {/* Mobile Menu Overlay */}
+      {/* Mobile Menu Overlay - Improved styling */}
       <div className={cn(
-        "fixed inset-0 z-40 bg-background/95 backdrop-blur-lg lg:hidden transition-opacity duration-300", 
+        "fixed inset-0 z-40 bg-background/98 backdrop-blur-lg lg:hidden transition-opacity duration-300", 
         mobileMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
       )}>
         <div className={cn(
-          "fixed inset-y-0 right-0 w-full max-w-sm bg-card shadow-2xl transition-transform duration-300 ease-in-out", 
+          "fixed inset-y-0 right-0 w-full max-w-sm bg-card/95 backdrop-blur-md shadow-2xl transition-transform duration-300 ease-in-out border-l border-border/20", 
           mobileMenuOpen ? "translate-x-0" : "translate-x-full"
         )}>
-          <div className="flex flex-col h-full justify-between p-8 pt-20">
+          <div className="flex flex-col h-full justify-between p-6 sm:p-8 pt-16 sm:pt-20">
             <div>
-              <ul className="space-y-8">
+              <div className="text-center mb-8">
+                {content.siteLogo && (
+                  <img 
+                    src={content.siteLogo} 
+                    alt={content.siteName}
+                    className="h-8 w-auto max-w-[120px] object-contain mx-auto mb-2"
+                  />
+                )}
+                <h2 className="font-display text-xl text-foreground tracking-wider">
+                  {content.siteName}
+                </h2>
+              </div>
+              
+              <ul className="space-y-6 sm:space-y-8">
                 {navLinks.map(link => (
                   <li key={link.name}>
                     <Link 
                       to={link.path} 
-                      className="font-display text-xl text-foreground transition-colors hover:text-foreground/70" 
+                      className="font-display text-lg sm:text-xl text-foreground transition-colors hover:text-foreground/70 block py-2" 
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       {link.name}

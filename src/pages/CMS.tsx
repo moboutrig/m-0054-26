@@ -13,13 +13,21 @@ export default function CMS() {
     <div className="min-h-screen bg-background">
       <CMSHeader />
 
-      <div className="container py-8">
-        <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <CMSTabsConfig />
-          <CMSTabContent />
-        </Tabs>
+      <div className="container py-4 sm:py-8">
+        <div className="max-w-7xl mx-auto">
+          <Tabs value={activeTab} onValueChange={setActiveTab}>
+            <div className="mb-6">
+              <CMSTabsConfig />
+            </div>
+            <div className="space-y-6">
+              <CMSTabContent />
+            </div>
+          </Tabs>
 
-        <CMSInfoCard />
+          <div className="mt-8">
+            <CMSInfoCard />
+          </div>
+        </div>
       </div>
     </div>
   );
