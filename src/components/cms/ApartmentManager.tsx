@@ -20,9 +20,10 @@ export default function ApartmentManager() {
     description: "",
     capacity: 2,
     size: 40,
-    location: "",
+    location: locationOptions[0],
     features: [] as string[],
-    newFeature: ""
+    newFeature: "",
+    customLocationValue: ""
   });
 
   const locationOptions = [
@@ -69,13 +70,14 @@ export default function ApartmentManager() {
 
   const addApartment = () => {
     if (newApartment.name.trim() && newApartment.description.trim()) {
+      const locationToSave = newApartment.location === "Custom location" ? newApartment.customLocationValue.trim() : newApartment.location;
       const apartment = {
-        id: Date.now().toString(),
+        id: crypto.randomUUID(),
         name: newApartment.name,
         description: newApartment.description,
         capacity: newApartment.capacity,
         size: newApartment.size,
-        location: newApartment.location,
+        location: locationToSave,
         features: [...newApartment.features],
         isActive: true,
         order: apartments.length + 1
@@ -86,9 +88,10 @@ export default function ApartmentManager() {
         description: "",
         capacity: 2,
         size: 40,
-        location: "",
+        location: locationOptions[0],
         features: [],
-        newFeature: ""
+        newFeature: "",
+        customLocationValue: ""
       });
       toast({
         title: "Apartment Added",
@@ -206,6 +209,15 @@ export default function ApartmentManager() {
                   ))}
                 </SelectContent>
               </Select>
+              {newApartment.location === "Custom location" && (
+                <Input
+                  id="new-custom-location"
+                  placeholder="Enter custom location text"
+                  value={newApartment.customLocationValue}
+                  onChange={(e) => setNewApartment({ ...newApartment, customLocationValue: e.target.value })}
+                  className="mt-2"
+                />
+              )}
             </div>
           </div>
 
@@ -231,7 +243,10 @@ export default function ApartmentManager() {
                   min="1"
                   max="20"
                   value={newApartment.capacity}
-                  onChange={(e) => setNewApartment({ ...newApartment, capacity: parseInt(e.target.value) || 2 })}
+                  onChange={(e) => {
+                    const value = parseInt(e.target.value);
+                    setNewApartment({ ...newApartment, capacity: isNaN(value) || value < 1 ? 1 : value });
+                  }}
                 />
               </div>
             </div>
@@ -245,7 +260,10 @@ export default function ApartmentManager() {
                   min="10"
                   max="500"
                   value={newApartment.size}
-                  onChange={(e) => setNewApartment({ ...newApartment, size: parseInt(e.target.value) || 40 })}
+                  onChange={(e) => {
+                    const value = parseInt(e.target.value);
+                    setNewApartment({ ...newApartment, size: isNaN(value) || value < 10 ? 10 : value });
+                  }}
                 />
               </div>
             </div>
@@ -326,7 +344,9 @@ export default function ApartmentManager() {
             </CardContent>
           </Card>
         ) : (
-          apartments.map((apartment) => (
+          apartments.map((apartment) => {
+            const isEffectivelyCustomForEdit = !locationOptions.includes(apartment.location);
+            return (
             <Card key={apartment.id} className={!apartment.isActive ? "opacity-60" : ""}>
               <CardContent className="pt-6">
                 <div className="space-y-4">
@@ -341,11 +361,37 @@ export default function ApartmentManager() {
                           />
                         </div>
                         <div>
-                          <Label>Location</Label>
-                          <Input
-                            value={apartment.location}
-                            onChange={(e) => updateApartment(apartment.id, 'location', e.target.value)}
-                          />
+                          <Label htmlFor={`location-${apartment.id}`}>Location</Label>
+                          <Select
+                            value={isEffectivelyCustomForEdit ? "Custom location" : apartment.location}
+                            onValueChange={(selectedValue) => {
+                              if (selectedValue === "Custom location") {
+                                updateApartment(apartment.id, 'location', "");
+                              } else {
+                                updateApartment(apartment.id, 'location', selectedValue);
+                              }
+                            }}
+                          >
+                            <SelectTrigger id={`location-${apartment.id}`}>
+                              <SelectValue placeholder="Select location" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {locationOptions.map((locOption) => (
+                                <SelectItem key={locOption} value={locOption}>
+                                  {locOption}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+
+                          { (isEffectivelyCustomForEdit || apartment.location === "") && (
+                            <Input
+                              placeholder="Enter custom location text"
+                              value={apartment.location}
+                              onChange={(e) => updateApartment(apartment.id, 'location', e.target.value.trim())}
+                              className="mt-2"
+                            />
+                          )}
                         </div>
                       </div>
                       
@@ -364,7 +410,10 @@ export default function ApartmentManager() {
                           <Input
                             type="number"
                             value={apartment.capacity}
-                            onChange={(e) => updateApartment(apartment.id, 'capacity', parseInt(e.target.value) || 2)}
+                            onChange={(e) => {
+                              const value = parseInt(e.target.value);
+                              updateApartment(apartment.id, 'capacity', isNaN(value) || value < 1 ? 1 : value);
+                            }}
                           />
                         </div>
                         <div>
@@ -372,7 +421,10 @@ export default function ApartmentManager() {
                           <Input
                             type="number"
                             value={apartment.size}
-                            onChange={(e) => updateApartment(apartment.id, 'size', parseInt(e.target.value) || 40)}
+                            onChange={(e) => {
+                              const value = parseInt(e.target.value);
+                              updateApartment(apartment.id, 'size', isNaN(value) || value < 10 ? 10 : value);
+                            }}
                           />
                         </div>
                       </div>
@@ -453,8 +505,8 @@ export default function ApartmentManager() {
                 </div>
               </CardContent>
             </Card>
-          ))
-        )}
+          );
+        })}
       </div>
 
       <Button onClick={handleSave} className="w-full">
