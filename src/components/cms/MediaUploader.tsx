@@ -1,13 +1,11 @@
 
 import { useState, useRef } from "react";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Upload, X, Image, Video, File, Camera, Home, User, Star } from "lucide-react";
+import { Upload, Camera, Home, User, Star, Image, File } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useCMS } from "@/contexts/CMSContext";
+import MediaTabContent from "./media/MediaTabContent";
 
 interface UploadedFile {
   id: string;
@@ -118,138 +116,6 @@ export default function MediaUploader() {
     });
   };
 
-  const formatFileSize = (bytes: number) => {
-    if (bytes === 0) return '0 Bytes';
-    const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-  };
-
-  const FileUploadSection = ({ category, title, icon: Icon, accept = "image/*,video/*" }: any) => (
-    <div className="space-y-4">
-      <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-6 text-center">
-        <div className="space-y-3">
-          <div className="flex justify-center">
-            <Icon className="h-8 w-8 text-muted-foreground" />
-          </div>
-          <div>
-            <Label htmlFor={`file-upload-${category}`} className="cursor-pointer">
-              <span className="font-medium">{title}</span>
-              <p className="text-sm text-muted-foreground mt-1">
-                Click to select files
-              </p>
-            </Label>
-            <Input
-              id={`file-upload-${category}`}
-              type="file"
-              accept={accept}
-              multiple
-              onChange={(e) => handleFileUpload(e, category)}
-              disabled={isUploading}
-              className="hidden"
-            />
-          </div>
-          <Button
-            onClick={() => document.getElementById(`file-upload-${category}`)?.click()}
-            disabled={isUploading}
-            variant="outline"
-            size="sm"
-          >
-            {isUploading ? "Uploading..." : "Select Files"}
-          </Button>
-        </div>
-      </div>
-
-      {/* Display uploaded files for this category */}
-      {uploadedFiles.filter(file => file.category === category).length > 0 && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {uploadedFiles.filter(file => file.category === category).map((file) => (
-            <Card key={file.id} className="relative">
-              <CardContent className="p-3">
-                <div className="aspect-video relative overflow-hidden rounded-lg mb-2">
-                  {file.type === 'image' ? (
-                    <img
-                      src={file.url}
-                      alt={file.name}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <video
-                      src={file.url}
-                      className="w-full h-full object-cover"
-                      controls
-                    />
-                  )}
-                </div>
-                
-                <div className="space-y-2">
-                  <p className="text-xs font-medium truncate" title={file.name}>
-                    {file.name}
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    {formatFileSize(file.size)}
-                  </p>
-                  
-                  <div className="flex flex-col gap-1">
-                    <div className="flex gap-1">
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => copyUrl(file.url)}
-                        className="flex-1 text-xs"
-                      >
-                        Copy URL
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="destructive"
-                        onClick={() => removeFile(file.id)}
-                      >
-                        <X className="h-3 w-3" />
-                      </Button>
-                    </div>
-                    
-                    {/* Quick action buttons based on category */}
-                    {category === 'logo' && file.type === 'image' && (
-                      <Button
-                        size="sm"
-                        onClick={() => useAsLogo(file.url)}
-                        className="w-full text-xs"
-                      >
-                        Use as Logo
-                      </Button>
-                    )}
-                    
-                    {category === 'hero' && file.type === 'image' && (
-                      <Button
-                        size="sm"
-                        onClick={() => useAsHeroImage(file.url)}
-                        className="w-full text-xs"
-                      >
-                        Use as Hero
-                      </Button>
-                    )}
-                    
-                    {category === 'gallery' && file.type === 'image' && (
-                      <Button
-                        size="sm"
-                        onClick={() => addToGallery(file.url)}
-                        className="w-full text-xs"
-                      >
-                        Add to Gallery
-                      </Button>
-                    )}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-
   return (
     <Card className="mb-6">
       <CardHeader>
@@ -269,78 +135,93 @@ export default function MediaUploader() {
             <TabsTrigger value="general">General</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="logo" className="space-y-4">
-            <div className="text-center mb-4">
-              <h3 className="text-lg font-semibold">Site Logo Upload</h3>
-              <p className="text-sm text-muted-foreground">Upload your site logo (PNG, SVG recommended)</p>
-            </div>
-            <FileUploadSection
+          <TabsContent value="logo">
+            <MediaTabContent
               category="logo"
-              title="Upload Site Logo"
+              title="Site Logo Upload"
+              description="Upload your site logo (PNG, SVG recommended)"
               icon={Star}
               accept="image/*"
+              uploadedFiles={uploadedFiles}
+              isUploading={isUploading}
+              onFileUpload={handleFileUpload}
+              onRemoveFile={removeFile}
+              onCopyUrl={copyUrl}
+              onUseAsLogo={useAsLogo}
             />
           </TabsContent>
 
-          <TabsContent value="hero" className="space-y-4">
-            <div className="text-center mb-4">
-              <h3 className="text-lg font-semibold">Hero Section Images</h3>
-              <p className="text-sm text-muted-foreground">Upload background images for hero sections</p>
-            </div>
-            <FileUploadSection
+          <TabsContent value="hero">
+            <MediaTabContent
               category="hero"
-              title="Upload Hero Images"
+              title="Hero Section Images"
+              description="Upload background images for hero sections"
               icon={Camera}
               accept="image/*"
+              uploadedFiles={uploadedFiles}
+              isUploading={isUploading}
+              onFileUpload={handleFileUpload}
+              onRemoveFile={removeFile}
+              onCopyUrl={copyUrl}
+              onUseAsHeroImage={useAsHeroImage}
             />
           </TabsContent>
 
-          <TabsContent value="rooms" className="space-y-4">
-            <div className="text-center mb-4">
-              <h3 className="text-lg font-semibold">Room Images</h3>
-              <p className="text-sm text-muted-foreground">Upload images for apartments and rooms</p>
-            </div>
-            <FileUploadSection
+          <TabsContent value="rooms">
+            <MediaTabContent
               category="rooms"
-              title="Upload Room Images"
+              title="Room Images"
+              description="Upload images for apartments and rooms"
               icon={Home}
+              uploadedFiles={uploadedFiles}
+              isUploading={isUploading}
+              onFileUpload={handleFileUpload}
+              onRemoveFile={removeFile}
+              onCopyUrl={copyUrl}
             />
           </TabsContent>
 
-          <TabsContent value="gallery" className="space-y-4">
-            <div className="text-center mb-4">
-              <h3 className="text-lg font-semibold">Gallery Images</h3>
-              <p className="text-sm text-muted-foreground">Upload images for the main gallery</p>
-            </div>
-            <FileUploadSection
+          <TabsContent value="gallery">
+            <MediaTabContent
               category="gallery"
-              title="Upload Gallery Images"
+              title="Gallery Images"
+              description="Upload images for the main gallery"
               icon={Image}
+              uploadedFiles={uploadedFiles}
+              isUploading={isUploading}
+              onFileUpload={handleFileUpload}
+              onRemoveFile={removeFile}
+              onCopyUrl={copyUrl}
+              onAddToGallery={addToGallery}
             />
           </TabsContent>
 
-          <TabsContent value="testimonials" className="space-y-4">
-            <div className="text-center mb-4">
-              <h3 className="text-lg font-semibold">People Images</h3>
-              <p className="text-sm text-muted-foreground">Upload photos for testimonials and team</p>
-            </div>
-            <FileUploadSection
+          <TabsContent value="testimonials">
+            <MediaTabContent
               category="testimonials"
-              title="Upload People Photos"
+              title="People Images"
+              description="Upload photos for testimonials and team"
               icon={User}
               accept="image/*"
+              uploadedFiles={uploadedFiles}
+              isUploading={isUploading}
+              onFileUpload={handleFileUpload}
+              onRemoveFile={removeFile}
+              onCopyUrl={copyUrl}
             />
           </TabsContent>
 
-          <TabsContent value="general" className="space-y-4">
-            <div className="text-center mb-4">
-              <h3 className="text-lg font-semibold">General Media</h3>
-              <p className="text-sm text-muted-foreground">Upload any other images or videos</p>
-            </div>
-            <FileUploadSection
+          <TabsContent value="general">
+            <MediaTabContent
               category="general"
-              title="Upload Media Files"
+              title="General Media"
+              description="Upload any other images or videos"
               icon={File}
+              uploadedFiles={uploadedFiles}
+              isUploading={isUploading}
+              onFileUpload={handleFileUpload}
+              onRemoveFile={removeFile}
+              onCopyUrl={copyUrl}
             />
           </TabsContent>
         </Tabs>
