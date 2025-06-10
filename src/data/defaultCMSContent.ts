@@ -1,4 +1,3 @@
-
 import { CMSContent } from '@/types/cms';
 
 export const defaultContent: CMSContent = {
@@ -131,7 +130,6 @@ export const defaultContent: CMSContent = {
       { id: "gym", name: "Fitness Access", icon: "Dumbbell", description: "Complimentary gym access" }
     ]
   },
-  // New features with default data
   navigation: [
     { id: "1", label: "Home", path: "/", isActive: true, order: 1 },
     { id: "2", label: "Apartments", path: "/apartments", isActive: true, order: 2 },
@@ -223,5 +221,143 @@ export const defaultContent: CMSContent = {
     checkOutTime: "11:00",
     cancellationPolicy: "Free cancellation up to 48 hours before check-in",
     depositRequired: 30
+  },
+  // New page-specific content
+  pageContent: {
+    amenities: {
+      title: "Premium Amenities & Services",
+      subtitle: "Experience luxury and comfort at every turn",
+      description: "Discover our comprehensive range of world-class amenities and personalized services, carefully designed to exceed your expectations and create unforgettable memories during your stay.",
+      categories: [
+        {
+          id: "wellness",
+          title: "Wellness & Fitness",
+          description: "Rejuvenate your body and mind with our premium wellness facilities",
+          items: [
+            { id: "spa", title: "Luxury Spa", description: "Full-service spa with massage treatments", icon: "Heart" },
+            { id: "gym", title: "Fitness Center", description: "State-of-the-art equipment and facilities", icon: "Dumbbell" },
+            { id: "pool", title: "Infinity Pool", description: "Stunning infinity pool with sea views", icon: "Waves" },
+            { id: "yoga", title: "Yoga Classes", description: "Daily yoga sessions by the beach", icon: "Activity" }
+          ]
+        },
+        {
+          id: "dining",
+          title: "Dining & Culinary",
+          description: "Savor exceptional cuisine and premium beverages",
+          items: [
+            { id: "restaurant", title: "Fine Dining", description: "Gourmet restaurant with Mediterranean cuisine", icon: "Utensils" },
+            { id: "cafe", title: "Beachside Café", description: "Casual dining with ocean views", icon: "Coffee" },
+            { id: "bar", title: "Sunset Bar", description: "Premium cocktails and wine selection", icon: "Wine" },
+            { id: "service", title: "Room Service", description: "24/7 in-room dining service", icon: "Clock" }
+          ]
+        },
+        {
+          id: "services",
+          title: "Guest Services",
+          description: "Personalized services to enhance your stay",
+          items: [
+            { id: "concierge", title: "Concierge", description: "24/7 concierge assistance", icon: "Clock" },
+            { id: "transfer", title: "Airport Transfer", description: "Luxury transportation service", icon: "Plane" },
+            { id: "parking", title: "Valet Parking", description: "Complimentary valet parking", icon: "Car" },
+            { id: "tours", title: "Local Tours", description: "Guided excursions and activities", icon: "MapPin" }
+          ]
+        },
+        {
+          id: "entertainment",
+          title: "Recreation & Entertainment",
+          description: "Endless activities and entertainment options",
+          items: [
+            { id: "beach", title: "Private Beach", description: "Exclusive beach access with loungers", icon: "Waves" },
+            { id: "events", title: "Event Space", description: "Elegant venues for special occasions", icon: "Users" },
+            { id: "music", title: "Live Music", description: "Regular live entertainment", icon: "Music" },
+            { id: "library", title: "Library Lounge", description: "Quiet reading and relaxation area", icon: "BookOpen" }
+          ]
+        }
+      ]
+    },
+    gallery: {
+      title: "Photo Gallery",
+      subtitle: "Discover the beauty of MareSereno through our lens",
+      filters: {
+        all: "All Photos",
+        exterior: "Exterior Views",
+        rooms: "Rooms & Suites",
+        amenities: "Amenities"
+      },
+      images: [
+        {
+          id: "1",
+          src: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&h=600&fit=crop",
+          alt: "Beachfront view",
+          category: "exterior"
+        },
+        {
+          id: "2",
+          src: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&h=600&fit=crop",
+          alt: "Luxury suite interior",
+          category: "rooms"
+        },
+        {
+          id: "3",
+          src: "https://images.unsplash.com/photo-1584132905271-512c958d674a?w=800&h=600&fit=crop",
+          alt: "Swimming pool",
+          category: "amenities"
+        },
+        {
+          id: "4",
+          src: "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?w=800&h=600&fit=crop",
+          alt: "Premium apartment",
+          category: "rooms"
+        },
+        {
+          id: "5",
+          src: "https://images.unsplash.com/photo-1445019980597-93fa8acb246c?w=800&h=600&fit=crop",
+          alt: "Beach sunset",
+          category: "exterior"
+        },
+        {
+          id: "6",
+          src: "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=800&h=600&fit=crop",
+          alt: "Dining area",
+          category: "amenities"
+        },
+        {
+          id: "7",
+          src: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=800&h=600&fit=crop",
+          alt: "Bathroom",
+          category: "rooms"
+        },
+        {
+          id: "8",
+          src: "https://images.unsplash.com/photo-1540518614846-7eded433c457?w=800&h=600&fit=crop",
+          alt: "Beach pathway",
+          category: "exterior"
+        },
+        {
+          id: "9",
+          src: "https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=800&h=600&fit=crop",
+          alt: "Restaurant",
+          category: "amenities"
+        },
+        {
+          id: "10",
+          src: "https://images.unsplash.com/photo-1560185007-c5ca9d2c014d?w=800&h=600&fit=crop",
+          alt: "Bedroom",
+          category: "rooms"
+        },
+        {
+          id: "11",
+          src: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&h=600&fit=crop",
+          alt: "Beach umbrellas",
+          category: "exterior"
+        },
+        {
+          id: "12",
+          src: "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800&h=600&fit=crop",
+          alt: "Spa",
+          category: "amenities"
+        }
+      ]
+    }
   }
 };

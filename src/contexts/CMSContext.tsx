@@ -1,6 +1,6 @@
 
 import React, { createContext, useContext } from 'react';
-import { CMSContent, CMSContextType, RoomImages, RoomAmenity, NavigationItem, Testimonial, PricingInfo } from '@/types/cms';
+import { CMSContent, CMSContextType, RoomImages, RoomAmenity, NavigationItem, Testimonial, PricingInfo, PageContent } from '@/types/cms';
 import { useCMSContent } from '@/hooks/useCMSContent';
 
 const CMSContext = createContext<CMSContextType | undefined>(undefined);
@@ -50,6 +50,17 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     saveContent(newContent);
   };
 
+  const updatePageContent = (pageKey: keyof PageContent, pageContent: any) => {
+    const newContent = {
+      ...content,
+      pageContent: {
+        ...content.pageContent,
+        [pageKey]: pageContent
+      }
+    };
+    saveContent(newContent);
+  };
+
   const resetContent = () => {
     localStorage.removeItem('cms-content');
     window.location.reload();
@@ -64,6 +75,7 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       updateNavigation,
       updateTestimonials,
       updatePricing,
+      updatePageContent,
       resetContent 
     }}>
       {children}

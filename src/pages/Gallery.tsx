@@ -4,103 +4,37 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useLanguage } from "@/contexts/LanguageContext";
-
-// Sample gallery images
-const galleryImages = [
-  {
-    id: 1,
-    src: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&h=600&fit=crop",
-    alt: "Beachfront view",
-    category: "exterior"
-  },
-  {
-    id: 2,
-    src: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&h=600&fit=crop",
-    alt: "Luxury suite interior",
-    category: "rooms"
-  },
-  {
-    id: 3,
-    src: "https://images.unsplash.com/photo-1584132905271-512c958d674a?w=800&h=600&fit=crop",
-    alt: "Swimming pool",
-    category: "amenities"
-  },
-  {
-    id: 4,
-    src: "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?w=800&h=600&fit=crop",
-    alt: "Premium apartment",
-    category: "rooms"
-  },
-  {
-    id: 5,
-    src: "https://images.unsplash.com/photo-1445019980597-93fa8acb246c?w=800&h=600&fit=crop",
-    alt: "Beach sunset",
-    category: "exterior"
-  },
-  {
-    id: 6,
-    src: "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=800&h=600&fit=crop",
-    alt: "Dining area",
-    category: "amenities"
-  },
-  {
-    id: 7,
-    src: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=800&h=600&fit=crop",
-    alt: "Bathroom",
-    category: "rooms"
-  },
-  {
-    id: 8,
-    src: "https://images.unsplash.com/photo-1540518614846-7eded433c457?w=800&h=600&fit=crop",
-    alt: "Beach pathway",
-    category: "exterior"
-  },
-  {
-    id: 9,
-    src: "https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=800&h=600&fit=crop",
-    alt: "Restaurant",
-    category: "amenities"
-  },
-  {
-    id: 10,
-    src: "https://images.unsplash.com/photo-1560185007-c5ca9d2c014d?w=800&h=600&fit=crop",
-    alt: "Bedroom",
-    category: "rooms"
-  },
-  {
-    id: 11,
-    src: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&h=600&fit=crop",
-    alt: "Beach umbrellas",
-    category: "exterior"
-  },
-  {
-    id: 12,
-    src: "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800&h=600&fit=crop",
-    alt: "Spa",
-    category: "amenities"
-  },
-];
+import { useCMS } from "@/contexts/CMSContext";
 
 export default function Gallery() {
-  const { t } = useLanguage();
-  const [selectedImage, setSelectedImage] = useState<number | null>(null);
-  const [filteredImages, setFilteredImages] = useState(galleryImages);
+  const { content } = useCMS();
+  const galleryContent = content.pageContent.gallery;
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [filteredImages, setFilteredImages] = useState(galleryContent.images);
   const [activeFilter, setActiveFilter] = useState("all");
   
   useEffect(() => {
     // Scroll to top when component mounts
     window.scrollTo(0, 0);
   }, []);
+
+  // Update filtered images when content changes
+  useEffect(() => {
+    if (activeFilter === "all") {
+      setFilteredImages(galleryContent.images);
+    } else {
+      setFilteredImages(galleryContent.images.filter(img => img.category === activeFilter));
+    }
+  }, [galleryContent.images, activeFilter]);
   
   // Filter gallery images by category
   const filterGallery = (category: string) => {
     setActiveFilter(category);
     
     if (category === "all") {
-      setFilteredImages(galleryImages);
+      setFilteredImages(galleryContent.images);
     } else {
-      setFilteredImages(galleryImages.filter(img => img.category === category));
+      setFilteredImages(galleryContent.images.filter(img => img.category === category));
     }
   };
   
@@ -148,10 +82,10 @@ export default function Gallery() {
           <div className="container relative z-10">
             <div className="max-w-3xl mx-auto text-center animate-fade-in">
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-                {t.gallery.title}
+                {galleryContent.title}
               </h1>
               <p className="text-muted-foreground text-lg mb-6">
-                {t.gallery.subtitle}
+                {galleryContent.subtitle}
               </p>
             </div>
           </div>
@@ -178,13 +112,7 @@ export default function Gallery() {
                       : "bg-card hover:bg-muted"
                   )}
                 >
-                  {category === "all" 
-                    ? t.gallery.filters.all 
-                    : category === "exterior" 
-                      ? t.gallery.filters.exterior 
-                      : category === "rooms" 
-                        ? t.gallery.filters.rooms 
-                        : t.gallery.filters.amenities}
+                  {galleryContent.filters[category as keyof typeof galleryContent.filters]}
                 </button>
               ))}
             </div>

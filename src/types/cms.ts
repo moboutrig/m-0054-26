@@ -84,6 +84,45 @@ export interface BookingSettings {
   depositRequired: number;
 }
 
+export interface AmenityCategory {
+  id: string;
+  title: string;
+  description: string;
+  items: {
+    id: string;
+    title: string;
+    description: string;
+    icon: string;
+  }[];
+}
+
+export interface GalleryImage {
+  id: string;
+  src: string;
+  alt: string;
+  category: string;
+}
+
+export interface PageContent {
+  amenities: {
+    title: string;
+    subtitle: string;
+    description: string;
+    categories: AmenityCategory[];
+  };
+  gallery: {
+    title: string;
+    subtitle: string;
+    images: GalleryImage[];
+    filters: {
+      all: string;
+      exterior: string;
+      rooms: string;
+      amenities: string;
+    };
+  };
+}
+
 export interface CMSContent {
   siteName: string;
   heroTitle: string;
@@ -119,6 +158,8 @@ export interface CMSContent {
   footerContent: FooterContent;
   themeSettings: ThemeSettings;
   bookingSettings: BookingSettings;
+  // Page-specific content
+  pageContent: PageContent;
 }
 
 export interface CMSContextType {
@@ -129,5 +170,6 @@ export interface CMSContextType {
   updateNavigation: (navigation: NavigationItem[]) => void;
   updateTestimonials: (testimonials: Testimonial[]) => void;
   updatePricing: (pricing: PricingInfo[]) => void;
+  updatePageContent: (pageKey: keyof PageContent, content: any) => void;
   resetContent: () => void;
 }
