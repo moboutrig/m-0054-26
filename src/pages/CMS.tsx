@@ -5,6 +5,7 @@ import CMSHeader from "@/components/cms/CMSHeader";
 import CMSTabsConfig from "@/components/cms/CMSTabsConfig";
 import CMSTabContent from "@/components/cms/CMSTabContent";
 import CMSInfoCard from "@/components/cms/CMSInfoCard";
+import MediaUploader from "@/components/cms/MediaUploader";
 
 export default function CMS() {
   const [activeTab, setActiveTab] = useState("content");
@@ -14,6 +15,8 @@ export default function CMS() {
       <CMSHeader />
 
       <div className="container py-8">
+        <MediaUploader />
+        
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <CMSTabsConfig />
           <CMSTabContent />
