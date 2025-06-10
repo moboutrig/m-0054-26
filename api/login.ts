@@ -1,30 +1,29 @@
-import type { NextApiRequest, NextApiResponse } from 'next'; // Using Next.js types for better illustration
+import type { VercelRequest, VercelResponse } from '@vercel/node';
 import jwt from 'jsonwebtoken';
 import cookie from 'cookie';
 
 // --- Environment Variables ---
 // IMPORTANT: Set CMS_PASSWORD via environment variables in production!
-// This default is for development convenience ONLY and is insecure for production.
-const CMS_PASSWORD = process.env.CMS_PASSWORD || 'DEFAULT_PASSWORD';
+const CMS_PASSWORD = process.env.CMS_PASSWORD;
 
 // IMPORTANT: Use a strong, unique secret from environment variables in production!
-// This default is for development convenience ONLY and is insecure for production.
 // A long, random string is recommended for SESSION_SECRET.
-const SESSION_SECRET = process.env.SESSION_SECRET || 'YOUR_REALLY_SECRET_KEY_MUST_BE_LONG_AND_RANDOM_DEV_ONLY';
+const SESSION_SECRET = process.env.SESSION_SECRET;
 
 // Used to determine if 'Secure' flag should be set on cookies.
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
-// --- Types ---
-type Data = {
-  success: boolean;
-  message?: string;
-};
 
 export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<Data>
+  req: VercelRequest,
+  res: VercelResponse
 ) {
+  // Check if essential environment variables are set
+  if (!CMS_PASSWORD || !SESSION_SECRET) {
+    console.error('CRITICAL: Missing CMS_PASSWORD or SESSION_SECRET in environment variables.');
+    return res.status(500).json({ success: false, message: 'Server configuration error. Please contact administrator.' });
+  }
+
   if (req.method !== 'POST') {
     res.setHeader('Allow', ['POST']);
     return res.status(405).json({ success: false, message: `Method ${req.method} Not Allowed` });

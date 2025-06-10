@@ -1,27 +1,27 @@
 import fs from 'fs';
 import path from 'path';
-import type { NextApiRequest, NextApiResponse } from 'next'; // Using Next.js types
+import type { VercelRequest, VercelResponse } from '@vercel/node';
 import jwt from 'jsonwebtoken';
 import cookie from 'cookie';
 
 // --- Environment Variables ---
 // IMPORTANT: Use a strong, unique secret from environment variables in production!
-// This default is for development convenience ONLY and is insecure for production.
 // A long, random string is recommended for SESSION_SECRET.
-const SESSION_SECRET = process.env.SESSION_SECRET || 'YOUR_REALLY_SECRET_KEY_MUST_BE_LONG_AND_RANDOM_DEV_ONLY';
-
-// --- Types ---
-// Using NextApiResponse for res, so specific data/error types can be defined per handler if needed
-// For simplicity, using `any` for response data type here, but can be more specific.
-type Data = any;
+const SESSION_SECRET = process.env.SESSION_SECRET;
 
 
 const dbPath = path.resolve(process.cwd(), 'api/db.json'); // Assuming api/db.json is at the root of the project for this example
 
 export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<Data>
+  req: VercelRequest,
+  res: VercelResponse
 ) {
+  // Check if essential environment variables are set, especially for POST requests
+  if (req.method === 'POST' && !SESSION_SECRET) {
+    console.error('CRITICAL: Missing SESSION_SECRET in environment variables for POST /api/content.');
+    return res.status(500).json({ message: 'Server configuration error. Please contact administrator.' });
+  }
+
   res.setHeader('Content-Type', 'application/json');
 
   if (req.method === 'GET') {

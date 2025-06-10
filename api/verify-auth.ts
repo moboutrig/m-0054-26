@@ -1,23 +1,23 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+import type { VercelRequest, VercelResponse } from '@vercel/node';
 import jwt from 'jsonwebtoken';
 import cookie from 'cookie';
 
 // --- Environment Variables ---
 // IMPORTANT: Use a strong, unique secret from environment variables in production!
-// This default is for development convenience ONLY and is insecure for production.
 // A long, random string is recommended for SESSION_SECRET.
-const SESSION_SECRET = process.env.SESSION_SECRET || 'YOUR_REALLY_SECRET_KEY_MUST_BE_LONG_AND_RANDOM_DEV_ONLY';
+const SESSION_SECRET = process.env.SESSION_SECRET;
 
-// --- Types ---
-type Data = {
-  authenticated: boolean;
-  message?: string;
-};
 
 export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<Data>
+  req: VercelRequest,
+  res: VercelResponse
 ) {
+  // Check if essential environment variables are set
+  if (!SESSION_SECRET) {
+    console.error('CRITICAL: Missing SESSION_SECRET in environment variables for /api/verify-auth.');
+    return res.status(500).json({ authenticated: false, message: 'Server configuration error. Please contact administrator.' });
+  }
+
   if (req.method !== 'GET') {
     res.setHeader('Allow', ['GET']);
     return res.status(405).json({ authenticated: false, message: `Method ${req.method} Not Allowed` });

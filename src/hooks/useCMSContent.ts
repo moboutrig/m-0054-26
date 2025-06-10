@@ -9,60 +9,73 @@ export const useCMSContent = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchContent = async () => {
+    const fetchAndSetContent = async () => {
       setIsLoading(true);
       setError(null);
+
       try {
+        // 1. Attempt to fetch data from GET /api/content
         const response = await fetch('/api/content');
         if (!response.ok) {
-          throw new Error(`Failed to fetch content: ${response.status} ${response.statusText}`);
+          throw new Error(`API request failed with status ${response.status}: ${response.statusText}`);
         }
-        const data: CMSContent = await response.json();
+        const apiData: CMSContent = await response.json();
+
         // Deep merge fetched data with defaultContent to ensure all keys are present
-        // This is a shallow example; a proper deep merge might be needed if structure is very dynamic
-        // For now, assuming fetched data is largely complete or `defaultContent` provides good fallbacks for missing top-level keys.
         const mergedContent = {
-          ...defaultContent,
-          ...data,
-          // Ensuring nested objects are also merged, at least one level deep for critical parts
-          roomImages: { ...defaultContent.roomImages, ...data.roomImages },
-          roomAmenities: { ...defaultContent.roomAmenities, ...data.roomAmenities },
-          navigation: data.navigation || defaultContent.navigation,
-          seoSettings: { ...defaultContent.seoSettings, ...data.seoSettings },
-          socialMedia: { ...defaultContent.socialMedia, ...data.socialMedia },
-          pricing: data.pricing || defaultContent.pricing,
-          testimonials: data.testimonials || defaultContent.testimonials,
-          footerContent: { ...defaultContent.footerContent, ...data.footerContent },
-          themeSettings: { ...defaultContent.themeSettings, ...data.themeSettings },
-          bookingSettings: { ...defaultContent.bookingSettings, ...data.bookingSettings },
-          pageContent: { ...defaultContent.pageContent, ...data.pageContent },
-          uiText: { ...defaultContent.uiText, ...data.uiText },
-          apartments: data.apartments || defaultContent.apartments,
+            ...defaultContent,
+            ...apiData,
+            roomImages: { ...defaultContent.roomImages, ...apiData.roomImages },
+            roomAmenities: { ...defaultContent.roomAmenities, ...apiData.roomAmenities },
+            navigation: apiData.navigation || defaultContent.navigation,
+            seoSettings: { ...defaultContent.seoSettings, ...apiData.seoSettings },
+            socialMedia: { ...defaultContent.socialMedia, ...apiData.socialMedia },
+            pricing: apiData.pricing || defaultContent.pricing,
+            testimonials: apiData.testimonials || defaultContent.testimonials,
+            footerContent: { ...defaultContent.footerContent, ...apiData.footerContent },
+            themeSettings: { ...defaultContent.themeSettings, ...apiData.themeSettings },
+            bookingSettings: { ...defaultContent.bookingSettings, ...apiData.bookingSettings },
+            pageContent: { ...defaultContent.pageContent, ...apiData.pageContent },
+            uiText: { ...defaultContent.uiText, ...apiData.uiText },
+            apartments: apiData.apartments || defaultContent.apartments,
         };
+
         setContent(mergedContent);
-        localStorage.setItem('cms-content-cache', JSON.stringify(mergedContent)); // Cache fetched content
-      } catch (err) {
-        console.error('Error fetching CMS content from API:', err);
-        setError(err instanceof Error ? err.message : 'An unknown error occurred');
-        // Fallback to local storage cache if API fails
-        const cachedContent = localStorage.getItem('cms-content-cache');
-        if (cachedContent) {
-          try {
-            setContent(JSON.parse(cachedContent));
-          } catch (parseError) {
-            console.error('Error parsing cached CMS content:', parseError);
-            setContent(defaultContent); // Fallback to default if cache is corrupt
+        localStorage.setItem('cms-content-cache', JSON.stringify(mergedContent));
+        setError(null); // Clear any previous errors if API fetch is successful
+        console.log("CMS content loaded from API.");
+
+      } catch (apiError: any) {
+        console.error('Failed to fetch CMS content from API:', apiError.message);
+        setError(`API Error: ${apiError.message}. Attempting to load from cache.`);
+
+        // 2. If API fetch fails, attempt to load from localStorage
+        try {
+          const cachedContentJSON = localStorage.getItem('cms-content-cache');
+          if (cachedContentJSON) {
+            const cachedData = JSON.parse(cachedContentJSON);
+            setContent(cachedData);
+            console.log("CMS content loaded from cache due to API failure.");
+            // Keep the API error message for info, but content is now from cache
+            // Or, could set setError(null) if showing cached data is considered "ok" for the user
+            setError(`API unavailable. Displaying cached content. (API Error: ${apiError.message})`);
+          } else {
+            console.warn('Cache miss after API failure. Falling back to default content.');
+            setContent(defaultContent); // Ensure it's explicitly defaultContent
+            setError(`API Error: ${apiError.message}. No cache available. Using default content.`);
           }
-        } else {
-          setContent(defaultContent); // Fallback to default if no cache
+        } catch (cacheError: any) {
+          console.error('Failed to load or parse CMS content from cache:', cacheError.message);
+          setContent(defaultContent); // Ensure it's explicitly defaultContent
+          setError(`API Error: ${apiError.message}. Cache Error: ${cacheError.message}. Using default content.`);
         }
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchContent();
-  }, []); // Empty dependency array means this runs once on mount
+    fetchAndSetContent();
+  }, []); // Empty dependency array ensures this runs once on mount
 
   const saveContent = (newContent: CMSContent) => {
     setContent(newContent);

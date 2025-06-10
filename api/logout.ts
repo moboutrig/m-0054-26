@@ -1,15 +1,10 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+import type { VercelRequest, VercelResponse } from '@vercel/node';
 import cookie from 'cookie';
 
-// --- Types ---
-type Data = {
-  success: boolean;
-  message?: string;
-};
 
 export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<Data>
+  req: VercelRequest,
+  res: VercelResponse
 ) {
   if (req.method !== 'POST') {
     res.setHeader('Allow', ['POST']);
