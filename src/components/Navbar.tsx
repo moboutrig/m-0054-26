@@ -29,7 +29,7 @@ export default function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const isScrolled = window.scrollY > 20;
+      const isScrolled = window.scrollY > 50;
       if (isScrolled !== scrolled) {
         setScrolled(isScrolled);
       }
@@ -40,30 +40,34 @@ export default function Navbar() {
   
   return (
     <header className={cn(
-      "fixed top-0 left-0 right-0 z-50 transition-all duration-300", 
-      scrolled ? "bg-white/80 dark:bg-card/80 backdrop-blur-lg py-3 shadow-md" : "bg-transparent py-5"
+      "fixed top-0 left-0 right-0 z-50 transition-all duration-500", 
+      scrolled ? "bg-white/95 dark:bg-card/95 backdrop-blur-lg py-4 shadow-sm border-b border-border/10" : "bg-transparent py-8"
     )}>
       <nav className="container flex justify-between items-center relative">
-        <div className="flex items-center space-x-2">
+        {/* Left side - Language and Theme */}
+        <div className="flex items-center space-x-4">
           <LanguageSelector />
+          <div className="hidden md:block">
+            <ThemeToggle />
+          </div>
         </div>
 
-        {/* Centered Logo with higher z-index */}
+        {/* Centered Logo */}
         <div className="absolute left-1/2 transform -translate-x-1/2 z-60">
-          <Link to="/" className="flex items-center space-x-2">
+          <Link to="/" className="flex items-center">
             {content.siteLogo ? (
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-3">
                 <img 
                   src={content.siteLogo} 
                   alt={content.siteName}
                   className="h-8 w-auto max-w-[120px] object-contain"
                 />
-                <span className="text-xl font-bold text-primary hidden sm:block">
+                <span className="font-display text-xl text-foreground hidden sm:block tracking-wider">
                   {content.siteName}
                 </span>
               </div>
             ) : (
-              <span className="text-2xl font-bold text-primary">
+              <span className="font-display text-2xl text-foreground tracking-wider">
                 {content.siteName}
               </span>
             )}
@@ -71,12 +75,12 @@ export default function Navbar() {
         </div>
 
         {/* Desktop Navigation */}
-        <ul className="hidden md:flex space-x-8">
+        <ul className="hidden lg:flex space-x-12">
           {navLinks.map(link => (
             <li key={link.name} className="relative">
               <Link 
                 to={link.path} 
-                className="font-medium transition-colors hover:text-primary after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:w-0 after:bg-primary after:transition-all hover:after:w-full"
+                className="luxury-subtitle text-foreground hover:text-foreground/70 transition-colors duration-300 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-px after:bg-foreground after:transition-all after:duration-300 hover:after:w-full"
               >
                 {link.name}
               </Link>
@@ -84,55 +88,46 @@ export default function Navbar() {
           ))}
         </ul>
 
-        <div className="hidden md:flex items-center space-x-2">
-          <ThemeToggle />
-          <Button asChild className="btn-primary">
+        {/* Right side - Book Now Button */}
+        <div className="hidden lg:flex items-center space-x-4">
+          <Button asChild className="minimal-button">
             <Link to="/booking">{t.nav.bookNow}</Link>
           </Button>
         </div>
 
-        {/* Mobile Navigation */}
-        <div className="md:hidden flex items-center space-x-2">
-          <ThemeToggle />
+        {/* Mobile Navigation Toggle */}
+        <div className="lg:hidden flex items-center space-x-2">
+          <div className="md:hidden">
+            <ThemeToggle />
+          </div>
           <Button 
             variant="ghost" 
             size="icon" 
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)} 
-            className="rounded-full z-50"
+            className="z-50"
           >
-            {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </Button>
         </div>
       </nav>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu Overlay */}
       <div className={cn(
-        "fixed inset-0 z-40 bg-background/80 backdrop-blur-sm md:hidden transition-opacity duration-300", 
+        "fixed inset-0 z-40 bg-background/95 backdrop-blur-lg lg:hidden transition-opacity duration-300", 
         mobileMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
       )}>
         <div className={cn(
-          "fixed inset-y-0 right-0 w-3/4 max-w-sm bg-card shadow-xl p-6 transition-transform duration-300 ease-in-out", 
+          "fixed inset-y-0 right-0 w-full max-w-sm bg-card shadow-2xl transition-transform duration-300 ease-in-out", 
           mobileMenuOpen ? "translate-x-0" : "translate-x-full"
         )}>
-          <div className="flex flex-col h-full justify-between">
+          <div className="flex flex-col h-full justify-between p-8 pt-20">
             <div>
-              <div className="flex justify-between mb-8">
-                <LanguageSelector />
-                <Button 
-                  variant="ghost" 
-                  size="icon" 
-                  onClick={() => setMobileMenuOpen(false)} 
-                  className="rounded-full"
-                >
-                  <X className="h-6 w-6" />
-                </Button>
-              </div>
-              <ul className="space-y-6">
+              <ul className="space-y-8">
                 {navLinks.map(link => (
                   <li key={link.name}>
                     <Link 
                       to={link.path} 
-                      className="text-lg font-medium transition-colors hover:text-primary" 
+                      className="font-display text-xl text-foreground transition-colors hover:text-foreground/70" 
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       {link.name}
@@ -142,7 +137,7 @@ export default function Navbar() {
               </ul>
             </div>
             
-            <Button asChild className="w-full btn-primary mt-6">
+            <Button asChild className="minimal-button w-full">
               <Link to="/booking" onClick={() => setMobileMenuOpen(false)}>
                 {t.nav.bookNow}
               </Link>
