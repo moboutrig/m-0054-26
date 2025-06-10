@@ -122,11 +122,141 @@ export interface PageContent {
       amenities: string;
     };
   };
+  apartments: {
+    title: string;
+    subtitle: string;
+    filters: {
+      guests: string;
+      location: string;
+      priceRange: string;
+      anyGuests: string;
+      onePlus: string;
+      twoPlus: string;
+      threePlus: string;
+      fourPlus: string;
+      anyLocation: string;
+    };
+  };
+  about: {
+    title: string;
+    subtitle: string;
+    story: {
+      title: string;
+      content: string[];
+    };
+    offer: {
+      title: string;
+      content: string[];
+    };
+    contact: {
+      title: string;
+    };
+  };
+  privacy: {
+    title: string;
+    subtitle: string;
+    sections: {
+      id: string;
+      title: string;
+      content: string;
+    }[];
+  };
+  terms: {
+    title: string;
+    subtitle: string;
+    sections: {
+      id: string;
+      title: string;
+      content: string;
+    }[];
+  };
+  faq: {
+    title: string;
+    subtitle: string;
+    questions: {
+      id: string;
+      question: string;
+      answer: string;
+    }[];
+    contactSection: {
+      title: string;
+      description: string;
+    };
+  };
+  notFound: {
+    title: string;
+    subtitle: string;
+    description: string;
+    returnHome: string;
+  };
+}
+
+export interface UIText {
+  nav: {
+    bookNow: string;
+    backToHome: string;
+  };
+  common: {
+    loading: string;
+    error: string;
+    save: string;
+    cancel: string;
+    edit: string;
+    delete: string;
+    add: string;
+    remove: string;
+    close: string;
+    next: string;
+    previous: string;
+  };
+  buttons: {
+    viewDetails: string;
+    bookNow: string;
+    learnMore: string;
+    contactUs: string;
+    readMore: string;
+    showMore: string;
+    showLess: string;
+  };
+  forms: {
+    name: string;
+    email: string;
+    phone: string;
+    message: string;
+    submit: string;
+    required: string;
+    invalidEmail: string;
+  };
+  apartment: {
+    perNight: string;
+    guests: string;
+    sqm: string;
+    features: string;
+    availability: string;
+    checkAvailability: string;
+  };
+  currency: {
+    symbol: string;
+    code: string;
+    position: 'before' | 'after';
+  };
+}
+
+export interface ApartmentData {
+  id: string;
+  name: string;
+  description: string;
+  capacity: number;
+  size: number;
+  location: string;
+  features: string[];
+  isActive: boolean;
+  order: number;
 }
 
 export interface CMSContent {
   siteName: string;
-  siteLogo: string; // Add logo field
+  siteLogo: string;
   heroTitle: string;
   heroSubtitle: string;
   heroDescription: string;
@@ -162,6 +292,10 @@ export interface CMSContent {
   bookingSettings: BookingSettings;
   // Page-specific content
   pageContent: PageContent;
+  // UI Text
+  uiText: UIText;
+  // Apartment data
+  apartments: ApartmentData[];
 }
 
 export interface CMSContextType {
@@ -173,5 +307,9 @@ export interface CMSContextType {
   updateTestimonials: (testimonials: Testimonial[]) => void;
   updatePricing: (pricing: PricingInfo[]) => void;
   updatePageContent: (pageKey: keyof PageContent, content: any) => void;
+  updateUIText: (uiText: UIText) => void;
+  updateApartments: (apartments: ApartmentData[]) => void;
   resetContent: () => void;
+  getFormattedPrice: (price: number, currency?: string) => string;
+  getApartmentWithPricing: (apartmentId: string) => any;
 }

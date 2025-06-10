@@ -1,6 +1,6 @@
 
 import React, { createContext, useContext } from 'react';
-import { CMSContent, CMSContextType, RoomImages, RoomAmenity, NavigationItem, Testimonial, PricingInfo, PageContent } from '@/types/cms';
+import { CMSContent, CMSContextType, RoomImages, RoomAmenity, NavigationItem, Testimonial, PricingInfo, PageContent, UIText, ApartmentData } from '@/types/cms';
 import { useCMSContent } from '@/hooks/useCMSContent';
 
 const CMSContext = createContext<CMSContextType | undefined>(undefined);
@@ -61,6 +61,43 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     saveContent(newContent);
   };
 
+  const updateUIText = (uiText: UIText) => {
+    const newContent = { ...content, uiText };
+    saveContent(newContent);
+  };
+
+  const updateApartments = (apartments: ApartmentData[]) => {
+    const newContent = { ...content, apartments };
+    saveContent(newContent);
+  };
+
+  const getFormattedPrice = (price: number, currency?: string) => {
+    const currencySettings = content.uiText.currency;
+    const symbol = currency === 'USD' ? '$' : currency === 'GBP' ? '£' : currencySettings.symbol;
+    
+    if (currencySettings.position === 'before') {
+      return `${symbol}${price}`;
+    } else {
+      return `${price}${symbol}`;
+    }
+  };
+
+  const getApartmentWithPricing = (apartmentId: string) => {
+    const apartment = content.apartments.find(apt => apt.id === apartmentId);
+    const pricing = content.pricing.find(p => p.roomId === apartmentId);
+    const images = content.roomImages[apartmentId];
+    
+    if (!apartment || !pricing) return null;
+    
+    return {
+      ...apartment,
+      price: pricing.basePrice,
+      currency: pricing.currency,
+      image: images?.main || '',
+      gallery: images?.gallery || []
+    };
+  };
+
   const resetContent = () => {
     localStorage.removeItem('cms-content');
     window.location.reload();
@@ -76,6 +113,10 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       updateTestimonials,
       updatePricing,
       updatePageContent,
+      updateUIText,
+      updateApartments,
+      getFormattedPrice,
+      getApartmentWithPricing,
       resetContent 
     }}>
       {children}

@@ -3,20 +3,18 @@ import { TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function CMSTabsConfig() {
   return (
-    <TabsList className="w-full flex flex-wrap justify-start gap-1 h-auto p-1">
-      <TabsTrigger value="content">Content</TabsTrigger>
-      <TabsTrigger value="settings">Site</TabsTrigger>
-      <TabsTrigger value="contact">Contact</TabsTrigger>
-      <TabsTrigger value="images">Images</TabsTrigger>
-      <TabsTrigger value="rooms">Rooms</TabsTrigger>
-      <TabsTrigger value="navigation">Navigation</TabsTrigger>
-      <TabsTrigger value="seo">SEO</TabsTrigger>
-      <TabsTrigger value="social">Social</TabsTrigger>
-      <TabsTrigger value="pricing">Pricing</TabsTrigger>
-      <TabsTrigger value="testimonials">Reviews</TabsTrigger>
-      <TabsTrigger value="footer">Footer</TabsTrigger>
-      <TabsTrigger value="booking">Booking</TabsTrigger>
-      <TabsTrigger value="theme">Theme</TabsTrigger>
+    <TabsList className="grid w-full grid-cols-6 lg:grid-cols-11 gap-1">
+      <TabsTrigger value="content" className="text-xs">Site</TabsTrigger>
+      <TabsTrigger value="apartments" className="text-xs">Apartments</TabsTrigger>
+      <TabsTrigger value="navigation" className="text-xs">Navigation</TabsTrigger>
+      <TabsTrigger value="rooms" className="text-xs">Rooms</TabsTrigger>
+      <TabsTrigger value="testimonials" className="text-xs">Reviews</TabsTrigger>
+      <TabsTrigger value="pricing" className="text-xs">Pricing</TabsTrigger>
+      <TabsTrigger value="pages" className="text-xs">Pages</TabsTrigger>
+      <TabsTrigger value="ui-text" className="text-xs">UI Text</TabsTrigger>
+      <TabsTrigger value="seo" className="text-xs">SEO</TabsTrigger>
+      <TabsTrigger value="social" className="text-xs">Social</TabsTrigger>
+      <TabsTrigger value="theme" className="text-xs">Theme</TabsTrigger>
     </TabsList>
   );
 }

@@ -9,6 +9,8 @@ import { useCMS } from "@/contexts/CMSContext";
 
 export default function About() {
   const { content } = useCMS();
+  const pageContent = content.pageContent.about;
+  const uiText = content.uiText;
 
   return (
     <div className="min-h-screen bg-background">
@@ -20,46 +22,42 @@ export default function About() {
             <Button asChild variant="ghost" size="sm">
               <Link to="/">
                 <ArrowLeft className="h-4 w-4 mr-2" />
-                Back to Home
+                {uiText.nav.backToHome}
               </Link>
             </Button>
-            <h1 className="text-3xl font-bold">About {content.siteName}</h1>
+            <h1 className="text-3xl font-bold">{pageContent.title} {content.siteName}</h1>
           </div>
 
           <div className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>Our Story</CardTitle>
+                <CardTitle>{pageContent.story.title}</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground leading-relaxed">
-                  {content.welcomeDescription1}
-                </p>
-                <br />
-                <p className="text-muted-foreground leading-relaxed">
-                  {content.welcomeDescription2}
-                </p>
+                {pageContent.story.content.map((paragraph, index) => (
+                  <p key={index} className="text-muted-foreground leading-relaxed mb-4 last:mb-0">
+                    {paragraph}
+                  </p>
+                ))}
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader>
-                <CardTitle>What We Offer</CardTitle>
+                <CardTitle>{pageContent.offer.title}</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground leading-relaxed">
-                  {content.featuredApartmentsDescription}
-                </p>
-                <br />
-                <p className="text-muted-foreground leading-relaxed">
-                  {content.amenitiesDescription}
-                </p>
+                {pageContent.offer.content.map((paragraph, index) => (
+                  <p key={index} className="text-muted-foreground leading-relaxed mb-4 last:mb-0">
+                    {paragraph}
+                  </p>
+                ))}
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader>
-                <CardTitle>Contact Information</CardTitle>
+                <CardTitle>{pageContent.contact.title}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
                 <p><strong>Address:</strong> {content.contactAddress}</p>

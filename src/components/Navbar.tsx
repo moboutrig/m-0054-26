@@ -6,12 +6,11 @@ import { cn } from "@/lib/utils";
 import ThemeToggle from "./ThemeToggle";
 import LanguageSelector from "./LanguageSelector";
 import { Button } from "@/components/ui/button";
-import { useLanguage } from "@/contexts/LanguageContext";
 import { useCMS } from "@/contexts/CMSContext";
 
 export default function Navbar() {
-  const { t } = useLanguage();
   const { content } = useCMS();
+  const uiText = content.uiText;
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   
@@ -90,7 +89,7 @@ export default function Navbar() {
             {content.bookingSettings?.enableBooking && (
               <div className="hidden lg:block">
                 <Button asChild className="minimal-button">
-                  <Link to="/booking">{t.nav.bookNow}</Link>
+                  <Link to="/booking">{uiText.nav.bookNow}</Link>
                 </Button>
               </div>
             )}
@@ -183,7 +182,7 @@ export default function Navbar() {
               {content.bookingSettings?.enableBooking && (
                 <Button asChild className="minimal-button w-full">
                   <Link to="/booking" onClick={() => setMobileMenuOpen(false)}>
-                    {t.nav.bookNow}
+                    {uiText.nav.bookNow}
                   </Link>
                 </Button>
               )}
