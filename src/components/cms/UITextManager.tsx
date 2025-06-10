@@ -42,12 +42,13 @@ export default function UITextManager() {
       </div>
 
       <Tabs defaultValue="navigation" className="w-full">
-        <TabsList className="grid w-full grid-cols-5">
+        <TabsList className="grid w-full grid-cols-6">
           <TabsTrigger value="navigation">Navigation</TabsTrigger>
           <TabsTrigger value="common">Common</TabsTrigger>
           <TabsTrigger value="buttons">Buttons</TabsTrigger>
           <TabsTrigger value="forms">Forms</TabsTrigger>
           <TabsTrigger value="apartment">Apartment</TabsTrigger>
+          <TabsTrigger value="filters">Filters</TabsTrigger>
         </TabsList>
         
         <TabsContent value="navigation" className="space-y-4">
@@ -318,6 +319,37 @@ export default function UITextManager() {
                     </Select>
                   </div>
                 </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="filters" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Filter & Search Text</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <Label>Clear Filters Button</Label>
+                <Input
+                  value={uiText.filters.clearFilters}
+                  onChange={(e) => updateText('filters', 'clearFilters', e.target.value)}
+                />
+              </div>
+              <div>
+                <Label>No Results Message</Label>
+                <Input
+                  value={uiText.filters.noResults}
+                  onChange={(e) => updateText('filters', 'noResults', e.target.value)}
+                />
+              </div>
+              <div>
+                <Label>No Results Description</Label>
+                <Input
+                  value={uiText.filters.noResultsDescription}
+                  onChange={(e) => updateText('filters', 'noResultsDescription', e.target.value)}
+                />
               </div>
             </CardContent>
           </Card>

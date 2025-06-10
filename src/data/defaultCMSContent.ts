@@ -151,6 +151,7 @@ export const defaultContent: CMSContent = {
     apartments: {
       title: "Our Apartments",
       subtitle: "Find your perfect accommodation",
+      description: "Discover our collection of luxury apartments and suites, each designed to provide you with an unforgettable coastal experience. From intimate studios to spacious family apartments, we have the perfect accommodation for every type of traveler.",
       filters: {
         guests: "Number of Guests",
         location: "Location",
@@ -161,6 +162,10 @@ export const defaultContent: CMSContent = {
         threePlus: "3+ Guests",
         fourPlus: "4+ Guests",
         anyLocation: "Any Location"
+      },
+      seo: {
+        metaTitle: "Luxury Apartments & Suites | Coastal Resort",
+        metaDescription: "Browse our collection of luxury apartments and suites with stunning ocean views, modern amenities, and premium service. Book your perfect coastal getaway today."
       }
     },
     about: {
@@ -291,6 +296,11 @@ export const defaultContent: CMSContent = {
       symbol: "€",
       code: "EUR",
       position: "after"
+    },
+    filters: {
+      clearFilters: "Clear Filters",
+      noResults: "No apartments match your current filters.",
+      noResultsDescription: "Try adjusting your search criteria or clear all filters to see more options."
     }
   },
   apartments: [

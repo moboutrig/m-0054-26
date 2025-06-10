@@ -1,4 +1,3 @@
-
 export interface RoomAmenity {
   id: string;
   name: string;
@@ -125,6 +124,7 @@ export interface PageContent {
   apartments: {
     title: string;
     subtitle: string;
+    description: string;
     filters: {
       guests: string;
       location: string;
@@ -135,6 +135,10 @@ export interface PageContent {
       threePlus: string;
       fourPlus: string;
       anyLocation: string;
+    };
+    seo: {
+      metaTitle: string;
+      metaDescription: string;
     };
   };
   about: {
@@ -239,6 +243,11 @@ export interface UIText {
     symbol: string;
     code: string;
     position: 'before' | 'after';
+  };
+  filters: {
+    clearFilters: string;
+    noResults: string;
+    noResultsDescription: string;
   };
 }
 
