@@ -125,6 +125,7 @@ export interface PageContent {
 
 export interface CMSContent {
   siteName: string;
+  siteLogo: string; // Add logo field
   heroTitle: string;
   heroSubtitle: string;
   heroDescription: string;

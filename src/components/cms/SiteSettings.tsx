@@ -1,4 +1,3 @@
-
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -23,6 +22,24 @@ export default function SiteSettings() {
               onChange={(e) => updateContent('siteName', e.target.value)}
               placeholder="Your site name"
             />
+          </div>
+          <div>
+            <Label htmlFor="siteLogo">Site Logo URL</Label>
+            <Input
+              id="siteLogo"
+              value={content.siteLogo || ''}
+              onChange={(e) => updateContent('siteLogo', e.target.value)}
+              placeholder="https://example.com/logo.png or upload via Media Manager"
+            />
+            {content.siteLogo && (
+              <div className="mt-2">
+                <img 
+                  src={content.siteLogo} 
+                  alt="Site Logo" 
+                  className="h-12 w-auto max-w-[200px] object-contain border rounded p-2"
+                />
+              </div>
+            )}
           </div>
         </CardContent>
       </Card>

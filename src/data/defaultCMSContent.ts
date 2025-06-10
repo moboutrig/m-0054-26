@@ -2,6 +2,7 @@ import { CMSContent } from '@/types/cms';
 
 export const defaultContent: CMSContent = {
   siteName: "MareSereno",
+  siteLogo: "", // Add default empty logo
   heroTitle: "Experience Seaside Tranquility",
   heroSubtitle: "BEACHFRONT LUXURY ACCOMMODATION",
   heroDescription: "Discover our exclusive collection of luxury beachfront apartments and hotel rooms, offering unparalleled comfort and breathtaking sea views.",
