@@ -131,7 +131,7 @@ export default function ApartmentManager() {
     }
   };
 
-  const updateApartment = (id: string, field: string, value: any) => {
+  const updateApartment = (id: string, field: string, value: string | number | boolean | string[]) => {
     setApartments(apartments.map(apt => 
       apt.id === id ? { ...apt, [field]: value } : apt
     ));

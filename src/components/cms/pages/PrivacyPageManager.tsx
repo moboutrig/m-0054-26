@@ -23,7 +23,11 @@ interface PrivacyPageManagerProps {
 }
 
 export default function PrivacyPageManager({ content, onUpdate }: PrivacyPageManagerProps) {
-  const updateContent = (field: string, value: any) => {
+  // Type field and value for updateContent
+  const updateContent = (
+    field: keyof PrivacyPageContent,
+    value: string | PolicySection[]
+  ) => {
     onUpdate({
       ...content,
       [field]: value

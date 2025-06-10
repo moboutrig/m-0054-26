@@ -23,7 +23,11 @@ interface TermsPageManagerProps {
 }
 
 export default function TermsPageManager({ content, onUpdate }: TermsPageManagerProps) {
-  const updateContent = (field: string, value: any) => {
+  // Type field and value for updateContent
+  const updateContent = (
+    field: keyof TermsPageContent,
+    value: string | TermsSection[]
+  ) => {
     onUpdate({
       ...content,
       [field]: value

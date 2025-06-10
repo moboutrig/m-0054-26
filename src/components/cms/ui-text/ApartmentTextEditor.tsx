@@ -39,7 +39,11 @@ export default function ApartmentTextEditor({
     });
   };
 
-  const updateCurrencySettings = (field: keyof CurrencySettings, value: any) => {
+  // Make updateCurrencySettings generic
+  const updateCurrencySettings = <F extends keyof CurrencySettings>(
+    field: F,
+    value: CurrencySettings[F]
+  ) => {
     onUpdateCurrency({
       ...currencySettings,
       [field]: value

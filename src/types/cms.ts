@@ -53,20 +53,31 @@ export interface CMSContent {
   apartments: ApartmentData[];
 }
 
+// Define the type for the object returned by getApartmentWithPricing
+export interface ApartmentWithPricing extends ApartmentData {
+  price: number;
+  currency: string;
+  image: string;
+  gallery: string[];
+}
+
 export interface CMSContextType {
   content: CMSContent;
-  updateContent: (key: keyof CMSContent, value: any) => void;
+  // Make updateContent generic
+  updateContent: <K extends keyof CMSContent>(key: K, value: CMSContent[K]) => void;
   updateRoomImages: (roomId: string, images: RoomImages) => void;
   updateRoomAmenities: (roomId: string, amenities: RoomAmenity[]) => void;
   updateNavigation: (navigation: NavigationItem[]) => void;
   updateTestimonials: (testimonials: Testimonial[]) => void;
   updatePricing: (pricing: PricingInfo[]) => void;
-  updatePageContent: (pageKey: keyof PageContent, content: any) => void;
+  // Make updatePageContent generic and use more specific type for pageData
+  updatePageContent: <PK extends keyof PageContent>(pageKey: PK, pageData: PageContent[PK]) => void;
   updateUIText: (uiText: UIText) => void;
   updateApartments: (apartments: ApartmentData[]) => void;
   resetContent: () => void;
   getFormattedPrice: (price: number, currency?: string) => string;
-  getApartmentWithPricing: (apartmentId: string) => any;
+  // Use specific return type for getApartmentWithPricing
+  getApartmentWithPricing: (apartmentId: string) => ApartmentWithPricing | null;
 }
 
 // Re-export types for convenience

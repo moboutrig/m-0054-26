@@ -25,7 +25,11 @@ interface AboutPageManagerProps {
 }
 
 export default function AboutPageManager({ content, onUpdate }: AboutPageManagerProps) {
-  const updateContent = (field: string, value: any) => {
+  // Type field and value for updateContent
+  const updateContent = (
+    field: keyof AboutPageContent,
+    value: string | { title: string; content: string[] }
+  ) => {
     onUpdate({
       ...content,
       [field]: value

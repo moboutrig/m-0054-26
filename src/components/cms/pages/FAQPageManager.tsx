@@ -25,7 +25,11 @@ interface FAQPageManagerProps {
 }
 
 export default function FAQPageManager({ content, onUpdate }: FAQPageManagerProps) {
-  const updateContent = (field: string, value: any) => {
+  // Type field and value for updateContent
+  const updateContent = (
+    field: keyof FAQPageContent,
+    value: string | FAQQuestion[]
+  ) => {
     onUpdate({
       ...content,
       [field]: value

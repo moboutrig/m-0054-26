@@ -15,9 +15,14 @@ export default function PageContentManager() {
   const { toast } = useToast();
   const [pageContent, setPageContent] = useState(content.pageContent);
 
+  // Define PageContentType for better readability
+  type PageContentType = typeof pageContent;
+
   const handleSave = () => {
-    Object.keys(pageContent).forEach(key => {
-      updatePageContent(key as any, pageContent[key as keyof typeof pageContent]);
+    Object.keys(pageContent).forEach(keyStr => {
+      // Cast string key to keyof PageContentType
+      const key = keyStr as keyof PageContentType;
+      updatePageContent(key, pageContent[key]);
     });
     toast({
       title: "Page Content Updated",
@@ -25,7 +30,8 @@ export default function PageContentManager() {
     });
   };
 
-  const updateContent = (page: keyof typeof pageContent, pageData: any) => {
+  // Make updateContent generic
+  const updateContent = <P extends keyof PageContentType>(page: P, pageData: PageContentType[P]) => {
     setPageContent(prev => ({
       ...prev,
       [page]: pageData

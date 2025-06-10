@@ -25,11 +25,18 @@ interface UnifiedRoom {
   type: 'room' | 'apartment';
 }
 
+// Define Amenity type based on observed structure
+interface Amenity {
+  id: string;
+  name: string;
+  icon: string;
+  description: string;
+}
+
 export default function UnifiedRoomManager() {
   const { content, updateApartments, updateRoomImages, updateRoomAmenities } = useCMS();
   const { toast } = useToast();
   
-  // Combine existing apartments and create unified rooms list
   const existingApartments = content.apartments || [];
   const [rooms, setRooms] = useState<UnifiedRoom[]>(
     existingApartments.map(apt => ({
@@ -38,7 +45,7 @@ export default function UnifiedRoomManager() {
     }))
   );
 
-  const [newRoom, setNewRoom] = useState<Omit<UnifiedRoom, 'id' | 'order'>>({
+  const [newRoom, setNewRoom] = useState<Omit<UnifiedRoom, 'id' | 'order'>({
     name: "",
     description: "",
     capacity: 2,
@@ -85,7 +92,6 @@ export default function UnifiedRoomManager() {
   ];
 
   const handleSave = () => {
-    // Convert back to apartment format for backwards compatibility
     const apartmentData = rooms.map(room => ({
       id: room.id,
       name: room.name,
@@ -165,7 +171,8 @@ export default function UnifiedRoomManager() {
     }
   };
 
-  const updateRoom = (id: string, field: keyof UnifiedRoom, value: any) => {
+  // Make updateRoom generic
+  const updateRoom = <F extends keyof UnifiedRoom>(id: string, field: F, value: UnifiedRoom[F]) => {
     setRooms(rooms.map(room => 
       room.id === id ? { ...room, [field]: value } : room
     ));
@@ -206,7 +213,8 @@ export default function UnifiedRoomManager() {
     updateRoomImages(roomId, images);
   };
 
-  const handleAmenitiesUpdate = (roomId: string, amenities: any[]) => {
+  // Type amenities for handleAmenitiesUpdate
+  const handleAmenitiesUpdate = (roomId: string, amenities: Amenity[]) => {
     updateRoomAmenities(roomId, amenities);
   };
 

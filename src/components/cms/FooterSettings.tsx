@@ -9,11 +9,14 @@ import { Plus, Trash2 } from "lucide-react";
 import { useCMS } from "@/contexts/CMSContext";
 import { useToast } from "@/hooks/use-toast";
 
+// Define a type for QuickLink for clarity
+type QuickLink = { label: string; path: string };
+
 export default function FooterSettings() {
   const { content, updateContent } = useCMS();
   const { toast } = useToast();
   const [footerContent, setFooterContent] = useState(content.footerContent);
-  const [newLink, setNewLink] = useState({ label: "", path: "" });
+  const [newLink, setNewLink] = useState<QuickLink>({ label: "", path: "" });
 
   const handleSave = () => {
     updateContent('footerContent', footerContent);
@@ -23,7 +26,7 @@ export default function FooterSettings() {
     });
   };
 
-  const updateFooter = (field: keyof typeof footerContent, value: any) => {
+  const updateFooter = (field: keyof typeof footerContent, value: string | QuickLink[]) => {
     setFooterContent(prev => ({ ...prev, [field]: value }));
   };
 

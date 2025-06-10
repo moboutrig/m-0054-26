@@ -8,7 +8,8 @@ const CMSContext = createContext<CMSContextType | undefined>(undefined);
 export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { content, saveContent } = useCMSContent();
 
-  const updateContent = (key: keyof CMSContent, value: any) => {
+  // Make updateContent generic
+  const updateContent = <K extends keyof CMSContent>(key: K, value: CMSContent[K]) => {
     const newContent = { ...content, [key]: value };
     saveContent(newContent);
   };
@@ -50,12 +51,13 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     saveContent(newContent);
   };
 
-  const updatePageContent = (pageKey: keyof PageContent, pageContent: any) => {
+  // Make updatePageContent generic and rename parameter
+  const updatePageContent = <PK extends keyof PageContent>(pageKey: PK, pageData: PageContent[PK]) => {
     const newContent = {
       ...content,
       pageContent: {
         ...content.pageContent,
-        [pageKey]: pageContent
+        [pageKey]: pageData
       }
     };
     saveContent(newContent);
