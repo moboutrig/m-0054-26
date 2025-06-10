@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -19,6 +18,7 @@ import PricingManager from "@/components/cms/PricingManager";
 import TestimonialsManager from "@/components/cms/TestimonialsManager";
 import FooterSettings from "@/components/cms/FooterSettings";
 import BookingSettings from "@/components/cms/BookingSettings";
+import ThemeManager from "@/components/cms/ThemeManager";
 
 export default function CMS() {
   const { resetContent } = useCMS();
@@ -62,7 +62,7 @@ export default function CMS() {
       {/* Content */}
       <div className="container py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-6 lg:grid-cols-12">
+          <TabsList className="grid w-full grid-cols-7 lg:grid-cols-13">
             <TabsTrigger value="content">Content</TabsTrigger>
             <TabsTrigger value="settings">Site</TabsTrigger>
             <TabsTrigger value="contact">Contact</TabsTrigger>
@@ -75,6 +75,7 @@ export default function CMS() {
             <TabsTrigger value="testimonials">Reviews</TabsTrigger>
             <TabsTrigger value="footer">Footer</TabsTrigger>
             <TabsTrigger value="booking">Booking</TabsTrigger>
+            <TabsTrigger value="theme">Theme</TabsTrigger>
           </TabsList>
 
           <TabsContent value="content" className="mt-6">
@@ -244,30 +245,46 @@ export default function CMS() {
               </CardContent>
             </Card>
           </TabsContent>
+
+          <TabsContent value="theme" className="mt-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Theme Customization</CardTitle>
+                <CardDescription>
+                  Customize your website's colors, fonts, and overall visual appearance.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ThemeManager />
+              </CardContent>
+            </Card>
+          </TabsContent>
         </Tabs>
 
         {/* Info Card */}
-        <Card className="mt-8 border-amber-200 bg-amber-50 dark:border-amber-800 dark:bg-amber-950/20">
+        <Card className="mt-8 border-green-200 bg-green-50 dark:border-green-800 dark:bg-green-950/20">
           <CardHeader>
-            <CardTitle className="text-amber-800 dark:text-amber-200">Comprehensive CMS Features</CardTitle>
+            <CardTitle className="text-green-800 dark:text-green-200">Fully Dynamic CMS-Driven Website</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid md:grid-cols-2 gap-4 text-amber-700 dark:text-amber-300">
+            <div className="grid md:grid-cols-2 gap-4 text-green-700 dark:text-green-300">
               <div className="space-y-2">
-                <p>• <strong>Content Management:</strong> Edit all page content and sections</p>
+                <p>• <strong>Dynamic Content:</strong> All content is now CMS-managed</p>
                 <p>• <strong>Room Customization:</strong> Individual room images and amenities</p>
-                <p>• <strong>Navigation Control:</strong> Manage menu items and structure</p>
-                <p>• <strong>SEO Optimization:</strong> Meta tags and search engine settings</p>
-                <p>• <strong>Social Integration:</strong> Connect all social media profiles</p>
-                <p>• <strong>Pricing Management:</strong> Set rates and seasonal pricing</p>
+                <p>• <strong>Navigation Control:</strong> Fully dynamic menu system</p>
+                <p>• <strong>SEO Optimization:</strong> Dynamic meta tags and settings</p>
+                <p>• <strong>Social Integration:</strong> Configurable social media links</p>
+                <p>• <strong>Pricing Management:</strong> Dynamic rates and seasonal pricing</p>
+                <p>• <strong>Theme Customization:</strong> Dynamic colors and typography</p>
               </div>
               <div className="space-y-2">
-                <p>• <strong>Customer Reviews:</strong> Manage testimonials and ratings</p>
-                <p>• <strong>Footer Customization:</strong> Links, contact info, and content</p>
-                <p>• <strong>Booking Policies:</strong> Check-in/out times and rules</p>
-                <p>• <strong>Image Management:</strong> Site-wide and room-specific images</p>
-                <p>• <strong>Contact Settings:</strong> Business information and details</p>
-                <p>• <strong>Live Preview:</strong> All changes reflect immediately</p>
+                <p>• <strong>Customer Reviews:</strong> Dynamic testimonials management</p>
+                <p>• <strong>Footer Content:</strong> Fully configurable footer sections</p>
+                <p>• <strong>Booking Policies:</strong> Dynamic check-in/out and rules</p>
+                <p>• <strong>Image Management:</strong> Dynamic image galleries</p>
+                <p>• <strong>Contact Settings:</strong> Dynamic business information</p>
+                <p>• <strong>Page Routing:</strong> All footer links now functional</p>
+                <p>• <strong>No Static Data:</strong> Everything is dynamically managed</p>
               </div>
             </div>
           </CardContent>
