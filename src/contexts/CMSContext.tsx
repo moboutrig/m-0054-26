@@ -2,11 +2,15 @@
 import React, { createContext, useContext } from 'react';
 import { CMSContent, CMSContextType, RoomImages, RoomAmenity, NavigationItem, Testimonial, PricingInfo, PageContent, UIText, ApartmentData } from '@/types/cms';
 import { useCMSContent } from '@/hooks/useCMSContent';
+import { defaultContent } from '@/data/defaultCMSContent'; // Import for fallback
 
 const CMSContext = createContext<CMSContextType | undefined>(undefined);
 
 export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { content, saveContent } = useCMSContent();
+  const { content, saveContent, isLoading, error } = useCMSContent();
+
+  // The actual content state is now managed by useCMSContent,
+  // including initial loading from API and fallback to defaultContent on error.
 
   const updateContent = (key: keyof CMSContent, value: any) => {
     const newContent = { ...content, [key]: value };
@@ -100,15 +104,37 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   const resetContent = () => {
-    localStorage.removeItem('cms-content');
-    window.location.reload();
+    // Consider if this should also clear the server state or just local cache
+    localStorage.removeItem('cms-content-cache'); // Updated to match the key used in useCMSContent
+    // Potentially, re-trigger fetch or set to default:
+    // saveContent(defaultContent); // This would update the local state and cache
+    window.location.reload(); // Or navigate to reset state without full reload
   };
 
+  // Display loading or error states globally if desired, or let individual components handle them.
+  // For this task, we ensure the context provides content fetched from API or a fallback.
+  if (isLoading) {
+    // Simple global loading state example.
+    // In a real app, this might be a more sophisticated loading spinner overlay,
+    // or each component using the context could handle its own loading UI.
+    return <div style={{ textAlign: 'center', padding: '50px', fontSize: '1.2em' }}>Loading CMS Data...</div>;
+  }
+
+  if (error) {
+    // Similar to loading, this is a simple global error display.
+    // Components could also check an error state from the context if needed.
+    // The useCMSContent hook already tries to fallback to cached or default content.
+    console.error("CMS Loading Error in Provider:", error);
+    // Optionally display a user-facing error message here, though useCMSContent handles fallback.
+    // return <div style={{ textAlign: 'center', padding: '50px', color: 'red' }}>Error loading CMS data: {error}. Displaying cached or default content.</div>;
+  }
+
+  // content is now guaranteed to be either fetched data, cached data, or defaultContent.
   return (
-    <CMSContext.Provider value={{ 
-      content, 
-      updateContent, 
-      updateRoomImages, 
+    <CMSContext.Provider value={{
+      content: content || defaultContent, // Ensure content is never null/undefined if API fails badly
+      updateContent,
+      updateRoomImages,
       updateRoomAmenities,
       updateNavigation,
       updateTestimonials,
@@ -118,7 +144,10 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       updateApartments,
       getFormattedPrice,
       getApartmentWithPricing,
-      resetContent 
+      resetContent,
+      // Expose isLoading and error if needed by consumer components, though not strictly required by the prompt for now
+      // isLoading,
+      // error
     }}>
       {children}
     </CMSContext.Provider>

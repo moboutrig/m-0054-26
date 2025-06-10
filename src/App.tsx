@@ -11,6 +11,8 @@ import Gallery from "./pages/Gallery";
 import Contact from "./pages/Contact";
 import Amenities from "./pages/Amenities";
 import CMS from "./pages/CMS";
+import LoginPage from './pages/Login';
+import ProtectedRoute from './components/ProtectedRoute';
 import About from "./pages/About";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
@@ -37,7 +39,8 @@ const App = () => (
               <Route path="/gallery" element={<Gallery />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/amenities" element={<Amenities />} />
-              <Route path="/cms" element={<CMS />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/cms" element={<ProtectedRoute><CMS /></ProtectedRoute>} />
               <Route path="/about" element={<About />} />
               <Route path="/privacy" element={<Privacy />} />
               <Route path="/terms" element={<Terms />} />
