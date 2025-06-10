@@ -84,11 +84,6 @@ export default function Apartments() {
               <p className="text-muted-foreground text-lg mb-6">
                 {pageContent.subtitle}
               </p>
-              {pageContent.description && (
-                <p className="text-muted-foreground max-w-2xl mx-auto">
-                  {pageContent.description}
-                </p>
-              )}
             </div>
           </div>
           
@@ -171,10 +166,7 @@ export default function Apartments() {
             {filteredApartments.length === 0 && (
               <div className="text-center py-12">
                 <p className="text-muted-foreground text-lg mb-4">
-                  {uiText.filters.noResults}
-                </p>
-                <p className="text-muted-foreground mb-6">
-                  {uiText.filters.noResultsDescription}
+                  No apartments match your current filters.
                 </p>
                 <Button 
                   onClick={() => {
@@ -184,7 +176,7 @@ export default function Apartments() {
                   }}
                   variant="outline"
                 >
-                  {uiText.filters.clearFilters}
+                  Clear Filters
                 </Button>
               </div>
             )}
