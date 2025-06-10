@@ -2,13 +2,12 @@
 import { TabsContent } from "@/components/ui/tabs";
 import SiteSettings from "./SiteSettings";
 import NavigationManager from "./NavigationManager";
-import RoomManager from "./RoomManager";
+import UnifiedRoomManager from "./UnifiedRoomManager";
 import TestimonialsManager from "./TestimonialsManager";
 import PricingManager from "./PricingManager";
 import SEOSettings from "./SEOSettings";
 import SocialMediaSettings from "./SocialMediaSettings";
 import ThemeManager from "./ThemeManager";
-import ApartmentManager from "./ApartmentManager";
 import PageContentManager from "./PageContentManager";
 import UITextManager from "./UITextManager";
 
@@ -19,16 +18,12 @@ export default function CMSTabContent() {
         <SiteSettings />
       </TabsContent>
       
-      <TabsContent value="apartments">
-        <ApartmentManager />
+      <TabsContent value="rooms">
+        <UnifiedRoomManager />
       </TabsContent>
       
       <TabsContent value="navigation">
         <NavigationManager />
-      </TabsContent>
-      
-      <TabsContent value="rooms">
-        <RoomManager />
       </TabsContent>
       
       <TabsContent value="testimonials">
