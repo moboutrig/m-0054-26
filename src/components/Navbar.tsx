@@ -7,13 +7,19 @@ import ThemeToggle from "./ThemeToggle";
 import LanguageSelector from "./LanguageSelector";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useCMS } from "@/contexts/CMSContext";
 
 export default function Navbar() {
   const { t } = useLanguage();
+  const { content } = useCMS();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   
-  const navLinks = [
+  // Use CMS navigation if available, otherwise fall back to default
+  const navLinks = content.navigation?.filter(nav => nav.isActive).sort((a, b) => a.order - b.order).map(nav => ({
+    name: nav.label,
+    path: nav.path
+  })) || [
     { name: t.nav.home, path: "/" },
     { name: t.nav.apartments, path: "/apartments" },
     { name: t.nav.amenities, path: "/amenities" },
@@ -36,6 +42,13 @@ export default function Navbar() {
       <nav className="container flex justify-between items-center">
         <div className="flex items-center space-x-2">
           <LanguageSelector />
+        </div>
+
+        {/* Centered Logo */}
+        <div className="absolute left-1/2 transform -translate-x-1/2">
+          <Link to="/" className="text-2xl font-bold text-primary">
+            {content.siteName}
+          </Link>
         </div>
 
         {/* Desktop Navigation */}

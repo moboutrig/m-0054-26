@@ -42,6 +42,11 @@ export default function ApartmentCard({ apartment }: { apartment: ApartmentProps
   const displayFeatures = roomAmenities?.length ? roomAmenities.slice(0, 3) : apartment.features.slice(0, 3);
   const totalFeatures = roomAmenities?.length || apartment.features.length;
   
+  // Use CMS pricing if available, otherwise fall back to apartment price
+  const roomPricing = content.pricing?.find(p => p.roomId === apartment.id);
+  const displayPrice = roomPricing?.basePrice || apartment.price;
+  const currency = roomPricing?.currency || "EUR";
+  
   return (
     <div 
       className="rounded-xl overflow-hidden shadow-lg transition-all duration-500 hover:shadow-xl bg-card group"
@@ -100,7 +105,7 @@ export default function ApartmentCard({ apartment }: { apartment: ApartmentProps
         
         <div className="flex items-end justify-between pt-2">
           <div>
-            <span className="text-xl font-bold">${apartment.price}</span>
+            <span className="text-xl font-bold">{currency === "EUR" ? "€" : "$"}{displayPrice}</span>
             <span className="text-muted-foreground text-sm"> / {t.booking.summary.night}</span>
           </div>
           <Button asChild className="btn-primary">

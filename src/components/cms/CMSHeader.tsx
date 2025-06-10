@@ -6,7 +6,7 @@ import { useCMS } from "@/contexts/CMSContext";
 import { useToast } from "@/hooks/use-toast";
 
 export default function CMSHeader() {
-  const { resetContent } = useCMS();
+  const { content, resetContent } = useCMS();
   const { toast } = useToast();
 
   const handleReset = () => {
@@ -28,9 +28,14 @@ export default function CMSHeader() {
                 Back to Site
               </Link>
             </Button>
+            
+            {/* Centered Logo */}
+            <div className="absolute left-1/2 transform -translate-x-1/2">
+              <h1 className="text-2xl font-bold text-primary">{content.siteName}</h1>
+            </div>
+            
             <div>
-              <h1 className="text-2xl font-bold">Content Management System</h1>
-              <p className="text-muted-foreground">Manage your website content and settings</p>
+              <p className="text-muted-foreground">Content Management System</p>
             </div>
           </div>
           <Button onClick={handleReset} variant="outline" size="sm">
