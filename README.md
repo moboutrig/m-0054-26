@@ -97,27 +97,38 @@ npm install express cookie-parser cors dotenv
 # bun install express cookie-parser cors dotenv
 ```
 
-### Running the Backend (Local API Server)
+### Running the Development Environment (Recommended)
 
-1.  **Start the Server:**
-    Open a terminal in the project root and run:
-    ```bash
-    node server.js
-    ```
-2.  **Server Port:**
-    The local API server will run on `http://localhost:3001` by default (or the port specified by `PORT` in `.env.local` if you set one). It simulates the Vercel serverless functions environment for your API routes.
+To simplify starting your local development setup, a single command can launch both the local API server and the Vite frontend development server concurrently:
 
-### Running the Frontend (Vite Dev Server)
+```bash
+npm run dev:local
+```
+(Or `bun run dev:local` if you are using Bun)
 
-1.  **Start the Server:**
-    In a separate terminal, run the Vite development server (as described in the "How can I edit this code?" section):
-    ```bash
-    npm run dev
-    # or if using bun:
-    # bun run dev
-    ```
-2.  **Server Port:**
-    The Vite dev server typically runs on `http://localhost:5173`.
+This command will:
+- Start the local API server (from `server.js`) on `http://localhost:3001` (or your configured `PORT`).
+- Start the Vite frontend server on `http://localhost:5173` (or your configured Vite port).
+- Output from both servers will be interleaved in your terminal, prefixed with `[API]` and `[FRONTEND]`.
+
+### Running Services Individually (Alternative)
+
+If you prefer or need to run the backend and frontend servers separately (e.g., for debugging or specific configurations):
+
+1.  **Running the Backend (Local API Server):**
+    - Open a terminal and run:
+      ```bash
+      node server.js
+      ```
+    - The API server will be available at `http://localhost:3001`.
+
+2.  **Running the Frontend (Vite Dev Server):**
+    - In a *separate* terminal, run:
+      ```bash
+      npm run dev
+      ```
+      (Or `bun run dev` if you are using Bun)
+    - The frontend will be available at `http://localhost:5173`.
 
 ### Configuring Vite Proxy for API Requests
 
