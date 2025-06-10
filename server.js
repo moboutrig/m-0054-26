@@ -35,6 +35,25 @@ if (!CMS_PASSWORD || !SESSION_SECRET) {
   process.exit(1); // Exit if critical env vars are missing
 }
 
+// --- Middleware for Authentication ---
+const checkAuth = (req, res, next) => {
+  const token = req.cookies.sessionToken;
+  if (!token) {
+    return res.status(401).json({ message: 'Not authenticated: No token provided' });
+  }
+  try {
+    // Verify the token using the SESSION_SECRET
+    // SESSION_SECRET is already loaded from process.env at the top
+    const decoded = jwt.verify(token, SESSION_SECRET);
+    // req.user = decoded; // Optional: attach decoded payload to request for further use
+    next(); // Token is valid, proceed to the route handler
+  } catch (error) {
+    // Token is invalid (e.g., expired, wrong signature)
+    console.warn('JWT Verification Error (checkAuth):', error.message);
+    return res.status(403).json({ message: 'Not authenticated: Invalid or expired token' });
+  }
+};
+
 // --- API Routes (Translated from /api/*.ts files) ---
 
 // 1. /api/content (GET and POST)
@@ -52,39 +71,19 @@ app.get('/api/content', (req, res) => {
   }
 });
 
-app.post('/api/content', (req, res) => {
-  if (!SESSION_SECRET) { // Should have been caught by global check, but good practice
-    console.error('CRITICAL: Missing SESSION_SECRET for POST /api/content.');
-    return res.status(500).json({ message: 'Server configuration error.' });
-  }
+app.post('/api/content', checkAuth, (req, res) => {
+  // If checkAuth passes, we are authenticated.
   try {
-    const token = req.cookies.sessionToken; // From cookieParser
-    if (!token) {
-      return res.status(403).json({ message: 'Not authorized: No session token provided.' });
+    const newData = req.body;
+    if (!newData || Object.keys(newData).length === 0) {
+      return res.status(400).json({ message: 'No data provided in request body or data is empty.' });
     }
 
-    jwt.verify(token, SESSION_SECRET, (err, decoded) => {
-      if (err) {
-        console.error('JWT Verification Error (/api/content):', err.message);
-        return res.status(403).json({ message: 'Not authorized: Invalid or expired token.' });
-      }
-
-      const newData = req.body;
-      if (!newData || Object.keys(newData).length === 0) {
-        return res.status(400).json({ message: 'No data provided in request body or data is empty.' });
-      }
-
-      try {
-        fs.writeFileSync(dbPath, JSON.stringify(newData, null, 2), 'utf-8');
-        return res.status(200).json({ message: 'Content updated successfully' });
-      } catch (writeError) {
-        console.error('Error writing to db.json:', writeError);
-        return res.status(500).json({ message: 'Error updating content on the server.' });
-      }
-    });
-  } catch (error) {
-    console.error('Error processing POST /api/content request:', error);
-    return res.status(500).json({ message: 'Internal server error' });
+    fs.writeFileSync(dbPath, JSON.stringify(newData, null, 2), 'utf-8');
+    return res.status(200).json({ message: 'Content updated successfully' });
+  } catch (writeError) {
+    console.error('Error writing to db.json:', writeError);
+    return res.status(500).json({ message: 'Error updating content on the server.' });
   }
 });
 
