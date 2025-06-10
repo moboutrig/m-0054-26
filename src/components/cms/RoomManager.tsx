@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Plus, Trash2, Edit, Save, X } from "lucide-react";
 import { useCMS } from "@/contexts/CMSContext";
 import { useToast } from "@/hooks/use-toast";
+import RoomMediaUploader from "./shared/RoomMediaUploader";
 
 interface RoomAmenity {
   id: string;
@@ -25,7 +25,6 @@ export default function RoomManager() {
   const { content, updateRoomImages, updateRoomAmenities } = useCMS();
   const { toast } = useToast();
   const [selectedRoom, setSelectedRoom] = useState("1");
-  const [newGalleryImage, setNewGalleryImage] = useState("");
   const [editingAmenity, setEditingAmenity] = useState<string | null>(null);
   const [newAmenity, setNewAmenity] = useState<Omit<RoomAmenity, 'id'>>({
     name: "",
@@ -48,39 +47,13 @@ export default function RoomManager() {
 
   const currentRoomImages = content.roomImages[selectedRoom] || { main: "", gallery: [] };
   const currentRoomAmenities = content.roomAmenities[selectedRoom] || [];
+  const selectedRoomName = roomTypes.find(r => r.id === selectedRoom)?.name || "";
 
-  const handleSaveImages = () => {
+  const handleSave = () => {
     toast({
-      title: "Room Images Updated",
-      description: `Images for ${roomTypes.find(r => r.id === selectedRoom)?.name} have been saved.`,
+      title: "Room Configuration Saved",
+      description: `Configuration for ${selectedRoomName} has been saved.`,
     });
-  };
-
-  const updateMainImage = (url: string) => {
-    const updatedImages: RoomImages = {
-      ...currentRoomImages,
-      main: url
-    };
-    updateRoomImages(selectedRoom, updatedImages);
-  };
-
-  const addGalleryImage = () => {
-    if (newGalleryImage.trim()) {
-      const updatedImages: RoomImages = {
-        ...currentRoomImages,
-        gallery: [...currentRoomImages.gallery, newGalleryImage]
-      };
-      updateRoomImages(selectedRoom, updatedImages);
-      setNewGalleryImage("");
-    }
-  };
-
-  const removeGalleryImage = (index: number) => {
-    const updatedImages: RoomImages = {
-      ...currentRoomImages,
-      gallery: currentRoomImages.gallery.filter((_, i) => i !== index)
-    };
-    updateRoomImages(selectedRoom, updatedImages);
   };
 
   const addAmenity = () => {
@@ -134,64 +107,11 @@ export default function RoomManager() {
         </CardContent>
       </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Room Images</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div>
-            <Label htmlFor="main-image">Main Room Image</Label>
-            <Input
-              id="main-image"
-              value={currentRoomImages.main}
-              onChange={(e) => updateMainImage(e.target.value)}
-              placeholder="https://example.com/room-image.jpg"
-            />
-            {currentRoomImages.main && (
-              <div className="mt-2">
-                <img 
-                  src={currentRoomImages.main} 
-                  alt="Room main" 
-                  className="w-32 h-24 object-cover rounded"
-                />
-              </div>
-            )}
-          </div>
-
-          <div>
-            <Label>Gallery Images</Label>
-            <div className="grid grid-cols-4 gap-4 mt-2">
-              {currentRoomImages.gallery.map((image, index) => (
-                <div key={index} className="relative">
-                  <img 
-                    src={image} 
-                    alt={`Gallery ${index + 1}`} 
-                    className="w-full h-20 object-cover rounded"
-                  />
-                  <Button
-                    onClick={() => removeGalleryImage(index)}
-                    variant="destructive"
-                    size="sm"
-                    className="absolute top-1 right-1"
-                  >
-                    <Trash2 className="h-3 w-3" />
-                  </Button>
-                </div>
-              ))}
-            </div>
-            <div className="flex gap-2 mt-2">
-              <Input
-                value={newGalleryImage}
-                onChange={(e) => setNewGalleryImage(e.target.value)}
-                placeholder="https://example.com/gallery-image.jpg"
-              />
-              <Button onClick={addGalleryImage}>
-                <Plus className="h-4 w-4" />
-              </Button>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+      <RoomMediaUploader
+        roomName={selectedRoomName}
+        images={currentRoomImages}
+        onUpdateImages={(images) => updateRoomImages(selectedRoom, images)}
+      />
 
       <Card>
         <CardHeader>
@@ -307,7 +227,7 @@ export default function RoomManager() {
         </CardContent>
       </Card>
 
-      <Button onClick={handleSaveImages} className="w-full">
+      <Button onClick={handleSave} className="w-full">
         Save Room Configuration
       </Button>
     </div>

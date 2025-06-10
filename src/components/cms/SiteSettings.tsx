@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useCMS } from "@/contexts/CMSContext";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import MediaUploadField from "./shared/MediaUploadField";
 
 export default function SiteSettings() {
   const { content, updateContent } = useCMS();
@@ -23,24 +24,13 @@ export default function SiteSettings() {
               placeholder="Your site name"
             />
           </div>
-          <div>
-            <Label htmlFor="siteLogo">Site Logo URL</Label>
-            <Input
-              id="siteLogo"
-              value={content.siteLogo || ''}
-              onChange={(e) => updateContent('siteLogo', e.target.value)}
-              placeholder="https://example.com/logo.png or upload via Media Manager"
-            />
-            {content.siteLogo && (
-              <div className="mt-2">
-                <img 
-                  src={content.siteLogo} 
-                  alt="Site Logo" 
-                  className="h-12 w-auto max-w-[200px] object-contain border rounded p-2"
-                />
-              </div>
-            )}
-          </div>
+          <MediaUploadField
+            label="Site Logo"
+            value={content.siteLogo || ''}
+            onChange={(url) => updateContent('siteLogo', url)}
+            placeholder="Upload or enter logo URL"
+            previewClassName="h-12 w-auto max-w-[200px] object-contain border rounded p-2"
+          />
         </CardContent>
       </Card>
 
