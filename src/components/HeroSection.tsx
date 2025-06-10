@@ -24,18 +24,25 @@ export default function HeroSection() {
   // Calculate parallax effect
   const backgroundY = scrollY * 0.3;
   const contentY = scrollY * 0.1;
+
+  // Don't render if no hero content is configured
+  if (!content.heroTitle && !content.heroImage) {
+    return null;
+  }
   
   return (
-    <section className="relative h-screen overflow-hidden bg-black">
+    <section className="relative h-screen overflow-hidden bg-background">
       {/* Background image with parallax */}
-      <div
-        className="absolute inset-0 bg-cover bg-center"
-        style={{
-          backgroundImage: `url('${content.heroImage || 'https://images.unsplash.com/photo-1615571022219-eb45cf7faa9d?q=80&w=1920&auto=format&fit=crop'}')`,
-          transform: `translateY(${backgroundY}px)`,
-          backgroundPosition: `center ${50 + scrollY * 0.02}%`
-        }}
-      />
+      {content.heroImage && (
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{
+            backgroundImage: `url('${content.heroImage}')`,
+            transform: `translateY(${backgroundY}px)`,
+            backgroundPosition: `center ${50 + scrollY * 0.02}%`
+          }}
+        />
+      )}
       
       {/* Dark overlay for better text readability */}
       <div className="absolute inset-0 bg-black/40" />
@@ -47,35 +54,45 @@ export default function HeroSection() {
       >
         <div className="max-w-4xl animate-fade-in-up">
           {/* Luxury subtitle */}
-          <div className="luxury-subtitle text-white/80 mb-8">
-            {content.heroSubtitle}
-          </div>
+          {content.heroSubtitle && (
+            <div className="luxury-subtitle text-white/80 mb-8">
+              {content.heroSubtitle}
+            </div>
+          )}
           
           {/* Decorative line */}
           <div className="w-16 h-px bg-white/40 mx-auto mb-12" />
           
           {/* Main title */}
-          <h1 className="font-display text-white mb-8 tracking-wider">
-            {content.heroTitle}
-          </h1>
+          {content.heroTitle && (
+            <h1 className="font-display text-white mb-8 tracking-wider">
+              {content.heroTitle}
+            </h1>
+          )}
           
           {/* Decorative line */}
           <div className="w-16 h-px bg-white/40 mx-auto mb-12" />
           
           {/* Description */}
-          <p className="luxury-text text-white/90 mb-16 max-w-2xl mx-auto text-lg">
-            {content.heroDescription}
-          </p>
+          {content.heroDescription && (
+            <p className="luxury-text text-white/90 mb-16 max-w-2xl mx-auto text-lg">
+              {content.heroDescription}
+            </p>
+          )}
           
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-            <Button asChild className="minimal-button bg-white text-black hover:bg-white/90 min-w-[180px]">
-              <Link to="/booking">{t.hero.bookStay}</Link>
-            </Button>
-            <Button asChild variant="outline" className="minimal-button border-white text-white hover:bg-white hover:text-black min-w-[180px]">
-              <Link to="/apartments">{t.hero.exploreApartments}</Link>
-            </Button>
-          </div>
+          {/* CTA Buttons - Only show if booking is enabled */}
+          {content.bookingSettings?.enableBooking && (
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
+              <Button asChild className="minimal-button bg-white text-black hover:bg-white/90 min-w-[180px]">
+                <Link to="/booking">{t.hero.bookStay}</Link>
+              </Button>
+              {content.navigation?.find(nav => nav.path === "/apartments" && nav.isActive) && (
+                <Button asChild variant="outline" className="minimal-button border-white text-white hover:bg-white hover:text-black min-w-[180px]">
+                  <Link to="/apartments">{t.hero.exploreApartments}</Link>
+                </Button>
+              )}
+            </div>
+          )}
         </div>
       </div>
       
