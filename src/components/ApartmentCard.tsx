@@ -25,10 +25,13 @@ export default function ApartmentCard({
   size, 
   image, 
   location, 
-  features 
+  features = [] // Default to empty array
 }: ApartmentProps) {
   const { content, getFormattedPrice } = useCMS();
   const uiText = content.uiText;
+
+  // Ensure features is always an array
+  const safeFeatures = Array.isArray(features) ? features : [];
 
   return (
     <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 group">
@@ -64,24 +67,26 @@ export default function ApartmentCard({
           </div>
         </div>
         
-        <div className="mb-4">
-          <h4 className="text-sm font-medium mb-2">{uiText.apartment.features}:</h4>
-          <div className="flex flex-wrap gap-1">
-            {features.slice(0, 3).map((feature, index) => (
-              <span 
-                key={index}
-                className="px-2 py-1 bg-muted text-xs rounded-full"
-              >
-                {feature}
-              </span>
-            ))}
-            {features.length > 3 && (
-              <span className="px-2 py-1 bg-muted text-xs rounded-full">
-                +{features.length - 3} more
-              </span>
-            )}
+        {safeFeatures.length > 0 && (
+          <div className="mb-4">
+            <h4 className="text-sm font-medium mb-2">{uiText.apartment.features}:</h4>
+            <div className="flex flex-wrap gap-1">
+              {safeFeatures.slice(0, 3).map((feature, index) => (
+                <span 
+                  key={index}
+                  className="px-2 py-1 bg-muted text-xs rounded-full"
+                >
+                  {feature}
+                </span>
+              ))}
+              {safeFeatures.length > 3 && (
+                <span className="px-2 py-1 bg-muted text-xs rounded-full">
+                  +{safeFeatures.length - 3} more
+                </span>
+              )}
+            </div>
           </div>
-        </div>
+        )}
         
         <div className="flex gap-2">
           <Button variant="outline" className="flex-1">

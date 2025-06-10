@@ -83,18 +83,19 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   const getApartmentWithPricing = (apartmentId: string) => {
-    const apartment = content.apartments.find(apt => apt.id === apartmentId);
-    const pricing = content.pricing.find(p => p.roomId === apartmentId);
-    const images = content.roomImages[apartmentId];
+    const apartment = content.apartments?.find(apt => apt.id === apartmentId);
+    const pricing = content.pricing?.find(p => p.roomId === apartmentId);
+    const images = content.roomImages?.[apartmentId];
     
-    if (!apartment || !pricing) return null;
+    if (!apartment) return null;
     
     return {
       ...apartment,
-      price: pricing.basePrice,
-      currency: pricing.currency,
-      image: images?.main || '',
-      gallery: images?.gallery || []
+      price: pricing?.basePrice || 150,
+      currency: pricing?.currency || 'EUR',
+      image: images?.main || 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&h=600&fit=crop',
+      gallery: images?.gallery || [],
+      features: apartment.features || []
     };
   };
 

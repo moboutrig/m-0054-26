@@ -57,6 +57,25 @@ export default function Index() {
     // Scroll to top when component mounts
     window.scrollTo(0, 0);
   }, []);
+
+  // Get apartments from CMS with proper fallback
+  const featuredApartments = content.apartments
+    ?.filter(apt => apt.isActive)
+    ?.slice(0, 3)
+    ?.map(apartment => {
+      const apartmentWithPricing = content.getApartmentWithPricing?.(apartment.id);
+      return apartmentWithPricing || {
+        id: apartment.id,
+        name: apartment.name,
+        description: apartment.description,
+        price: 150,
+        capacity: apartment.capacity,
+        size: apartment.size,
+        image: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&h=600&fit=crop",
+        location: apartment.location,
+        features: apartment.features || []
+      };
+    }) || [];
   
   // Feature items
   const features = [
@@ -206,7 +225,17 @@ export default function Index() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {featuredApartments.map((apartment, index) => (
                 <div key={apartment.id} className="animate-fade-in" style={{ animationDelay: `${(index + 1) * 100}ms` }}>
-                  <ApartmentCard apartment={apartment} />
+                  <ApartmentCard 
+                    id={apartment.id}
+                    name={apartment.name}
+                    description={apartment.description}
+                    price={apartment.price}
+                    capacity={apartment.capacity}
+                    size={apartment.size}
+                    image={apartment.image}
+                    location={apartment.location}
+                    features={apartment.features}
+                  />
                 </div>
               ))}
             </div>
