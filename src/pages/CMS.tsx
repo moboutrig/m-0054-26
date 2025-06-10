@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft, Save, RotateCcw } from "lucide-react";
+import { ArrowLeft, RotateCcw } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useCMS } from "@/contexts/CMSContext";
 import { useToast } from "@/hooks/use-toast";
@@ -59,8 +59,8 @@ export default function CMS() {
             <TabsTrigger value="content">Page Content</TabsTrigger>
             <TabsTrigger value="settings">Site Settings</TabsTrigger>
             <TabsTrigger value="contact">Contact Info</TabsTrigger>
-            <TabsTrigger value="images">Images</TabsTrigger>
-            <TabsTrigger value="rooms">Rooms</TabsTrigger>
+            <TabsTrigger value="images">Site Images</TabsTrigger>
+            <TabsTrigger value="rooms">Room Management</TabsTrigger>
           </TabsList>
 
           <TabsContent value="content" className="mt-6">
@@ -108,9 +108,9 @@ export default function CMS() {
           <TabsContent value="images" className="mt-6">
             <Card>
               <CardHeader>
-                <CardTitle>Image Management</CardTitle>
+                <CardTitle>Site-wide Image Management</CardTitle>
                 <CardDescription>
-                  Manage images used throughout your website. Add URLs for hero, welcome, and gallery sections.
+                  Manage general site images like hero, welcome section, and gallery. For room-specific images, use the Room Management tab.
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -122,9 +122,9 @@ export default function CMS() {
           <TabsContent value="rooms" className="mt-6">
             <Card>
               <CardHeader>
-                <CardTitle>Room Management</CardTitle>
+                <CardTitle>Individual Room Management</CardTitle>
                 <CardDescription>
-                  Manage individual room images and amenities. Customize each room's specific features and gallery.
+                  Manage each room's specific images and amenities. Select a room to customize its main image, gallery, and unique amenities.
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -137,13 +137,15 @@ export default function CMS() {
         {/* Info Card */}
         <Card className="mt-8 border-amber-200 bg-amber-50 dark:border-amber-800 dark:bg-amber-950/20">
           <CardHeader>
-            <CardTitle className="text-amber-800 dark:text-amber-200">Important Notice</CardTitle>
+            <CardTitle className="text-amber-800 dark:text-amber-200">Room Management Features</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-amber-700 dark:text-amber-300">
-              This CMS uses browser localStorage for data persistence. Content will be saved locally but won't sync across devices or browsers. 
-              For a production environment, consider integrating with a proper database solution.
-            </p>
+            <div className="space-y-2 text-amber-700 dark:text-amber-300">
+              <p>• <strong>Individual Room Customization:</strong> Each of the 6 rooms can have unique images and amenities</p>
+              <p>• <strong>Room Images:</strong> Set a main image and gallery for each room independently</p>
+              <p>• <strong>Custom Amenities:</strong> Add specific amenities for each room with custom icons and descriptions</p>
+              <p>• <strong>Automatic Integration:</strong> Room-specific content automatically appears on apartment cards and detail pages</p>
+            </div>
           </CardContent>
         </Card>
       </div>
