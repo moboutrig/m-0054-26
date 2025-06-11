@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;500;600;700&family=Inter:wght@200;300;400;500;600&display=swap');
+/* src/index.css */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;700&family=Lato:wght@300;400;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,65 +7,70 @@
 
 @layer base {
   :root {
-    --background: 45 15% 97%;
-    --foreground: 30 15% 15%;
+    /* Inspired by the Terracotta & Cream design */
+    --background: 34 29% 96%; /* #F8F5F1 */
+    --foreground: 0 0% 20%;   /* #333333 */
 
-    --card: 45 10% 99%;
-    --card-foreground: 30 15% 15%;
+    --card: 34 29% 96%;
+    --card-foreground: 0 0% 20%;
 
-    --popover: 45 10% 99%;
-    --popover-foreground: 30 15% 15%;
+    --popover: 34 29% 96%;
+    --popover-foreground: 0 0% 20%;
 
-    --primary: 30 25% 20%;
-    --primary-foreground: 45 15% 97%;
+    --primary: 25 35% 58%;   /* #A97C5B */
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 40 10% 94%;
-    --secondary-foreground: 30 15% 15%;
+    --secondary: 34 10% 90%;
+    --secondary-foreground: 0 0% 20%;
 
-    --muted: 40 8% 92%;
-    --muted-foreground: 30 10% 45%;
+    --muted: 34 10% 85%;
+    --muted-foreground: 0 0% 40%;
 
-    --accent: 35 15% 88%;
-    --accent-foreground: 30 15% 15%;
+    --accent: 34 10% 90%;
+    --accent-foreground: 0 0% 20%;
 
-    --destructive: 0 85% 60%;
+    --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 40 8% 88%;
-    --input: 40 8% 88%;
-    --ring: 30 25% 20%;
+    --border: 34 10% 88%;
+    --input: 34 10% 88%;
+    --ring: 25 35% 58%;
 
     --radius: 0.25rem;
   }
 
   .dark {
-    --background: 30 15% 8%;
-    --foreground: 45 15% 90%;
+    /* Define dark mode colors if needed, or keep it consistent */
+    --background: 0 0% 8%;
+    --foreground: 0 0% 90%;
+    /* ... map all other variables for dark mode ... */
 
-    --card: 30 12% 10%;
-    --card-foreground: 45 15% 90%;
+    /* For dark mode, let's ensure primary and other relevant colors are adjusted if needed */
+    /* For instance, the primary color might need to be a lighter shade of terracotta, or a different accent altogether. */
+    /* For now, mirroring the light theme's logic but with dark background/foreground */
+    --card: 0 0% 8%;
+    --card-foreground: 0 0% 90%;
 
-    --popover: 30 12% 10%;
-    --popover-foreground: 45 15% 90%;
+    --popover: 0 0% 8%;
+    --popover-foreground: 0 0% 90%;
 
-    --primary: 45 20% 85%;
-    --primary-foreground: 30 15% 10%;
+    /* Primary could be a lighter terracotta or a contrasting color for dark mode */
+    /* Using the same as light for now, but this might need adjustment based on visual preference */
+    --primary: 25 35% 58%;
+    --primary-foreground: 0 0% 100%; /* White text on primary should still work */
 
-    --secondary: 30 10% 15%;
-    --secondary-foreground: 45 15% 90%;
+    --secondary: 0 0% 15%;
+    --secondary-foreground: 0 0% 90%;
 
-    --muted: 30 8% 18%;
-    --muted-foreground: 45 10% 65%;
+    --muted: 0 0% 20%;
+    --muted-foreground: 0 0% 70%;
 
-    --accent: 35 12% 25%;
-    --accent-foreground: 45 15% 90%;
+    --accent: 0 0% 15%;
+    --accent-foreground: 0 0% 90%;
 
-    --destructive: 0 70% 50%;
-    --destructive-foreground: 0 0% 95%;
-
-    --border: 30 8% 20%;
-    --input: 30 8% 20%;
-    --ring: 45 20% 85%;
+    --border: 0 0% 25%;
+    --input: 0 0% 25%;
+    --ring: 25 35% 58%; /* Ring could remain the primary color */
   }
 }
 
@@ -72,206 +78,12 @@
   * {
     @apply border-border;
   }
-  
   body {
-    @apply bg-background text-foreground antialiased;
-    font-family: 'Inter', sans-serif;
-    font-weight: 300;
-    letter-spacing: 0.015em;
+    @apply bg-background text-foreground font-body;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
-  
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Playfair Display', serif;
-    font-weight: 400;
-    letter-spacing: 0.025em;
-  }
-  
-  h1 {
-    font-size: clamp(1.8rem, 5vw, 4rem);
-    line-height: 1.1;
-    font-weight: 300;
-  }
-  
-  h2 {
-    font-size: clamp(1.5rem, 4vw, 3rem);
-    line-height: 1.2;
-    font-weight: 400;
-  }
-  
-  h3 {
-    font-size: clamp(1.2rem, 3vw, 2rem);
-    line-height: 1.3;
-    font-weight: 400;
-  }
-}
-
-@layer components {
-  .container {
-    @apply px-3 sm:px-6 md:px-12 lg:px-24 mx-auto;
-    max-width: 1400px;
-  }
-  
-  .btn-primary {
-    @apply bg-primary text-primary-foreground px-4 sm:px-8 py-2 sm:py-3 font-light text-xs sm:text-sm tracking-[0.1em] uppercase transition-all duration-500 hover:bg-primary/90 active:scale-[0.98] border border-primary hover:shadow-lg;
-  }
-  
-  .section {
-    @apply py-8 sm:py-20 md:py-32 lg:py-40;
-  }
-  
-  .section-small {
-    @apply py-6 sm:py-12 md:py-16 lg:py-20;
-  }
-  
-  .glass-card {
-    @apply bg-card/95 backdrop-blur-sm border border-border/20 shadow-xl;
-  }
-  
-  .luxury-text {
-    @apply text-muted-foreground leading-relaxed tracking-wide text-sm sm:text-base;
-    font-weight: 300;
-    line-height: 1.8;
-  }
-  
-  .luxury-subtitle {
-    @apply text-xs tracking-[0.2em] uppercase text-muted-foreground font-light;
-  }
-  
-  .divider {
-    @apply w-8 sm:w-12 h-px bg-foreground/20 mx-auto my-6 sm:my-8;
-  }
-  
-  .minimal-button {
-    @apply relative overflow-hidden px-3 sm:px-6 py-1.5 sm:py-2 text-xs sm:text-sm tracking-[0.1em] uppercase font-light border border-foreground/20 transition-all duration-300 hover:border-foreground hover:bg-foreground hover:text-background;
-  }
-  
-  .image-overlay {
-    @apply absolute inset-0 bg-black/20 transition-opacity duration-300 hover:bg-black/40;
-  }
-  
-  .wave-animation {
-    animation: wave 20s linear infinite;
-    animation-delay: -2s;
-    transform-origin: center bottom;
-  }
-  
-  .page-transition-enter {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  
-  .page-transition-enter-active {
-    opacity: 1;
-    transform: translateY(0);
-    transition: opacity 600ms ease-out, transform 600ms ease-out;
-  }
-  
-  .page-transition-exit {
-    opacity: 1;
-  }
-  
-  .page-transition-exit-active {
-    opacity: 0;
-    transition: opacity 400ms ease-out;
-  }
-  
-  .parallax-section {
-    @apply relative overflow-hidden;
-  }
-  
-  .parallax-content {
-    @apply relative z-10;
-  }
-  
-  .parallax-bg {
-    @apply absolute inset-0 will-change-transform;
-  }
-
-  /* Mobile-specific improvements */
-  @media (max-width: 640px) {
-    .container {
-      @apply px-3;
-    }
-    
-    .minimal-button {
-      @apply px-2 py-1 text-xs;
-    }
-    
-    .luxury-subtitle {
-      @apply text-xs;
-    }
-    
-    .btn-primary {
-      @apply px-3 py-1.5 text-xs;
-    }
-
-    /* Two-row header mobile adjustments */
-    header .container {
-      @apply gap-2;
-    }
-  }
-
-  /* Tablet improvements */
-  @media (min-width: 641px) and (max-width: 1024px) {
-    .container {
-      @apply px-4;
-    }
-  }
-
-  /* Desktop improvements */
-  @media (min-width: 1025px) {
-    .minimal-button {
-      @apply px-6 py-2 text-sm;
-    }
-  }
-
-  /* Two-row header specific styles */
-  .two-row-header {
-    @apply border-b border-border/10;
-  }
-  
-  .header-row {
-    @apply py-2 sm:py-3 transition-all duration-500;
-  }
-  
-  .header-row.scrolled {
-    @apply py-1 sm:py-2;
-  }
-  
-  .navigation-row {
-    @apply hidden lg:block py-2 sm:py-3 border-t border-border/5;
-  }
-  
-  .navigation-row.scrolled {
-    @apply py-1 sm:py-2;
-  }
-}
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
-  
-  .aspect-luxury {
-    aspect-ratio: 16 / 10;
-  }
-  
-  .aspect-portrait {
-    aspect-ratio: 4 / 5;
-  }
-  
-  .grid-luxury {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1rem;
-  }
-
-  @media (min-width: 640px) {
-    .grid-luxury {
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 2rem;
-    }
+    @apply font-heading;
   }
 }
