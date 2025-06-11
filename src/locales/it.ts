@@ -1,7 +1,7 @@
 export const it = {
   nav: {
     home: "Home",
-    apartments: "Appartamenti",
+    rooms: "Camere", // Renamed
     amenities: "Servizi",
     gallery: "Galleria",
     contact: "Contatti",
@@ -10,13 +10,13 @@ export const it = {
   hero: {
     subtitle: "ALLOGGI DI LUSSO SUL MARE",
     title: "Vivi la Tranquillità del Mare",
-    description: "Scopri la nostra esclusiva collezione di appartamenti di lusso e camere d'albergo sul mare, che offrono comfort impareggiabile e viste mozzafiato sul mare.",
+    description: "Scopri la nostra esclusiva collezione di camere e suite di lusso sul mare, che offrono comfort impareggiabile e viste mozzafiato sul mare.", // Updated
     bookStay: "Prenota il tuo Soggiorno",
-    exploreApartments: "Esplora gli Appartamenti",
+    exploreRooms: "Esplora le Camere", // Renamed
     scrollDown: "Scorri Giù"
   },
   footer: {
-    description: "Appartamenti di lusso sul mare e camere d'albergo con splendide viste sul mare, che offrono il perfetto connubio di comfort ed eleganza per la tua vacanza da sogno.",
+    description: "Camere e suite di lusso sul mare con splendide viste sul mare, che offrono il perfetto connubio di comfort ed eleganza per la tua vacanza da sogno.", // Updated
     quickLinks: "Link Rapidi",
     contact: "Contatti",
     newsletter: "Newsletter",
@@ -46,8 +46,8 @@ export const it = {
     description: "Non siamo riusciti a trovare la pagina che stavi cercando. Forse hai preso una svolta sbagliata in paradiso?",
     returnHome: "Torna alla Home"
   },
-  apartments: {
-    title: "I Nostri Appartamenti e Camere",
+  roomsPage: { // Renamed
+    title: "Le Nostre Camere e Suite", // Updated
     subtitle: "Scopri la nostra selezione di alloggi premium, dalle accoglienti mansarde ai lussuosi attici.",
     filters: {
       guests: "Ospiti",
@@ -63,7 +63,7 @@ export const it = {
       of: "di",
       accommodations: "alloggi",
       resetFilters: "Reimposta Filtri",
-      noMatch: "Nessun appartamento corrisponde ai tuoi filtri",
+      noMatch: "Nessuna camera corrisponde ai tuoi filtri", // Updated
       adjustFilters: "Prova a modificare i criteri di filtro per vedere più opzioni.",
       viewDetails: "Visualizza Dettagli",
       features: "caratteristiche",
@@ -199,8 +199,8 @@ export const it = {
         answer: "Sì, offriamo parcheggio gratuito per tutti gli ospiti. Il servizio di parcheggio con valletto è disponibile anche a un costo aggiuntivo."
       },
       pets: {
-        question: "Gli animali domestici sono ammessi negli appartamenti?",
-        answer: "Accogliamo gli animali domestici in appartamenti designati pet-friendly. Si prega di informarci in anticipo se si prevede di portare un animale domestico, poiché potrebbero essere applicati costi aggiuntivi."
+        question: "Gli animali domestici sono ammessi nelle camere/suite?", // Updated
+        answer: "Accogliamo gli animali domestici in camere/suite designati pet-friendly. Si prega di informarci in anticipo se si prevede di portare un animale domestico, poiché potrebbero essere applicati costi aggiuntivi." // Updated
       },
       breakfast: {
         question: "La colazione è inclusa nella tariffa della camera?",
@@ -212,7 +212,7 @@ export const it = {
       },
       amenities: {
         question: "Quali servizi sono disponibili nella struttura?",
-        answer: "La nostra struttura dispone di piscine, una spa, ristoranti, un bar sulla spiaggia, un centro fitness e accesso diretto alla spiaggia. Tutti gli appartamenti includono Wi-Fi, aria condizionata e elettrodomestici moderni."
+        answer: "La nostra struttura dispone di piscine, una spa, ristoranti, un bar sulla spiaggia, un centro fitness e accesso diretto alla spiaggia. Tutte le camere e suite includono Wi-Fi, aria condizionata e elettrodomestici moderni." // Updated
       }
     }
   },
@@ -220,7 +220,7 @@ export const it = {
     welcome: {
       subtitle: "Benvenuti a MareSereno",
       title: "Alloggi di Lusso sul Mare",
-      description1: "Situato sulla incontaminata costa mediterranea, MareSereno offre una squisita collezione di appartamenti di lusso e camere d'albergo. I nostri alloggi fronte mare combinano un design elegante con comfort moderni, creando l'ambientazione perfetta per una indimenticabile fuga al mare.",
+      description1: "Situato sulla incontaminata costa mediterranea, MareSereno offre una squisita collezione di camere e suite di lusso. I nostri alloggi fronte mare combinano un design elegante con comfort moderni, creando l'ambientazione perfetta per una indimenticabile fuga al mare.", // Updated
       description2: "Che tu stia cercando una fuga romantica, una vacanza in famiglia o un ritiro tranquillo, la nostra vasta gamma di alloggi si adatta a ogni preferenza ed esigenza. Ogni spazio è progettato con cura per fornire viste panoramiche sul mare e accesso diretto alla spiaggia.",
       learnMore: "Scopri di Più"
     },
@@ -230,11 +230,11 @@ export const it = {
       description: "Fai il primo passo verso la tua vacanza da sogno verificando la disponibilità e assicurandoti le date preferite. Il nostro semplice processo di prenotazione garantisce un'esperienza senza interruzioni dalla prenotazione all'arrivo.",
       benefits: ["Conferma istantanea", "Miglior tariffa garantita", "Opzioni di cancellazione flessibili", "Pagamento sicuro"]
     },
-    featuredApartments: {
+    featuredRooms: { // Renamed
       subtitle: "I Nostri Alloggi",
-      title: "Appartamenti in Evidenza",
+      title: "Camere in Evidenza", // Renamed
       description: "Scopri le nostre opzioni di alloggio più popolari, ognuna che offre un perfetto equilibrio di comfort, stile e viste mozzafiato sul mare.",
-      viewAll: "Visualizza Tutti gli Appartamenti"
+      viewAll: "Visualizza Tutte le Camere" // Renamed
     },
     amenities: {
       subtitle: "Servizi dell'Hotel",
@@ -318,7 +318,7 @@ export const it = {
           },
           {
             title: "Servizio in Camera",
-            description: "Goditi pasti gourmet nella privacy del tuo appartamento, disponibile 24 ore su 24."
+            description: "Goditi pasti gourmet nella privacy della tua camera o suite, disponibile 24 ore su 24." // Updated
           }
         ]
       },
@@ -368,14 +368,14 @@ export const it = {
       }
     }
   },
-  apartmentDescriptions: {
+  roomDescriptions: { // Renamed
     "1": {
       name: "Suite Vista Mare Deluxe",
       description: "Suite lussuosa con vista panoramica sul mare, comfort moderni e balcone privato."
     },
     "2": {
-      name: "Appartamento Premium per Famiglie",
-      description: "Appartamento spazioso ideale per famiglie, con cucina completa e splendide viste costiere."
+      name: "Suite Premium per Famiglie", // Updated
+      description: "Suite spaziosa ideale per famiglie, con cucina completa e splendide viste costiere." // Updated
     },
     "3": {
       name: "Studio Esecutivo sulla Spiaggia",
@@ -390,8 +390,8 @@ export const it = {
       description: "Confortevole camera d'albergo con comfort moderni e vista parziale sul mare."
     },
     "6": {
-      name: "Appartamento Vista Giardino",
-      description: "Appartamento tranquillo circondato da rigogliosi giardini, a breve distanza dalla spiaggia."
+      name: "Camera Vista Giardino", // Updated
+      description: "Camera tranquilla circondata da rigogliosi giardini, a breve distanza dalla spiaggia." // Updated
     }
   }
 };

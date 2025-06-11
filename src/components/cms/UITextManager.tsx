@@ -47,7 +47,7 @@ export default function UITextManager() {
           <TabsTrigger value="common">Common</TabsTrigger>
           <TabsTrigger value="buttons">Buttons</TabsTrigger>
           <TabsTrigger value="forms">Forms</TabsTrigger>
-          <TabsTrigger value="apartment">Apartment</TabsTrigger>
+          <TabsTrigger value="room">Room</TabsTrigger> {/* Renamed */}
         </TabsList>
         
         <TabsContent value="navigation" className="space-y-4">
@@ -246,25 +246,25 @@ export default function UITextManager() {
           </Card>
         </TabsContent>
 
-        <TabsContent value="apartment" className="space-y-4">
+        <TabsContent value="room" className="space-y-4"> {/* Renamed */}
           <Card>
             <CardHeader>
-              <CardTitle>Apartment & Currency Text</CardTitle>
+              <CardTitle>Room & Currency Text</CardTitle> {/* Renamed */}
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <Label>Per Night</Label>
                   <Input
-                    value={uiText.apartment.perNight}
-                    onChange={(e) => updateText('apartment', 'perNight', e.target.value)}
+                    value={uiText.room?.perNight || ""} // Use optional chaining
+                    onChange={(e) => updateText('room', 'perNight', e.target.value)}
                   />
                 </div>
                 <div>
                   <Label>Guests</Label>
                   <Input
-                    value={uiText.apartment.guests}
-                    onChange={(e) => updateText('apartment', 'guests', e.target.value)}
+                    value={uiText.room?.guests || ""} // Use optional chaining
+                    onChange={(e) => updateText('room', 'guests', e.target.value)}
                   />
                 </div>
               </div>
@@ -272,15 +272,15 @@ export default function UITextManager() {
                 <div>
                   <Label>Square Meters (sqm)</Label>
                   <Input
-                    value={uiText.apartment.sqm}
-                    onChange={(e) => updateText('apartment', 'sqm', e.target.value)}
+                    value={uiText.room?.sqm || ""} // Use optional chaining
+                    onChange={(e) => updateText('room', 'sqm', e.target.value)}
                   />
                 </div>
                 <div>
                   <Label>Features</Label>
                   <Input
-                    value={uiText.apartment.features}
-                    onChange={(e) => updateText('apartment', 'features', e.target.value)}
+                    value={uiText.room?.features || ""} // Use optional chaining
+                    onChange={(e) => updateText('room', 'features', e.target.value)}
                   />
                 </div>
               </div>

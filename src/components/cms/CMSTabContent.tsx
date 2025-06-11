@@ -8,7 +8,7 @@ import PricingManager from "./PricingManager";
 import SEOSettings from "./SEOSettings";
 import SocialMediaSettings from "./SocialMediaSettings";
 import ThemeManager from "./ThemeManager";
-import ApartmentManager from "./ApartmentManager";
+// import ApartmentManager from "./ApartmentManager"; // Removed
 import PageContentManager from "./PageContentManager";
 import UITextManager from "./UITextManager";
 
@@ -19,9 +19,8 @@ export default function CMSTabContent() {
         <SiteSettings />
       </TabsContent>
       
-      <TabsContent value="apartments">
-        <ApartmentManager />
-      </TabsContent>
+      {/* <TabsContent value="apartments">
+      </TabsContent> */} {/* Removed */}
       
       <TabsContent value="navigation">
         <NavigationManager />

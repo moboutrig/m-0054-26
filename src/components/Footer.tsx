@@ -2,11 +2,21 @@
 import { Link } from "react-router-dom";
 import { Facebook, Instagram, Twitter, Mail, Phone, MapPin } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useCMS } from "@/contexts/CMSContext"; // Import useCMS
 
 export default function Footer() {
   const { t } = useLanguage();
+  const { content } = useCMS(); // Get CMS content
   const currentYear = new Date().getFullYear();
   
+  const {
+    contactAddress,
+    contactPhone,
+    contactEmail,
+    footerContent,
+    socialMedia
+  } = content;
+
   return (
     <footer className="bg-card text-card-foreground pt-16 pb-8 border-t">
       <div className="container">
@@ -35,20 +45,14 @@ export default function Footer() {
           <div className="animate-fade-in [animation-delay:200ms]">
             <h4 className="text-xl font-bold mb-4">{t.footer.quickLinks}</h4>
             <ul className="space-y-2">
-              {[
-                { name: t.nav.home, path: "/" },
-                { name: t.nav.apartments, path: "/apartments" },
-                { name: t.nav.amenities, path: "/amenities" },
-                { name: t.nav.gallery, path: "/gallery" },
-                { name: t.nav.contact, path: "/contact" },
-                { name: t.nav.bookNow, path: "/booking" },
-              ].map((link) => (
-                <li key={link.name}>
+              {footerContent.quickLinks.map((link) => (
+                <li key={link.label}> {/* Use label as key if unique, or generate id */}
                   <Link 
                     to={link.path} 
                     className="text-muted-foreground hover:text-primary transition-colors"
                   >
-                    {link.name}
+                    {/* Assuming labels in quickLinks are already translated or are keys for t() if needed */}
+                    {link.label}
                   </Link>
                 </li>
               ))}
@@ -58,22 +62,30 @@ export default function Footer() {
           <div className="animate-fade-in [animation-delay:300ms]">
             <h4 className="text-xl font-bold mb-4">{t.footer.contact}</h4>
             <ul className="space-y-3">
-              <li className="flex items-start">
-                <MapPin className="w-5 h-5 mr-2 mt-0.5 text-primary" />
-                <span className="text-muted-foreground">
-                  123 Seaside Boulevard<br />
-                  Costa Bella, 12345<br />
-                  Italy
-                </span>
-              </li>
-              <li className="flex items-center">
-                <Phone className="w-5 h-5 mr-2 text-primary" />
-                <span className="text-muted-foreground">+39 123 4567 890</span>
-              </li>
-              <li className="flex items-center">
-                <Mail className="w-5 h-5 mr-2 text-primary" />
-                <span className="text-muted-foreground">info@maresereno.com</span>
-              </li>
+              {contactAddress && (
+                <li className="flex items-start">
+                  <MapPin className="w-5 h-5 mr-2 mt-0.5 text-primary flex-shrink-0" />
+                  <span className="text-muted-foreground whitespace-pre-line">{contactAddress}</span>
+                </li>
+              )}
+              {contactPhone && (
+                <li className="flex items-center">
+                  <Phone className="w-5 h-5 mr-2 text-primary flex-shrink-0" />
+                  <a href={`tel:${contactPhone}`} className="text-muted-foreground hover:text-primary">{contactPhone}</a>
+                </li>
+              )}
+              {contactEmail && (
+                <li className="flex items-center">
+                  <Mail className="w-5 h-5 mr-2 text-primary flex-shrink-0" />
+                  <a href={`mailto:${contactEmail}`} className="text-muted-foreground hover:text-primary">{contactEmail}</a>
+                </li>
+              )}
+              {footerContent.contactInfo?.hours && (
+                 <li className="flex items-center">
+                   {/* Consider an icon for hours if available, e.g., ClockIcon */}
+                   <span className="text-muted-foreground ml-7">{footerContent.contactInfo.hours}</span> {/* Assuming no icon for now, align with others */}
+                 </li>
+              )}
             </ul>
           </div>
           

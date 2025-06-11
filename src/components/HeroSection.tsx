@@ -86,9 +86,9 @@ export default function HeroSection() {
               <Button asChild className="minimal-button bg-white text-black hover:bg-white/90 min-w-[180px]">
                 <Link to="/booking">{t.hero.bookStay}</Link>
               </Button>
-              {content.navigation?.find(nav => nav.path === "/apartments" && nav.isActive) && (
+              {content.navigation?.find(nav => nav.path === "/rooms" && nav.isActive) && ( // Updated path
                 <Button asChild variant="outline" className="minimal-button border-white text-white hover:bg-white hover:text-black min-w-[180px]">
-                  <Link to="/apartments">{t.hero.exploreApartments}</Link>
+                  <Link to="/rooms">{t.hero.exploreApartments}</Link> {/* Updated path, text from t.hero.exploreApartments will be updated via localization files later */}
                 </Button>
               )}
             </div>

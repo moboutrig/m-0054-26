@@ -1,19 +1,18 @@
-
-import { CMSContent } from '@/types/cms';
+import { CMSContent, RoomType } from '@/types/cms'; // Added RoomType
 
 export const defaultContent: CMSContent = {
   siteName: "Luxury Coastal Resort",
   siteLogo: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=200&h=80&fit=crop",
   heroTitle: "Luxury Coastal Retreat",
   heroSubtitle: "Where comfort meets elegance",
-  heroDescription: "Experience unparalleled luxury in our beautifully appointed apartments, nestled along pristine coastlines with breathtaking ocean views.",
+  heroDescription: "Experience unparalleled luxury in our beautifully appointed rooms and suites, nestled along pristine coastlines with breathtaking ocean views.", // Changed apartments to rooms/suites
   welcomeTitle: "Welcome to Paradise",
-  welcomeDescription1: "Discover your perfect coastal getaway in our collection of luxury apartments and suites. Each accommodation is thoughtfully designed to provide the ultimate in comfort and sophistication.",
+  welcomeDescription1: "Discover your perfect coastal getaway in our collection of luxury rooms and suites. Each accommodation is thoughtfully designed to provide the ultimate in comfort and sophistication.", // Changed apartments to rooms/suites
   welcomeDescription2: "From intimate studios to spacious penthouses, our properties offer stunning ocean views, modern amenities, and personalized service that exceeds expectations.",
   bookingTitle: "Book Your Stay",
   bookingDescription: "Reserve your luxury coastal experience with our easy booking system. Choose your dates, select your perfect accommodation, and prepare for an unforgettable getaway.",
-  featuredApartmentsTitle: "Featured Accommodations",
-  featuredApartmentsDescription: "Explore our handpicked selection of premium apartments and suites, each offering unique features and stunning coastal views.",
+  featuredRoomsTitle: "Featured Accommodations", // Renamed
+  featuredRoomsDescription: "Explore our handpicked selection of premium rooms and suites, each offering unique features and stunning coastal views.", // Renamed and updated text
   amenitiesTitle: "Premium Amenities",
   amenitiesDescription: "Indulge in our world-class amenities designed to enhance your stay and create lasting memories.",
   ctaTitle: "Ready for Your Escape?",
@@ -27,43 +26,18 @@ export const defaultContent: CMSContent = {
     "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?w=600&h=400&fit=crop"
   ],
   galleryImages: [],
-  roomImages: {
-    "1": {
-      main: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&h=600&fit=crop",
-      gallery: [
-        "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&h=600&fit=crop",
-        "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop"
-      ]
-    },
-    "2": {
-      main: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
-      gallery: [
-        "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
-        "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?w=800&h=600&fit=crop"
-      ]
-    }
-  },
-  roomAmenities: {
-    "1": [
-      { id: "1", name: "Wi-Fi", icon: "Wifi", description: "High-speed internet" },
-      { id: "2", name: "Kitchen", icon: "Utensils", description: "Fully equipped kitchen" }
-    ],
-    "2": [
-      { id: "3", name: "Wi-Fi", icon: "Wifi", description: "High-speed internet" },
-      { id: "4", name: "Bathroom", icon: "Bath", description: "Luxury bathroom" }
-    ]
-  },
+  // roomImages and roomAmenities are removed from top level
   navigation: [
     { id: "1", label: "Home", path: "/", isActive: true, order: 1 },
-    { id: "2", label: "Apartments", path: "/apartments", isActive: true, order: 2 },
+    { id: "2", label: "Rooms", path: "/rooms", isActive: true, order: 2 }, // Updated
     { id: "3", label: "Amenities", path: "/amenities", isActive: true, order: 3 },
     { id: "4", label: "Gallery", path: "/gallery", isActive: true, order: 4 },
     { id: "5", label: "About", path: "/about", isActive: true, order: 5 }
   ],
   seoSettings: {
-    title: "Luxury Coastal Resort - Premium Accommodations",
-    description: "Experience luxury coastal living with our premium apartments and suites featuring ocean views, modern amenities, and exceptional service.",
-    keywords: "luxury resort, coastal accommodation, ocean view apartments, premium suites, beachfront rental",
+    title: "Luxury Coastal Resort - Premium Rooms & Suites", // Updated
+    description: "Experience luxury coastal living with our premium rooms and suites featuring ocean views, modern amenities, and exceptional service.", // Updated
+    keywords: "luxury resort, coastal accommodation, ocean view rooms, premium suites, beachfront rental", // Updated
     ogImage: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=1200&h=630&fit=crop"
   },
   socialMedia: {
@@ -73,24 +47,25 @@ export const defaultContent: CMSContent = {
     youtube: "",
     tripadvisor: ""
   },
-  pricing: [
+  pricing: [ // Assuming roomIds still match the new RoomData ids
     { roomId: "1", basePrice: 180, currency: "EUR", seasonalRates: [] },
-    { roomId: "2", basePrice: 250, currency: "EUR", seasonalRates: [] }
+    { roomId: "2", basePrice: 250, currency: "EUR", seasonalRates: [] },
+    { roomId: "3", basePrice: 150, currency: "EUR", seasonalRates: [] },
+    { roomId: "4", basePrice: 320, currency: "EUR", seasonalRates: [] },
+    { roomId: "5", basePrice: 120, currency: "EUR", seasonalRates: [] },
+    { roomId: "6", basePrice: 200, currency: "EUR", seasonalRates: [] },
   ],
   testimonials: [],
   footerContent: {
     description: "Experience luxury coastal living at its finest with our premium accommodations and exceptional service.",
     quickLinks: [
       { label: "About", path: "/about" },
-      { label: "Apartments", path: "/apartments" },
+      { label: "Rooms", path: "/rooms" }, // Updated
       { label: "Gallery", path: "/gallery" },
       { label: "Privacy", path: "/privacy" },
       { label: "Terms", path: "/terms" }
     ],
-    contactInfo: {
-      address: "123 Coastal Drive, Paradise Bay",
-      phone: "+1 (555) 123-4567",
-      email: "info@luxurycoastal.com",
+    contactInfo: { // Address, phone, email are now sourced from root content.contactAddress etc.
       hours: "24/7 Customer Service"
     },
     newsletter: {
@@ -116,7 +91,7 @@ export const defaultContent: CMSContent = {
     depositRequired: 30
   },
   pageContent: {
-    amenities: {
+    amenities: { // This section seems fine
       title: "Premium Amenities",
       subtitle: "Experience luxury at every turn",
       description: "Our carefully curated amenities are designed to provide you with comfort, convenience, and unforgettable experiences throughout your stay.",
@@ -134,7 +109,7 @@ export const defaultContent: CMSContent = {
         }
       ]
     },
-    gallery: {
+    gallery: { // This section seems fine
       title: "Gallery",
       subtitle: "Discover the beauty of our resort",
       images: [
@@ -144,14 +119,14 @@ export const defaultContent: CMSContent = {
       filters: {
         all: "All Photos",
         exterior: "Exterior",
-        rooms: "Rooms",
+        rooms: "Rooms", // This key "rooms" is fine.
         amenities: "Amenities"
       }
     },
-    apartments: {
-      title: "Our Apartments",
+    rooms: { // Renamed from apartments
+      title: "Our Rooms & Suites", // Updated
       subtitle: "Find your perfect accommodation",
-      filters: {
+      filters: { // These filters can remain as they are general
         guests: "Number of Guests",
         location: "Location",
         priceRange: "Price Range",
@@ -163,7 +138,7 @@ export const defaultContent: CMSContent = {
         anyLocation: "Any Location"
       }
     },
-    about: {
+    about: { // This section seems fine
       title: "About Us",
       subtitle: "Your luxury coastal retreat",
       story: {
@@ -176,15 +151,15 @@ export const defaultContent: CMSContent = {
       offer: {
         title: "What We Offer",
         content: [
-          "Our resort features a diverse range of luxury apartments and suites, each designed with comfort and elegance in mind.",
-          "From intimate studios perfect for romantic getaways to spacious family apartments with all the amenities of home, we have the perfect accommodation for every traveler."
+          "Our resort features a diverse range of luxury rooms and suites, each designed with comfort and elegance in mind.", // Updated
+          "From intimate studios perfect for romantic getaways to spacious family suites with all the amenities of home, we have the perfect accommodation for every traveler." // Updated
         ]
       },
       contact: {
         title: "Contact Information"
       }
     },
-    privacy: {
+    privacy: { // This section seems fine
       title: "Privacy Policy",
       subtitle: "How we protect your information",
       sections: [
@@ -200,7 +175,7 @@ export const defaultContent: CMSContent = {
         }
       ]
     },
-    terms: {
+    terms: { // This section seems fine
       title: "Terms of Service",
       subtitle: "Terms and conditions for using our services",
       sections: [
@@ -216,7 +191,7 @@ export const defaultContent: CMSContent = {
         }
       ]
     },
-    faq: {
+    faq: { // This section seems fine
       title: "Frequently Asked Questions",
       subtitle: "Find answers to common questions",
       questions: [
@@ -236,7 +211,7 @@ export const defaultContent: CMSContent = {
         description: "If you couldn't find the answer you're looking for, feel free to contact us directly:"
       }
     },
-    notFound: {
+    notFound: { // This section seems fine
       title: "Page Not Found",
       subtitle: "Oops! The page you're looking for doesn't exist.",
       description: "The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.",
@@ -248,7 +223,7 @@ export const defaultContent: CMSContent = {
       bookNow: "Book Now",
       backToHome: "Back to Home"
     },
-    common: {
+    common: { // This section seems fine
       loading: "Loading...",
       error: "An error occurred",
       save: "Save",
@@ -261,7 +236,7 @@ export const defaultContent: CMSContent = {
       next: "Next",
       previous: "Previous"
     },
-    buttons: {
+    buttons: { // This section seems fine
       viewDetails: "View Details",
       bookNow: "Book Now",
       learnMore: "Learn More",
@@ -270,7 +245,7 @@ export const defaultContent: CMSContent = {
       showMore: "Show More",
       showLess: "Show Less"
     },
-    forms: {
+    forms: { // This section seems fine
       name: "Name",
       email: "Email",
       phone: "Phone",
@@ -279,7 +254,7 @@ export const defaultContent: CMSContent = {
       required: "This field is required",
       invalidEmail: "Please enter a valid email address"
     },
-    apartment: {
+    room: { // Renamed from apartment
       perNight: "per night",
       guests: "guests",
       sqm: "sqm",
@@ -287,13 +262,13 @@ export const defaultContent: CMSContent = {
       availability: "Check Availability",
       checkAvailability: "Check Availability"
     },
-    currency: {
+    currency: { // This section seems fine
       symbol: "€",
       code: "EUR",
       position: "after"
     }
   },
-  apartments: [
+  rooms: [ // Renamed from apartments and structure updated
     {
       id: "1",
       name: "Deluxe Sea View Suite",
@@ -303,18 +278,42 @@ export const defaultContent: CMSContent = {
       location: "Beachfront",
       features: ["Wi-Fi", "Kitchen", "Bathroom", "Air Conditioning", "TV", "Balcony"],
       isActive: true,
-      order: 1
+      order: 1,
+      roomType: 'Suite' as RoomType,
+      images: {
+        main: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&h=600&fit=crop",
+        gallery: [
+          "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&h=600&fit=crop",
+          "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop"
+        ]
+      },
+      amenities: [
+        { id: "1", name: "Wi-Fi", icon: "Wifi", description: "High-speed internet" },
+        { id: "2", name: "Kitchen", icon: "Utensils", description: "Fully equipped kitchen" }
+      ]
     },
     {
       id: "2",
-      name: "Premium Family Apartment",
-      description: "Spacious apartment ideal for families, with full kitchen and stunning coastal views.",
+      name: "Premium Family Suite", // Updated name for consistency
+      description: "Spacious suite ideal for families, with full kitchen and stunning coastal views.",
       capacity: 4,
       size: 75,
       location: "Second row",
       features: ["Wi-Fi", "Kitchen", "Bathroom", "Air Conditioning", "TV", "Washing Machine"],
       isActive: true,
-      order: 2
+      order: 2,
+      roomType: 'Premium' as RoomType,
+      images: {
+        main: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+        gallery: [
+          "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+          "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?w=800&h=600&fit=crop"
+        ]
+      },
+      amenities: [
+        { id: "3", name: "Wi-Fi", icon: "Wifi", description: "High-speed internet" },
+        { id: "4", name: "Bathroom", icon: "Bath", description: "Luxury bathroom" }
+      ]
     },
     {
       id: "3",
@@ -325,7 +324,10 @@ export const defaultContent: CMSContent = {
       location: "Beachfront",
       features: ["Wi-Fi", "Kitchenette", "Bathroom", "Air Conditioning", "TV"],
       isActive: true,
-      order: 3
+      order: 3,
+      roomType: 'Studio' as RoomType,
+      images: { main: "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?w=800&h=600&fit=crop", gallery: [] },
+      amenities: [{ id: "5", name: "Beach Access", icon: "Waves", description: "Direct beach access"}]
     },
     {
       id: "4",
@@ -336,7 +338,10 @@ export const defaultContent: CMSContent = {
       location: "Beachfront",
       features: ["Wi-Fi", "Full Kitchen", "2 Bathrooms", "Air Conditioning", "TV", "Terrace", "Jacuzzi"],
       isActive: true,
-      order: 4
+      order: 4,
+      roomType: 'Suite' as RoomType,
+      images: { main: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&h=600&fit=crop", gallery: [] },
+      amenities: [{ id: "6", name: "Jacuzzi", icon: "Wind", description: "Private Jacuzzi" }]
     },
     {
       id: "5",
@@ -347,18 +352,24 @@ export const defaultContent: CMSContent = {
       location: "Hotel building",
       features: ["Wi-Fi", "Bathroom", "Air Conditioning", "TV", "Mini Fridge"],
       isActive: true,
-      order: 5
+      order: 5,
+      roomType: 'Standard' as RoomType,
+      images: { main: "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800&h=600&fit=crop", gallery: [] },
+      amenities: []
     },
     {
       id: "6",
-      name: "Garden View Apartment",
-      description: "Peaceful apartment surrounded by lush gardens, just a short walk from the beach.",
+      name: "Garden View Room", // Updated name
+      description: "Peaceful room surrounded by lush gardens, just a short walk from the beach.",
       capacity: 3,
       size: 55,
       location: "Garden area",
       features: ["Wi-Fi", "Kitchen", "Bathroom", "Air Conditioning", "TV", "Terrace"],
       isActive: true,
-      order: 6
+      order: 6,
+      roomType: 'Custom' as RoomType, // Example
+      images: { main: "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?w=800&h=600&fit=crop", gallery: [] },
+      amenities: []
     }
   ]
 };

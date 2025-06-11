@@ -49,17 +49,30 @@ export default function MediaUploadField({
     setIsUploading(true);
 
     try {
-      const fileUrl = URL.createObjectURL(file);
-      onChange(fileUrl);
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ message: 'Unknown error during upload.' }));
+        throw new Error(`Upload failed: ${response.statusText} - ${errorData.message}`);
+      }
+
+      const result = await response.json();
+      onChange(result.filePath);
       
       toast({
         title: "Upload successful",
-        description: "File uploaded successfully.",
+        description: `${file.name} uploaded successfully.`,
       });
-    } catch (error) {
+    } catch (error: any) {
       toast({
         title: "Upload failed",
-        description: "Failed to upload file. Please try again.",
+        description: error.message || "Failed to upload file. Please try again.",
         variant: "destructive",
       });
     } finally {

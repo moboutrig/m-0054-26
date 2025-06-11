@@ -242,17 +242,35 @@ export interface UIText {
   };
 }
 
-export interface ApartmentData {
+export type RoomType = 'Deluxe' | 'Studio' | 'Suite' | 'Standard' | 'Premium' | 'Ocean View' | 'Custom';
+
+export interface RoomData {
   id: string;
   name: string;
   description: string;
   capacity: number;
-  size: number;
-  location: string;
-  features: string[];
+  size: number; // size in sqm or similar unit
+  location: string; // e.g., "Floor 5, Mountain View"
+  features: string[]; // e.g., ["Balcony", "Kitchenette"]
   isActive: boolean;
   order: number;
+  roomType: RoomType;
+  amenities: RoomAmenity[]; // Array of RoomAmenity objects
+  images: RoomImages; // RoomImages object
 }
+
+// ApartmentData is now deprecated and replaced by RoomData
+// export interface ApartmentData {
+//   id: string;
+//   name: string;
+//   description: string;
+//   capacity: number;
+//   size: number;
+//   location: string;
+//   features: string[];
+//   isActive: boolean;
+//   order: number;
+// }
 
 export interface CMSContent {
   siteName: string;
@@ -278,9 +296,9 @@ export interface CMSContent {
   heroImage: string;
   welcomeImages: string[];
   galleryImages: string[];
-  // Room-specific data
-  roomImages: { [roomId: string]: RoomImages };
-  roomAmenities: { [roomId: string]: RoomAmenity[] };
+  // Room-specific data for RoomData is now part of rooms: RoomData[]
+  // roomImages: { [roomId: string]: RoomImages };
+  // roomAmenities: { [roomId: string]: RoomAmenity[] };
   // New features
   navigation: NavigationItem[];
   seoSettings: SEOSettings;
@@ -295,21 +313,22 @@ export interface CMSContent {
   // UI Text
   uiText: UIText;
   // Apartment data
-  apartments: ApartmentData[];
+  rooms: RoomData[]; // Changed from apartments: ApartmentData[]
 }
 
 export interface CMSContextType {
   content: CMSContent;
   updateContent: (key: keyof CMSContent, value: any) => void;
-  updateRoomImages: (roomId: string, images: RoomImages) => void;
-  updateRoomAmenities: (roomId: string, amenities: RoomAmenity[]) => void;
+  // updateRoomImages and updateRoomAmenities are no longer needed as this data is part of RoomData
+  // updateRoomImages: (roomId: string, images: RoomImages) => void;
+  // updateRoomAmenities: (roomId: string, amenities: RoomAmenity[]) => void;
   updateNavigation: (navigation: NavigationItem[]) => void;
   updateTestimonials: (testimonials: Testimonial[]) => void;
   updatePricing: (pricing: PricingInfo[]) => void;
   updatePageContent: (pageKey: keyof PageContent, content: any) => void;
   updateUIText: (uiText: UIText) => void;
-  updateApartments: (apartments: ApartmentData[]) => void;
+  updateRooms: (rooms: RoomData[]) => void; // Changed from updateApartments
   resetContent: () => void;
   getFormattedPrice: (price: number, currency?: string) => string;
-  getApartmentWithPricing: (apartmentId: string) => any;
+  getRoomWithPricing: (roomId: string) => any; // Changed from getApartmentWithPricing
 }

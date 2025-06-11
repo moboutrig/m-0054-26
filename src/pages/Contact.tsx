@@ -7,9 +7,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useCMS } from "@/contexts/CMSContext"; // Import useCMS
 
 export default function Contact() {
   const { t } = useLanguage();
+  const { content } = useCMS(); // Get CMS content
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -91,49 +93,58 @@ export default function Contact() {
                     </div>
                     <div>
                       <h3 className="font-semibold mb-1">{t.contact.address}</h3>
-                      <p className="text-muted-foreground">
-                        123 Seaside Boulevard<br />
-                        Costa Bella, 12345<br />
-                        Italy
+                      <p className="text-muted-foreground whitespace-pre-line">
+                        {content.contactAddress || "123 Seaside Boulevard, Costa Bella, 12345, Italy"}
                       </p>
                     </div>
                   </div>
                   
-                  <div className="flex items-start">
-                    <div className="flex-shrink-0 h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center mr-4">
-                      <Phone className="h-5 w-5 text-primary" />
+                  {content.contactPhone && (
+                    <div className="flex items-start">
+                      <div className="flex-shrink-0 h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center mr-4">
+                        <Phone className="h-5 w-5 text-primary" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold mb-1">{t.contact.phone}</h3>
+                        <a href={`tel:${content.contactPhone}`} className="text-muted-foreground hover:text-primary">
+                          {content.contactPhone}
+                        </a>
+                        {/* Secondary phone removed as it's not in CMS structure */}
+                      </div>
                     </div>
-                    <div>
-                      <h3 className="font-semibold mb-1">{t.contact.phone}</h3>
-                      <p className="text-muted-foreground">+39 123 4567 890</p>
-                      <p className="text-muted-foreground">+39 098 7654 321 (Reservations)</p>
-                    </div>
-                  </div>
+                  )}
                   
-                  <div className="flex items-start">
-                    <div className="flex-shrink-0 h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center mr-4">
-                      <Mail className="h-5 w-5 text-primary" />
+                  {content.contactEmail && (
+                    <div className="flex items-start">
+                      <div className="flex-shrink-0 h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center mr-4">
+                        <Mail className="h-5 w-5 text-primary" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold mb-1">{t.contact.email}</h3>
+                        <a href={`mailto:${content.contactEmail}`} className="text-muted-foreground hover:text-primary">
+                          {content.contactEmail}
+                        </a>
+                        {/* Secondary email removed */}
+                      </div>
                     </div>
-                    <div>
-                      <h3 className="font-semibold mb-1">{t.contact.email}</h3>
-                      <p className="text-muted-foreground">info@maresereno.com</p>
-                      <p className="text-muted-foreground">reservations@maresereno.com</p>
-                    </div>
-                  </div>
+                  )}
                   
-                  <div className="flex items-start">
-                    <div className="flex-shrink-0 h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center mr-4">
-                      <Clock className="h-5 w-5 text-primary" />
+                  {content.footerContent?.contactInfo?.hours && (
+                    <div className="flex items-start">
+                      <div className="flex-shrink-0 h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center mr-4">
+                        <Clock className="h-5 w-5 text-primary" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold mb-1">{t.contact.receptionHours}</h3>
+                        <p className="text-muted-foreground">
+                          {content.footerContent.contactInfo.hours}<br />
+                          {/* Check-in/out times could also be from CMS if needed, e.g. content.bookingSettings */}
+                          {t.contact.checkInTime} <br />
+                          {t.contact.checkOutTime}
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <h3 className="font-semibold mb-1">{t.contact.receptionHours}</h3>
-                      <p className="text-muted-foreground">
-                        Monday - Sunday: 24 hours<br />
-                        {t.contact.checkInTime}<br />
-                        {t.contact.checkOutTime}
-                      </p>
-                    </div>
-                  </div>
+                  )}
                 </div>
                 
                 <div className="aspect-video rounded-xl overflow-hidden">

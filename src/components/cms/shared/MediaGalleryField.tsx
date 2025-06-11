@@ -34,45 +34,83 @@ export default function MediaGalleryField({
     if (!files) return;
 
     setIsUploading(true);
-    const newImages: string[] = [];
+    const uploadedFilePaths: string[] = [];
+    let successfulUploads = 0;
+    let failedUploads = 0;
 
     try {
-      for (const file of Array.from(files)) {
-        if (images.length + newImages.length >= maxImages) {
-          toast({
-            title: "Maximum images reached",
-            description: `You can only have up to ${maxImages} images.`,
-            variant: "destructive",
-          });
-          break;
+      await Promise.all(Array.from(files).map(async (file) => {
+        if (images.length + successfulUploads >= maxImages) {
+          // No toast here, as it might get repetitive. Overall summary toast is better.
+          return;
         }
 
         const isImage = file.type.startsWith('image/');
-        
         if (!isImage) {
           toast({
             title: "Invalid file type",
-            description: `${file.name} is not a valid image file.`,
+            description: `${file.name} is not a valid image file. Skipped.`,
             variant: "destructive",
           });
-          continue;
+          failedUploads++;
+          return;
         }
 
-        const fileUrl = URL.createObjectURL(file);
-        newImages.push(fileUrl);
+        try {
+          const formData = new FormData();
+          formData.append('file', file);
+
+          const response = await fetch('/api/upload', {
+            method: 'POST',
+            body: formData,
+          });
+
+          if (!response.ok) {
+            const errorData = await response.json().catch(() => ({ message: 'Unknown error during upload.' }));
+            throw new Error(`Upload failed for ${file.name}: ${response.statusText} - ${errorData.message}`);
+          }
+
+          const result = await response.json();
+          uploadedFilePaths.push(result.filePath);
+          successfulUploads++;
+        } catch (uploadError: any) {
+          toast({
+            title: `Upload failed for ${file.name}`,
+            description: uploadError.message || "An unexpected error occurred.",
+            variant: "destructive",
+          });
+          failedUploads++;
+        }
+      }));
+
+      if (successfulUploads > 0) {
+        onChange([...images, ...uploadedFilePaths]);
       }
 
-      if (newImages.length > 0) {
-        onChange([...images, ...newImages]);
+      if (successfulUploads > 0 && failedUploads > 0) {
+        toast({
+          title: "Partial upload success",
+          description: `${successfulUploads} image(s) uploaded successfully. ${failedUploads} failed.`,
+          variant: "default", // Or "warning" if you have one
+        });
+      } else if (successfulUploads > 0) {
         toast({
           title: "Upload successful",
-          description: `${newImages.length} image(s) uploaded successfully.`,
+          description: `${successfulUploads} image(s) uploaded successfully.`,
+        });
+      } else if (failedUploads > 0) {
+        toast({
+          title: "Upload failed",
+          description: `All ${failedUploads} image(s) failed to upload. Please try again.`,
+          variant: "destructive",
         });
       }
-    } catch (error) {
+      // If no files were processed (e.g., all hit maxImages limit early), no toast.
+
+    } catch (error: any) { // Catching potential errors from Promise.all itself, though individual errors are caught inside
       toast({
-        title: "Upload failed",
-        description: "Failed to upload files. Please try again.",
+        title: "Upload process error",
+        description: error.message || "An unexpected error occurred during the upload process.",
         variant: "destructive",
       });
     } finally {
