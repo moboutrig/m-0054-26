@@ -7,6 +7,7 @@ const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
 const jwt = require('jsonwebtoken');
+const multer = require('multer');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -34,6 +35,20 @@ if (!CMS_PASSWORD || !SESSION_SECRET) {
   console.log('Please ensure .env.local is set up correctly or environment variables are provided.');
   process.exit(1); // Exit if critical env vars are missing
 }
+
+// --- Multer Configuration ---
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    const uploadPath = 'public/uploads/';
+    // Ensure the directory exists
+    fs.mkdirSync(uploadPath, { recursive: true });
+    cb(null, uploadPath);
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + '-' + file.originalname);
+  }
+});
+const upload = multer({ storage: storage });
 
 // --- Middleware for Authentication ---
 const checkAuth = (req, res, next) => {
@@ -159,6 +174,22 @@ app.post('/api/logout', (req, res) => {
   }
 });
 
+// 5. /api/upload (POST)
+app.post('/api/upload', checkAuth, upload.single('file'), (req, res) => {
+  try {
+    if (req.file) {
+      res.status(200).json({ filePath: `/uploads/${req.file.filename}` });
+    } else {
+      res.status(400).json({ message: 'File upload failed: No file provided or upload error.' });
+    }
+  } catch (error) {
+    console.error('Error in /api/upload:', error);
+    res.status(500).json({ message: 'Internal server error during file upload.' });
+  }
+});
+
+// Serve static files from public/uploads
+app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 
 // --- Start Server ---
 app.listen(PORT, () => {

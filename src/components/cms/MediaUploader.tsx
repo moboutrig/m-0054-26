@@ -43,12 +43,27 @@ export default function MediaUploader() {
           continue;
         }
 
-        const fileUrl = URL.createObjectURL(file);
-        
+        // Create FormData and append the file
+        const formData = new FormData();
+        formData.append('file', file);
+
+        // Send the file to the new API endpoint
+        const response = await fetch('/api/upload', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (!response.ok) {
+          throw new Error(`Failed to upload ${file.name}: ${response.statusText}`);
+        }
+
+        const result = await response.json();
+        const filePath = result.filePath;
+
         const uploadedFile: UploadedFile = {
           id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
           name: file.name,
-          url: fileUrl,
+          url: filePath, // Use the filePath from the API response
           type: isImage ? 'image' : 'video',
           size: file.size,
           category
@@ -61,10 +76,10 @@ export default function MediaUploader() {
         title: "Upload successful",
         description: `${files.length} file(s) uploaded successfully.`,
       });
-    } catch (error) {
+    } catch (error: any) {
       toast({
         title: "Upload failed",
-        description: "Failed to upload files. Please try again.",
+        description: error.message || "Failed to upload files. Please try again.",
         variant: "destructive",
       });
     } finally {
