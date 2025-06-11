@@ -3,7 +3,7 @@ import SectionWrapper from "./SectionWrapper";
 import RoomCard from "../RoomCard"; // Updated import
 import { Button } from "../ui/button";
 import { ArrowRight } from "lucide-react";
-import Link from "next/link";
+import { Link } from "react-router-dom";
 
 export default function FeaturedRoomsSection() { // Renamed component
   const { content, getRoomWithPricing } = useCMS(); // Updated to getRoomWithPricing
